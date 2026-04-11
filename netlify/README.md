@@ -19,7 +19,7 @@ This directory contains a static documentation site for the Thai SET reverse DCF
 From the repository root:
 
 ```bash
-python scripts/build_netlify_site.py --site-url https://b9b4ymiN.github.io/thai-set-reverse-dcf-research
+python scripts/build_netlify_site.py --site-url https://b9b4ymin.github.io/thai-set-reverse-dcf-research
 ```
 
 If you know the production URL, replace the example value above before deployment so `sitemap.xml` and `robots.txt` use the correct base URL.

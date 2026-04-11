@@ -18,7 +18,7 @@ Netlify would also work well for this site technically, but it would require sep
 
 The automated deployment target is:
 
-`https://b9b4ymiN.github.io/thai-set-reverse-dcf-research/`
+`https://b9b4ymin.github.io/thai-set-reverse-dcf-research/`
 
 ## What deploys
 
@@ -32,7 +32,7 @@ The automated deployment target is:
 2. Rebuild locally if you want to inspect the exact generated site before pushing:
 
 ```bash
-python scripts/build_netlify_site.py --site-url https://b9b4ymiN.github.io/thai-set-reverse-dcf-research
+python scripts/build_netlify_site.py --site-url https://b9b4ymin.github.io/thai-set-reverse-dcf-research
 ```
 
 3. Push to `main`.
