@@ -1,0 +1,16 @@
+{
+  "output_dir": "research_data/latest/backtest",
+  "horizons_months": [
+    3,
+    6,
+    12
+  ],
+  "top_n": 10,
+  "rebalance_frequency": "Q",
+  "signals": 408,
+  "portfolio_rows": 39,
+  "exclusion_rows": 242,
+  "summary_rows": 3,
+  "no_lookahead_failures": 0,
+  "wacc_mode": "fixed"
+}

@@ -1,0 +1,128 @@
+{
+  "symbol": "TTB",
+  "fetched_at": "2026-04-11T10:15:56.221149",
+  "source": "stockanalysis.com",
+  "url": "https://stockanalysis.com/quote/bkk/TTB/financials/?p=quarterly",
+  "quarters": [
+    {
+      "quarter": "Q4 2025",
+      "field": "revenue",
+      "value": 12798.0,
+      "raw_label": "Revenue"
+    },
+    {
+      "quarter": "Q3 2025",
+      "field": "revenue",
+      "value": 12333.0,
+      "raw_label": "Revenue"
+    },
+    {
+      "quarter": "Q2 2025",
+      "field": "revenue",
+      "value": 12087.0,
+      "raw_label": "Revenue"
+    },
+    {
+      "quarter": "Q1 2025",
+      "field": "revenue",
+      "value": 11973.0,
+      "raw_label": "Revenue"
+    },
+    {
+      "quarter": "Q4 2024",
+      "field": "revenue",
+      "value": 12430.0,
+      "raw_label": "Revenue"
+    },
+    {
+      "quarter": "Q3 2024",
+      "field": "revenue",
+      "value": 12473.0,
+      "raw_label": "Revenue"
+    },
+    {
+      "quarter": "Q2 2024",
+      "field": "revenue",
+      "value": 12092.0,
+      "raw_label": "Revenue"
+    },
+    {
+      "quarter": "Q1 2024",
+      "field": "revenue",
+      "value": 12553.0,
+      "raw_label": "Revenue"
+    },
+    {
+      "quarter": "Q4 2023",
+      "field": "revenue",
+      "value": 9019.0,
+      "raw_label": "Revenue"
+    },
+    {
+      "quarter": "Q3 2023",
+      "field": "revenue",
+      "value": 13646.0,
+      "raw_label": "Revenue"
+    },
+    {
+      "quarter": "Q2 2023",
+      "field": "revenue",
+      "value": 13516.0,
+      "raw_label": "Revenue"
+    },
+    {
+      "quarter": "Q1 2023",
+      "field": "revenue",
+      "value": 12594.0,
+      "raw_label": "Revenue"
+    },
+    {
+      "quarter": "Q4 2022",
+      "field": "revenue",
+      "value": 13038.0,
+      "raw_label": "Revenue"
+    },
+    {
+      "quarter": "Q3 2022",
+      "field": "revenue",
+      "value": 11989.0,
+      "raw_label": "Revenue"
+    },
+    {
+      "quarter": "Q2 2022",
+      "field": "revenue",
+      "value": 11507.0,
+      "raw_label": "Revenue"
+    },
+    {
+      "quarter": "Q1 2022",
+      "field": "revenue",
+      "value": 10966.0,
+      "raw_label": "Revenue"
+    },
+    {
+      "quarter": "Q4 2021",
+      "field": "revenue",
+      "value": 11491.0,
+      "raw_label": "Revenue"
+    },
+    {
+      "quarter": "Q3 2021",
+      "field": "revenue",
+      "value": 10288.0,
+      "raw_label": "Revenue"
+    },
+    {
+      "quarter": "Q2 2021",
+      "field": "revenue",
+      "value": 10600.0,
+      "raw_label": "Revenue"
+    },
+    {
+      "quarter": "Q1 2021",
+      "field": "revenue",
+      "value": 11643.0,
+      "raw_label": "Revenue"
+    }
+  ]
+}

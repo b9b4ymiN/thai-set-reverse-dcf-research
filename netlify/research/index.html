@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Research Methodology | Thai SET Reverse DCF</title>
+    <meta name="description" content="Methodology, datasource decision, and no-lookahead audit notes for the Thai SET reverse DCF workflow." />
+    <meta name="theme-color" content="#173144" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Research Methodology | Thai SET Reverse DCF" />
+    <meta property="og:description" content="Methodology, datasource decision, and no-lookahead audit notes for the Thai SET reverse DCF workflow." />
+    <meta property="og:url" content="https://b9b4ymiN.github.io/thai-set-reverse-dcf-research/research/" />
+    <meta property="og:site_name" content="Thai SET Reverse DCF Research" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="stylesheet" href="../css/style.css" />
+    
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="topbar">
+        <a class="brand" href="../index.html">
+          <span class="brand-mark">RDCF</span>
+          <span class="brand-copy">
+            <strong>Thai SET Reverse DCF</strong>
+            <span>Deployment-ready thesis and backtest documentation</span>
+          </span>
+        </a>
+        <nav aria-label="Primary"><a href="../index.html">Home</a><a href="../thesis.html">Thesis</a><a href="../research/index.html" class="active">Research</a><a href="../backtest/index.html">Backtest</a><a href="../about/index.html">About</a><a href="../download/index.html">Download</a></nav>
+      </header>
+      
+    <section class="page-intro">
+      <span class="eyebrow">Research architecture</span>
+      <h1>Methodology, datasource policy, and validation controls</h1>
+      <p>
+        The research layer explains how the repository moves from free Thai equity data to dated observations,
+        benchmark-relative backtests, and thesis-ready evidence artifacts.
+      </p>
+    </section>
+    <section class="card-grid">
+      <article class="card span-8 content-area">
+        <h1 id="thesis-methodology">Thesis Methodology</h1>
+<h2 id="research-question">Research question</h2>
+<p>Can a <strong>fundamental-only reverse DCF ranking strategy</strong> select Thai stocks that outperform the Thai market benchmark over multiple holding periods?</p>
+<h2 id="data-source-policy">Data source policy</h2>
+<ul><li><strong>Primary source:</strong> Yahoo Finance via <code>yfinance</code></li><li><strong>Validation source:</strong> official SET pages for optional manual spot checks only</li><li><strong>Cost constraint:</strong> free data only</li><li><strong>Datasource rule:</strong> when freshness conflicts with backtest strength, prefer the source that gives stronger historical/backtest completeness</li></ul>
+<p>See also:</p>
+<ul><li><code>docs/datasource-decision.md</code></li><li><code>research_data/latest/manifest.json</code></li></ul>
+<h2 id="dataset-used-in-this-repo">Dataset used in this repo</h2>
+<p>The current thesis workflow uses the generated research bundle under <code>research_data/latest/</code>.</p>
+<p>Core inputs:</p>
+<ul><li><code>fundamentals_snapshot.csv</code></li><li><code>fundamental_observations.csv</code></li><li><code>price_history.csv</code></li><li><code>benchmark_history.csv</code></li><li><code>fundamental_coverage.csv</code></li><li><code>price_coverage.csv</code></li></ul>
+<h2 id="observation-dating">Observation dating</h2>
+<p>The backtest uses <strong>historical statement observations</strong> from Yahoo quarterly and annual statements.</p>
+<p>Each observation contains:</p>
+<ul><li><code>Statement_Date</code></li><li><code>Availability_Date</code></li><li><code>Reporting_Lag_Days</code></li></ul>
+<p>The execution rule is:</p>
+<p><code>Availability_Date &amp;lt;= Rebalance_Date</code></p>
+<ol><li>at each rebalance date, select the latest row where</li><li>use the latest adjusted market price on or before the rebalance date</li></ol>
+<p>This is designed to reduce look-ahead bias.</p>
+<h2 id="reverse-dcf-signal-construction">Reverse DCF signal construction</h2>
+<p>For each eligible ticker at each rebalance date:</p>
+<ol><li>take dated <code>FCF</code>, <code>Net_Debt</code>, and share-count inputs from the latest eligible observation</li><li>take market price from the dated price series</li><li>solve for the <strong>implied growth rate</strong> that makes DCF value equal market price</li><li>compare implied growth with observed historical revenue growth</li></ol>
+<p>Signal used in the current backtest:</p>
+<p><code>Signal_Score = Actual_Revenue_Growth - Implied_Growth_Rate</code></p>
+<p>Higher score means the company’s observed growth is stronger relative to what market price appears to imply.</p>
+<h2 id="backtest-design">Backtest design</h2>
+<p>Current implementation:</p>
+<ul><li><strong>Rebalance frequency:</strong> quarterly</li><li><strong>Portfolio construction:</strong> equal-weight top 10 names by signal score</li><li><strong>Benchmark:</strong> <code>^SET.BK</code></li><li><strong>Holding periods tested:</strong> 3, 6, 12 months</li><li><strong>WACC mode:</strong> <code>fixed</code></li></ul>
+<p>The fixed-WACC mode is intentional for historical safety. It avoids leaking latest snapshot WACC into historical scoring.</p>
+<h2 id="no-look-ahead-controls">No-look-ahead controls</h2>
+<p>Current controls implemented in code and artifacts:</p>
+<ul><li>only observations with <code>Availability_Date &amp;lt;= Rebalance_Date</code> are used</li><li>only prices on or before the rebalance date are used</li><li>backtest manifest records <code>wacc_mode</code></li><li>audit artifacts are written:</li><li><code>research_data/latest/backtest/audit_sample.csv</code></li><li><code>research_data/latest/backtest/no_lookahead_audit.md</code></li></ul>
+<p>The latest run recorded:</p>
+<ul><li><code>no_lookahead_failures = 0</code></li></ul>
+<h2 id="universe-and-exclusions">Universe and exclusions</h2>
+<p>The backtest writes explicit exclusion artifacts instead of silently dropping names:</p>
+<ul><li><code>research_data/latest/backtest/exclusions.csv</code></li><li><code>research_data/latest/backtest/summary.csv</code></li></ul>
+<p>Main exclusion reasons in the current run:</p>
+<ul><li><code>invalid_fcf</code></li><li><code>no_convergence</code></li><li><code>no_price_on_or_before</code></li><li><code>no_available_observation</code></li><li><code>invalid_shares</code></li></ul>
+<p>This makes the research more auditable and thesis-friendly.</p>
+<h2 id="limitations">Limitations</h2>
+<ol><li><strong>WACC is fixed in the backtest</strong></li></ol>
+<ul><li>this is safer than using latest snapshot WACC historically</li><li>but it is still a simplifying assumption</li></ul>
+<ol><li><strong>Yahoo coverage gaps remain</strong></li></ol>
+<ul><li>some symbols may have incomplete price or statement history</li><li>coverage files must be reviewed alongside performance</li></ul>
+<ol><li><strong>Universe is free-data constrained</strong></li></ol>
+<ul><li>the strategy is evaluated on what the free source can actually provide</li></ul>
+<ol><li><strong>Revenue growth is a simplified realized-growth reference</strong></li></ol>
+<ul><li>it is not a full forecasting model</li></ul>
+<h2 id="reproducibility-commands">Reproducibility commands</h2>
+<p>Build data:</p>
+<pre><code class="language-bash">python -m rdcf.data_pipeline --output-dir research_data/latest --period 10y --sync-root-snapshot</code></pre>
+<p>Run backtest:</p>
+<pre><code class="language-bash">python -m src.pipeline.backtest \
+  --output-dir research_data/latest/backtest \
+  --top-n 10 \
+  --horizons 3 6 12 \
+  --rebalance-frequency Q \
+  --start-date 2020-01-01 \
+  --wacc-mode fixed</code></pre>
+<h2 id="validation-checklist">Validation checklist</h2>
+<ul><li>review <code>research_data/latest/backtest/manifest.json</code></li><li>review <code>research_data/latest/backtest/no_lookahead_audit.md</code></li><li>review <code>research_data/latest/backtest/exclusions.csv</code></li><li>compare <code>summary.csv</code> with <code>report.md</code></li></ul>
+      </article>
+      <article class="card span-4">
+        <p class="kicker">Why this design</p>
+        <h2>Research choices that keep the thesis defensible</h2>
+        <ul class="list-clean">
+          <li>Free-data only constraint keeps the workflow reproducible.</li>
+          <li>Availability-date logic prevents simple timing leakage.</li>
+          <li>Explicit exclusions make the investable universe auditable.</li>
+          <li>Historical scoring uses fixed WACC to avoid leaking live assumptions into the past.</li>
+        </ul>
+      </article>
+      <article class="card span-6 content-area">
+        <h1 id="datasource-decision">Datasource Decision</h1>
+<h2 id="decision">Decision</h2>
+<p>Use <strong>Yahoo Finance via <code>yfinance</code></strong> as the primary free datasource for this repository&#x27;s reverse-DCF workflows.</p>
+<h2 id="why">Why</h2>
+<ul><li>It is already integrated into the project.</li><li>It is free and script-friendly.</li><li>It offers a more practical path for historical backtest completeness than the free public SET website.</li><li>The datasource adapter can be reused in other Thai-equity projects.</li></ul>
+<h2 id="rejected-alternatives">Rejected alternatives</h2>
+<h3 id="free-official-set-website-as-primary-source">Free official SET website as primary source</h3>
+<p>Rejected as the thesis-core datasource because its free public web experience appears too shallow for long-horizon backtests compared with the paid SETSMART offering.</p>
+<h3 id="setsmart-as-primary-source">SETSMART as primary source</h3>
+<p>Rejected because it is paid and violates the project&#x27;s free-only requirement.</p>
+<h2 id="validation-policy">Validation policy</h2>
+<p>Official SET pages may still be used for optional manual spot checks, but they are <strong>not</strong> the default ingestion path.</p>
+<h2 id="caveat">Caveat</h2>
+<p>Yahoo/<code>yfinance</code> is practical, not perfect. The project must log field coverage, exclusions, and datasource limitations explicitly in research outputs.</p>
+      </article>
+      <article class="card span-6 content-area">
+        <h1 id="no-lookahead-audit">No-Lookahead Audit</h1>
+<ul><li>WACC mode: fixed</li><li>No-lookahead failures: 0</li></ul>
+<p>This audit samples the first generated rebalance cross-section. Each sampled row should satisfy:</p>
+<ol><li><code>Availability_Date &amp;lt;= Rebalance_Date</code></li><li><code>Price_Date &amp;lt;= Rebalance_Date</code></li><li>backtest WACC mode is fixed (not latest snapshot)</li></ol>
+<table><thead><tr><th>Ticker</th><th>Rebalance_Date</th><th>Availability_Date</th><th>Price_Date</th><th>WACC_Mode</th><th>No_Lookahead_Pass</th><th>Days_Since_Available</th></tr></thead><tbody><tr><td>TTB.BK</td><td>2023-03-31</td><td>2023-02-14</td><td>2023-03-31</td><td>fixed</td><td>True</td><td>45</td></tr><tr><td>IVL.BK</td><td>2023-03-31</td><td>2023-02-14</td><td>2023-03-31</td><td>fixed</td><td>True</td><td>45</td></tr><tr><td>BBL.BK</td><td>2023-03-31</td><td>2023-02-14</td><td>2023-03-31</td><td>fixed</td><td>True</td><td>45</td></tr><tr><td>MINT.BK</td><td>2023-03-31</td><td>2023-02-14</td><td>2023-03-31</td><td>fixed</td><td>True</td><td>45</td></tr><tr><td>ADVANC.BK</td><td>2023-03-31</td><td>2023-02-14</td><td>2023-03-31</td><td>fixed</td><td>True</td><td>45</td></tr><tr><td>SCGP.BK</td><td>2023-03-31</td><td>2023-02-14</td><td>2023-03-31</td><td>fixed</td><td>True</td><td>45</td></tr><tr><td>TOP.BK</td><td>2023-03-31</td><td>2023-02-14</td><td>2023-03-31</td><td>fixed</td><td>True</td><td>45</td></tr><tr><td>CPALL.BK</td><td>2023-03-31</td><td>2023-02-14</td><td>2023-03-31</td><td>fixed</td><td>True</td><td>45</td></tr><tr><td>EGCO.BK</td><td>2023-03-31</td><td>2023-02-14</td><td>2023-03-31</td><td>fixed</td><td>True</td><td>45</td></tr><tr><td>BJC.BK</td><td>2023-03-31</td><td>2023-02-14</td><td>2023-03-31</td><td>fixed</td><td>True</td><td>45</td></tr></tbody></table>
+      </article>
+    </section>
+    
+      
+    <footer class="site-footer">
+      <p>Built from local thesis and backtest artifacts in this repository. Designed for Netlify and GitHub Pages deployment.</p>
+      <div class="footer-links"><a href="../thesis.html">Thesis</a><a href="../research/index.html">Research</a><a href="../backtest/index.html">Backtest</a><a href="../about/index.html">About</a><a href="../download/index.html">Download</a></div>
+    </footer>
+    
+    </div>
+  </body>
+</html>

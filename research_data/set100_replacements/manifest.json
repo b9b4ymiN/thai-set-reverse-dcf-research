@@ -1,0 +1,36 @@
+{
+  "tickers": [
+    "BCH.BK,BCPG.BK,BRR.BK,CGD.BK,CHG.BK,ERW.BK,FPI.BK"
+  ],
+  "benchmark_ticker": "^SET.BK",
+  "period": "10y",
+  "interval": "1d",
+  "reporting_lag_days": 45,
+  "rows": {
+    "fundamentals": 1,
+    "observations": 0,
+    "fundamental_coverage": 1,
+    "prices": 0,
+    "benchmark": 2422,
+    "price_coverage": 1
+  },
+  "paths": {
+    "fundamentals": "research_data/set100_replacements/fundamentals_snapshot.csv",
+    "quality": "research_data/set100_replacements/datasource_quality.csv",
+    "exclusions": "research_data/set100_replacements/reverse_dcf_exclusions.csv",
+    "validation": "research_data/set100_replacements/set_validation_references.csv",
+    "observations": "research_data/set100_replacements/fundamental_observations.csv",
+    "fundamental_coverage": "research_data/set100_replacements/fundamental_coverage.csv",
+    "prices": "research_data/set100_replacements/price_history.csv",
+    "benchmark": "research_data/set100_replacements/benchmark_history.csv",
+    "price_coverage": "research_data/set100_replacements/price_coverage.csv",
+    "manifest": "research_data/set100_replacements/manifest.json"
+  },
+  "missing_fundamental_tickers": [
+    "BCH.BK,BCPG.BK,BRR.BK,CGD.BK,CHG.BK,ERW.BK,FPI.BK"
+  ],
+  "missing_price_tickers": [
+    "BCH.BK,BCPG.BK,BRR.BK,CGD.BK,CHG.BK,ERW.BK,FPI.BK"
+  ],
+  "root_snapshot_synced": false
+}

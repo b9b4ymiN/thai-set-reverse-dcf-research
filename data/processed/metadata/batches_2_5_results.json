@@ -1,0 +1,394 @@
+{
+  "started_at": "2026-04-11T10:34:10.108414",
+  "batches": [
+    {
+      "batch_id": 2,
+      "started_at": "2026-04-11T10:34:10.108717",
+      "stocks_tested": [
+        {
+          "ticker": "AWC.BK",
+          "status": "success",
+          "quarters": 20,
+          "data_points": 140,
+          "time_seconds": 4.058213710784912
+        },
+        {
+          "ticker": "BANPU.BK",
+          "status": "success",
+          "quarters": 20,
+          "data_points": 120,
+          "time_seconds": 3.377241611480713
+        },
+        {
+          "ticker": "BEM.BK",
+          "status": "success",
+          "quarters": 20,
+          "data_points": 120,
+          "time_seconds": 6.445175409317017
+        },
+        {
+          "ticker": "BGRIM.BK",
+          "status": "success",
+          "quarters": 20,
+          "data_points": 120,
+          "time_seconds": 4.572531700134277
+        },
+        {
+          "ticker": "BH.BK",
+          "status": "success",
+          "quarters": 20,
+          "data_points": 140,
+          "time_seconds": 6.7932212352752686
+        },
+        {
+          "ticker": "BJC.BK",
+          "status": "success",
+          "quarters": 20,
+          "data_points": 140,
+          "time_seconds": 9.438359022140503
+        },
+        {
+          "ticker": "BTS.BK",
+          "status": "success",
+          "quarters": 20,
+          "data_points": 120,
+          "time_seconds": 3.465872049331665
+        },
+        {
+          "ticker": "CBG.BK",
+          "status": "success",
+          "quarters": 20,
+          "data_points": 140,
+          "time_seconds": 6.420748233795166
+        },
+        {
+          "ticker": "CENTEL.BK",
+          "status": "success",
+          "quarters": 20,
+          "data_points": 140,
+          "time_seconds": 4.60260534286499
+        },
+        {
+          "ticker": "COM7.BK",
+          "status": "success",
+          "quarters": 20,
+          "data_points": 140,
+          "time_seconds": 1.0377624034881592
+        },
+        {
+          "ticker": "CPF.BK",
+          "status": "success",
+          "quarters": 20,
+          "data_points": 140,
+          "time_seconds": 6.5809242725372314
+        },
+        {
+          "ticker": "EGCO.BK",
+          "status": "success",
+          "quarters": 20,
+          "data_points": 140,
+          "time_seconds": 1.5872166156768799
+        },
+        {
+          "ticker": "GLOBAL.BK",
+          "status": "success",
+          "quarters": 20,
+          "data_points": 140,
+          "time_seconds": 4.145336866378784
+        },
+        {
+          "ticker": "GPSC.BK",
+          "status": "success",
+          "quarters": 20,
+          "data_points": 140,
+          "time_seconds": 6.6951189041137695
+        },
+        {
+          "ticker": "HMPRO.BK",
+          "status": "success",
+          "quarters": 20,
+          "data_points": 140,
+          "time_seconds": 6.412978649139404
+        },
+        {
+          "ticker": "KCE.BK",
+          "status": "success",
+          "quarters": 20,
+          "data_points": 120,
+          "time_seconds": 0.8918697834014893
+        },
+        {
+          "ticker": "KKP.BK",
+          "status": "success",
+          "quarters": 20,
+          "data_points": 20,
+          "time_seconds": 7.818840503692627
+        },
+        {
+          "ticker": "KTC.BK",
+          "status": "success",
+          "quarters": 20,
+          "data_points": 94,
+          "time_seconds": 0.7821507453918457
+        },
+        {
+          "ticker": "LH.BK",
+          "status": "success",
+          "quarters": 20,
+          "data_points": 140,
+          "time_seconds": 8.857568979263306
+        },
+        {
+          "ticker": "MINT.BK",
+          "status": "success",
+          "quarters": 20,
+          "data_points": 140,
+          "time_seconds": 10.050414085388184
+        }
+      ],
+      "successful": [
+        "AWC.BK",
+        "BANPU.BK",
+        "BEM.BK",
+        "BGRIM.BK",
+        "BH.BK",
+        "BJC.BK",
+        "BTS.BK",
+        "CBG.BK",
+        "CENTEL.BK",
+        "COM7.BK",
+        "CPF.BK",
+        "EGCO.BK",
+        "GLOBAL.BK",
+        "GPSC.BK",
+        "HMPRO.BK",
+        "KCE.BK",
+        "KKP.BK",
+        "KTC.BK",
+        "LH.BK",
+        "MINT.BK"
+      ],
+      "failed": [],
+      "rate_limited": false,
+      "total_data_points": 2534,
+      "errors": [],
+      "aborted": false,
+      "abort_reason": null,
+      "completed_at": "2026-04-11T10:49:42.151840",
+      "total_time_seconds": 932.0431265830994
+    },
+    {
+      "batch_id": 3,
+      "started_at": "2026-04-11T10:51:48.877899",
+      "stocks_tested": [
+        {
+          "ticker": "OR.BK",
+          "status": "success",
+          "quarters": 20,
+          "data_points": 120,
+          "time_seconds": 5.754337310791016
+        },
+        {
+          "ticker": "OSP.BK",
+          "status": "success",
+          "quarters": 20,
+          "data_points": 140,
+          "time_seconds": 5.180248975753784
+        },
+        {
+          "ticker": "RATCH.BK",
+          "status": "success",
+          "quarters": 20,
+          "data_points": 120,
+          "time_seconds": 1.6887245178222656
+        },
+        {
+          "ticker": "SAWAD.BK",
+          "status": "success",
+          "quarters": 20,
+          "data_points": 100,
+          "time_seconds": 10.440248489379883
+        },
+        {
+          "ticker": "SCB.BK",
+          "status": "success",
+          "quarters": 20,
+          "data_points": 20,
+          "time_seconds": 6.143425941467285
+        },
+        {
+          "ticker": "SCC.BK",
+          "status": "success",
+          "quarters": 20,
+          "data_points": 120,
+          "time_seconds": 3.0761666297912598
+        },
+        {
+          "ticker": "SCGP.BK",
+          "status": "success",
+          "quarters": 20,
+          "data_points": 120,
+          "time_seconds": 7.922548770904541
+        },
+        {
+          "ticker": "TCAP.BK",
+          "status": "success",
+          "quarters": 20,
+          "data_points": 20,
+          "time_seconds": 4.847326040267944
+        },
+        {
+          "ticker": "TIDLOR.BK",
+          "status": "success",
+          "quarters": 20,
+          "data_points": 100,
+          "time_seconds": 1.131901502609253
+        },
+        {
+          "ticker": "TISCO.BK",
+          "status": "success",
+          "quarters": 20,
+          "data_points": 20,
+          "time_seconds": 4.286526679992676
+        },
+        {
+          "ticker": "TLI.BK",
+          "status": "success",
+          "quarters": 20,
+          "data_points": 100,
+          "time_seconds": 4.03671669960022
+        },
+        {
+          "ticker": "TOP.BK",
+          "status": "success",
+          "quarters": 20,
+          "data_points": 140,
+          "time_seconds": 6.433769702911377
+        },
+        {
+          "ticker": "TU.BK",
+          "status": "success",
+          "quarters": 19,
+          "data_points": 114,
+          "time_seconds": 9.863377571105957
+        },
+        {
+          "ticker": "VGI.BK",
+          "status": "success",
+          "quarters": 20,
+          "data_points": 140,
+          "time_seconds": 9.166698455810547
+        },
+        {
+          "ticker": "BAY.BK",
+          "status": "success",
+          "quarters": 20,
+          "data_points": 20,
+          "time_seconds": 7.410546779632568
+        },
+        {
+          "ticker": "CIMBT.BK",
+          "status": "success",
+          "quarters": 20,
+          "data_points": 20,
+          "time_seconds": 6.5637218952178955
+        },
+        {
+          "ticker": "CRC.BK",
+          "status": "success",
+          "quarters": 18,
+          "data_points": 126,
+          "time_seconds": 9.487602472305298
+        },
+        {
+          "ticker": "DRT.BK",
+          "status": "success",
+          "quarters": 20,
+          "data_points": 140,
+          "time_seconds": 9.663435220718384
+        }
+      ],
+      "successful": [
+        "OR.BK",
+        "OSP.BK",
+        "RATCH.BK",
+        "SAWAD.BK",
+        "SCB.BK",
+        "SCC.BK",
+        "SCGP.BK",
+        "TCAP.BK",
+        "TIDLOR.BK",
+        "TISCO.BK",
+        "TLI.BK",
+        "TOP.BK",
+        "TU.BK",
+        "VGI.BK",
+        "BAY.BK",
+        "CIMBT.BK",
+        "CRC.BK",
+        "DRT.BK"
+      ],
+      "failed": [
+        "BANK.BK",
+        "CIP.BK"
+      ],
+      "rate_limited": false,
+      "total_data_points": 1680,
+      "errors": [
+        "BANK.BK: Request failed",
+        "CIP.BK: Request failed"
+      ],
+      "aborted": false,
+      "abort_reason": null,
+      "completed_at": "2026-04-11T11:07:56.784971",
+      "total_time_seconds": 967.907060623169
+    },
+    {
+      "batch_id": 4,
+      "started_at": "2026-04-11T11:10:50.149284",
+      "stocks_tested": [
+        {
+          "ticker": "FPT.BK",
+          "status": "success",
+          "quarters": 20,
+          "data_points": 40,
+          "time_seconds": 10.78089427947998
+        },
+        {
+          "ticker": "JMT.BK",
+          "status": "success",
+          "quarters": 20,
+          "data_points": 140,
+          "time_seconds": 3.2346343994140625
+        }
+      ],
+      "successful": [
+        "FPT.BK",
+        "JMT.BK"
+      ],
+      "failed": [
+        "IFEC.BK",
+        "LHB.BK"
+      ],
+      "rate_limited": false,
+      "total_data_points": 180,
+      "errors": [
+        "IFEC.BK: Request failed",
+        "LHB.BK: Request failed"
+      ],
+      "aborted": true,
+      "abort_reason": "Success rate 40.0% below 80% threshold",
+      "completed_at": "2026-04-11T11:14:42.545194",
+      "total_time_seconds": 232.39591002464294
+    }
+  ],
+  "total_stocks_tested": 40,
+  "total_successful": 40,
+  "total_failed": 4,
+  "total_data_points": 4394,
+  "rate_limited": false,
+  "aborted": true,
+  "abort_reason": "Batch 4: Success rate 40.0% below 80% threshold",
+  "completed_at": "2026-04-11T11:14:42.545634",
+  "total_time_seconds": 2432.4372131824493
+}

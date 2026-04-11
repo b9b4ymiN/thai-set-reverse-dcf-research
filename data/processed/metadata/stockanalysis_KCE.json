@@ -1,0 +1,728 @@
+{
+  "symbol": "KCE",
+  "fetched_at": "2026-04-11T10:46:30.763881",
+  "source": "stockanalysis.com",
+  "url": "https://stockanalysis.com/quote/bkk/KCE/financials/?p=quarterly",
+  "quarters": [
+    {
+      "quarter": "Q4 2025",
+      "field": "revenue",
+      "value": 3021.0,
+      "raw_label": "Revenue"
+    },
+    {
+      "quarter": "Q3 2025",
+      "field": "revenue",
+      "value": 3444.0,
+      "raw_label": "Revenue"
+    },
+    {
+      "quarter": "Q2 2025",
+      "field": "revenue",
+      "value": 3285.0,
+      "raw_label": "Revenue"
+    },
+    {
+      "quarter": "Q1 2025",
+      "field": "revenue",
+      "value": 3324.0,
+      "raw_label": "Revenue"
+    },
+    {
+      "quarter": "Q4 2024",
+      "field": "revenue",
+      "value": 3239.0,
+      "raw_label": "Revenue"
+    },
+    {
+      "quarter": "Q3 2024",
+      "field": "revenue",
+      "value": 3802.0,
+      "raw_label": "Revenue"
+    },
+    {
+      "quarter": "Q2 2024",
+      "field": "revenue",
+      "value": 4012.0,
+      "raw_label": "Revenue"
+    },
+    {
+      "quarter": "Q1 2024",
+      "field": "revenue",
+      "value": 3780.0,
+      "raw_label": "Revenue"
+    },
+    {
+      "quarter": "Q4 2023",
+      "field": "revenue",
+      "value": 4095.0,
+      "raw_label": "Revenue"
+    },
+    {
+      "quarter": "Q3 2023",
+      "field": "revenue",
+      "value": 4326.0,
+      "raw_label": "Revenue"
+    },
+    {
+      "quarter": "Q2 2023",
+      "field": "revenue",
+      "value": 3898.0,
+      "raw_label": "Revenue"
+    },
+    {
+      "quarter": "Q1 2023",
+      "field": "revenue",
+      "value": 4025.0,
+      "raw_label": "Revenue"
+    },
+    {
+      "quarter": "Q4 2022",
+      "field": "revenue",
+      "value": 4622.0,
+      "raw_label": "Revenue"
+    },
+    {
+      "quarter": "Q3 2022",
+      "field": "revenue",
+      "value": 4634.0,
+      "raw_label": "Revenue"
+    },
+    {
+      "quarter": "Q2 2022",
+      "field": "revenue",
+      "value": 4667.0,
+      "raw_label": "Revenue"
+    },
+    {
+      "quarter": "Q1 2022",
+      "field": "revenue",
+      "value": 4533.0,
+      "raw_label": "Revenue"
+    },
+    {
+      "quarter": "Q4 2021",
+      "field": "revenue",
+      "value": 4198.0,
+      "raw_label": "Revenue"
+    },
+    {
+      "quarter": "Q3 2021",
+      "field": "revenue",
+      "value": 3789.0,
+      "raw_label": "Revenue"
+    },
+    {
+      "quarter": "Q2 2021",
+      "field": "revenue",
+      "value": 3536.0,
+      "raw_label": "Revenue"
+    },
+    {
+      "quarter": "Q1 2021",
+      "field": "revenue",
+      "value": 3415.0,
+      "raw_label": "Revenue"
+    },
+    {
+      "quarter": "Q4 2025",
+      "field": "ebit",
+      "value": 150.38,
+      "raw_label": "Operating Income"
+    },
+    {
+      "quarter": "Q3 2025",
+      "field": "ebit",
+      "value": 262.09,
+      "raw_label": "Operating Income"
+    },
+    {
+      "quarter": "Q2 2025",
+      "field": "ebit",
+      "value": 159.56,
+      "raw_label": "Operating Income"
+    },
+    {
+      "quarter": "Q1 2025",
+      "field": "ebit",
+      "value": 168.36,
+      "raw_label": "Operating Income"
+    },
+    {
+      "quarter": "Q4 2024",
+      "field": "ebit",
+      "value": 231.6,
+      "raw_label": "Operating Income"
+    },
+    {
+      "quarter": "Q3 2024",
+      "field": "ebit",
+      "value": 181.33,
+      "raw_label": "Operating Income"
+    },
+    {
+      "quarter": "Q2 2024",
+      "field": "ebit",
+      "value": 449.1,
+      "raw_label": "Operating Income"
+    },
+    {
+      "quarter": "Q1 2024",
+      "field": "ebit",
+      "value": 452.11,
+      "raw_label": "Operating Income"
+    },
+    {
+      "quarter": "Q4 2023",
+      "field": "ebit",
+      "value": 496.56,
+      "raw_label": "Operating Income"
+    },
+    {
+      "quarter": "Q3 2023",
+      "field": "ebit",
+      "value": 492.99,
+      "raw_label": "Operating Income"
+    },
+    {
+      "quarter": "Q2 2023",
+      "field": "ebit",
+      "value": 330.41,
+      "raw_label": "Operating Income"
+    },
+    {
+      "quarter": "Q1 2023",
+      "field": "ebit",
+      "value": 308.9,
+      "raw_label": "Operating Income"
+    },
+    {
+      "quarter": "Q4 2022",
+      "field": "ebit",
+      "value": 510.55,
+      "raw_label": "Operating Income"
+    },
+    {
+      "quarter": "Q3 2022",
+      "field": "ebit",
+      "value": 602.02,
+      "raw_label": "Operating Income"
+    },
+    {
+      "quarter": "Q2 2022",
+      "field": "ebit",
+      "value": 574.69,
+      "raw_label": "Operating Income"
+    },
+    {
+      "quarter": "Q1 2022",
+      "field": "ebit",
+      "value": 526.24,
+      "raw_label": "Operating Income"
+    },
+    {
+      "quarter": "Q4 2021",
+      "field": "ebit",
+      "value": 660.66,
+      "raw_label": "Operating Income"
+    },
+    {
+      "quarter": "Q3 2021",
+      "field": "ebit",
+      "value": 633.91,
+      "raw_label": "Operating Income"
+    },
+    {
+      "quarter": "Q2 2021",
+      "field": "ebit",
+      "value": 569.67,
+      "raw_label": "Operating Income"
+    },
+    {
+      "quarter": "Q1 2021",
+      "field": "ebit",
+      "value": 452.61,
+      "raw_label": "Operating Income"
+    },
+    {
+      "quarter": "Q4 2025",
+      "field": "free_cash_flow",
+      "value": 419.9,
+      "raw_label": "Free Cash Flow"
+    },
+    {
+      "quarter": "Q3 2025",
+      "field": "free_cash_flow",
+      "value": 528.81,
+      "raw_label": "Free Cash Flow"
+    },
+    {
+      "quarter": "Q2 2025",
+      "field": "free_cash_flow",
+      "value": 112.6,
+      "raw_label": "Free Cash Flow"
+    },
+    {
+      "quarter": "Q1 2025",
+      "field": "free_cash_flow",
+      "value": 872.36,
+      "raw_label": "Free Cash Flow"
+    },
+    {
+      "quarter": "Q4 2024",
+      "field": "free_cash_flow",
+      "value": 414.9,
+      "raw_label": "Free Cash Flow"
+    },
+    {
+      "quarter": "Q3 2024",
+      "field": "free_cash_flow",
+      "value": 700.72,
+      "raw_label": "Free Cash Flow"
+    },
+    {
+      "quarter": "Q2 2024",
+      "field": "free_cash_flow",
+      "value": 618.7,
+      "raw_label": "Free Cash Flow"
+    },
+    {
+      "quarter": "Q1 2024",
+      "field": "free_cash_flow",
+      "value": 1163.0,
+      "raw_label": "Free Cash Flow"
+    },
+    {
+      "quarter": "Q4 2023",
+      "field": "free_cash_flow",
+      "value": 1090.0,
+      "raw_label": "Free Cash Flow"
+    },
+    {
+      "quarter": "Q3 2023",
+      "field": "free_cash_flow",
+      "value": 1041.0,
+      "raw_label": "Free Cash Flow"
+    },
+    {
+      "quarter": "Q2 2023",
+      "field": "free_cash_flow",
+      "value": 476.89,
+      "raw_label": "Free Cash Flow"
+    },
+    {
+      "quarter": "Q1 2023",
+      "field": "free_cash_flow",
+      "value": 1162.0,
+      "raw_label": "Free Cash Flow"
+    },
+    {
+      "quarter": "Q4 2022",
+      "field": "free_cash_flow",
+      "value": 402.72,
+      "raw_label": "Free Cash Flow"
+    },
+    {
+      "quarter": "Q3 2022",
+      "field": "free_cash_flow",
+      "value": 613.99,
+      "raw_label": "Free Cash Flow"
+    },
+    {
+      "quarter": "Q2 2022",
+      "field": "free_cash_flow",
+      "value": 194.36,
+      "raw_label": "Free Cash Flow"
+    },
+    {
+      "quarter": "Q1 2022",
+      "field": "free_cash_flow",
+      "value": -195.85,
+      "raw_label": "Free Cash Flow"
+    },
+    {
+      "quarter": "Q4 2021",
+      "field": "free_cash_flow",
+      "value": -450.03,
+      "raw_label": "Free Cash Flow"
+    },
+    {
+      "quarter": "Q3 2021",
+      "field": "free_cash_flow",
+      "value": 178.13,
+      "raw_label": "Free Cash Flow"
+    },
+    {
+      "quarter": "Q2 2021",
+      "field": "free_cash_flow",
+      "value": -11.82,
+      "raw_label": "Free Cash Flow"
+    },
+    {
+      "quarter": "Q1 2021",
+      "field": "free_cash_flow",
+      "value": 293.98,
+      "raw_label": "Free Cash Flow"
+    },
+    {
+      "quarter": "Q4 2025",
+      "field": "free_cash_flow",
+      "value": 0.35,
+      "raw_label": "Free Cash Flow Per Share"
+    },
+    {
+      "quarter": "Q3 2025",
+      "field": "free_cash_flow",
+      "value": 0.45,
+      "raw_label": "Free Cash Flow Per Share"
+    },
+    {
+      "quarter": "Q2 2025",
+      "field": "free_cash_flow",
+      "value": 0.1,
+      "raw_label": "Free Cash Flow Per Share"
+    },
+    {
+      "quarter": "Q1 2025",
+      "field": "free_cash_flow",
+      "value": 0.74,
+      "raw_label": "Free Cash Flow Per Share"
+    },
+    {
+      "quarter": "Q4 2024",
+      "field": "free_cash_flow",
+      "value": 0.35,
+      "raw_label": "Free Cash Flow Per Share"
+    },
+    {
+      "quarter": "Q3 2024",
+      "field": "free_cash_flow",
+      "value": 0.59,
+      "raw_label": "Free Cash Flow Per Share"
+    },
+    {
+      "quarter": "Q2 2024",
+      "field": "free_cash_flow",
+      "value": 0.52,
+      "raw_label": "Free Cash Flow Per Share"
+    },
+    {
+      "quarter": "Q1 2024",
+      "field": "free_cash_flow",
+      "value": 0.98,
+      "raw_label": "Free Cash Flow Per Share"
+    },
+    {
+      "quarter": "Q4 2023",
+      "field": "free_cash_flow",
+      "value": 0.92,
+      "raw_label": "Free Cash Flow Per Share"
+    },
+    {
+      "quarter": "Q3 2023",
+      "field": "free_cash_flow",
+      "value": 0.88,
+      "raw_label": "Free Cash Flow Per Share"
+    },
+    {
+      "quarter": "Q2 2023",
+      "field": "free_cash_flow",
+      "value": 0.41,
+      "raw_label": "Free Cash Flow Per Share"
+    },
+    {
+      "quarter": "Q1 2023",
+      "field": "free_cash_flow",
+      "value": 0.98,
+      "raw_label": "Free Cash Flow Per Share"
+    },
+    {
+      "quarter": "Q4 2022",
+      "field": "free_cash_flow",
+      "value": 0.34,
+      "raw_label": "Free Cash Flow Per Share"
+    },
+    {
+      "quarter": "Q3 2022",
+      "field": "free_cash_flow",
+      "value": 0.52,
+      "raw_label": "Free Cash Flow Per Share"
+    },
+    {
+      "quarter": "Q2 2022",
+      "field": "free_cash_flow",
+      "value": 0.16,
+      "raw_label": "Free Cash Flow Per Share"
+    },
+    {
+      "quarter": "Q1 2022",
+      "field": "free_cash_flow",
+      "value": -0.17,
+      "raw_label": "Free Cash Flow Per Share"
+    },
+    {
+      "quarter": "Q4 2021",
+      "field": "free_cash_flow",
+      "value": -0.38,
+      "raw_label": "Free Cash Flow Per Share"
+    },
+    {
+      "quarter": "Q3 2021",
+      "field": "free_cash_flow",
+      "value": 0.15,
+      "raw_label": "Free Cash Flow Per Share"
+    },
+    {
+      "quarter": "Q2 2021",
+      "field": "free_cash_flow",
+      "value": -0.01,
+      "raw_label": "Free Cash Flow Per Share"
+    },
+    {
+      "quarter": "Q1 2021",
+      "field": "free_cash_flow",
+      "value": 0.25,
+      "raw_label": "Free Cash Flow Per Share"
+    },
+    {
+      "quarter": "Q4 2025",
+      "field": "free_cash_flow",
+      "value": 13.9,
+      "raw_label": "Free Cash Flow Margin"
+    },
+    {
+      "quarter": "Q3 2025",
+      "field": "free_cash_flow",
+      "value": 15.35,
+      "raw_label": "Free Cash Flow Margin"
+    },
+    {
+      "quarter": "Q2 2025",
+      "field": "free_cash_flow",
+      "value": 3.43,
+      "raw_label": "Free Cash Flow Margin"
+    },
+    {
+      "quarter": "Q1 2025",
+      "field": "free_cash_flow",
+      "value": 26.24,
+      "raw_label": "Free Cash Flow Margin"
+    },
+    {
+      "quarter": "Q4 2024",
+      "field": "free_cash_flow",
+      "value": 12.81,
+      "raw_label": "Free Cash Flow Margin"
+    },
+    {
+      "quarter": "Q3 2024",
+      "field": "free_cash_flow",
+      "value": 18.43,
+      "raw_label": "Free Cash Flow Margin"
+    },
+    {
+      "quarter": "Q2 2024",
+      "field": "free_cash_flow",
+      "value": 15.42,
+      "raw_label": "Free Cash Flow Margin"
+    },
+    {
+      "quarter": "Q1 2024",
+      "field": "free_cash_flow",
+      "value": 30.76,
+      "raw_label": "Free Cash Flow Margin"
+    },
+    {
+      "quarter": "Q4 2023",
+      "field": "free_cash_flow",
+      "value": 26.61,
+      "raw_label": "Free Cash Flow Margin"
+    },
+    {
+      "quarter": "Q3 2023",
+      "field": "free_cash_flow",
+      "value": 24.07,
+      "raw_label": "Free Cash Flow Margin"
+    },
+    {
+      "quarter": "Q2 2023",
+      "field": "free_cash_flow",
+      "value": 12.23,
+      "raw_label": "Free Cash Flow Margin"
+    },
+    {
+      "quarter": "Q1 2023",
+      "field": "free_cash_flow",
+      "value": 28.88,
+      "raw_label": "Free Cash Flow Margin"
+    },
+    {
+      "quarter": "Q4 2022",
+      "field": "free_cash_flow",
+      "value": 8.71,
+      "raw_label": "Free Cash Flow Margin"
+    },
+    {
+      "quarter": "Q3 2022",
+      "field": "free_cash_flow",
+      "value": 13.25,
+      "raw_label": "Free Cash Flow Margin"
+    },
+    {
+      "quarter": "Q2 2022",
+      "field": "free_cash_flow",
+      "value": 4.16,
+      "raw_label": "Free Cash Flow Margin"
+    },
+    {
+      "quarter": "Q1 2022",
+      "field": "free_cash_flow",
+      "value": -4.32,
+      "raw_label": "Free Cash Flow Margin"
+    },
+    {
+      "quarter": "Q4 2021",
+      "field": "free_cash_flow",
+      "value": -10.72,
+      "raw_label": "Free Cash Flow Margin"
+    },
+    {
+      "quarter": "Q3 2021",
+      "field": "free_cash_flow",
+      "value": 4.7,
+      "raw_label": "Free Cash Flow Margin"
+    },
+    {
+      "quarter": "Q2 2021",
+      "field": "free_cash_flow",
+      "value": -0.33,
+      "raw_label": "Free Cash Flow Margin"
+    },
+    {
+      "quarter": "Q1 2021",
+      "field": "free_cash_flow",
+      "value": 8.61,
+      "raw_label": "Free Cash Flow Margin"
+    },
+    {
+      "quarter": "Q4 2025",
+      "field": "ebit",
+      "value": 150.38,
+      "raw_label": "EBIT"
+    },
+    {
+      "quarter": "Q3 2025",
+      "field": "ebit",
+      "value": 262.09,
+      "raw_label": "EBIT"
+    },
+    {
+      "quarter": "Q2 2025",
+      "field": "ebit",
+      "value": 159.56,
+      "raw_label": "EBIT"
+    },
+    {
+      "quarter": "Q1 2025",
+      "field": "ebit",
+      "value": 168.36,
+      "raw_label": "EBIT"
+    },
+    {
+      "quarter": "Q4 2024",
+      "field": "ebit",
+      "value": 231.6,
+      "raw_label": "EBIT"
+    },
+    {
+      "quarter": "Q3 2024",
+      "field": "ebit",
+      "value": 181.33,
+      "raw_label": "EBIT"
+    },
+    {
+      "quarter": "Q2 2024",
+      "field": "ebit",
+      "value": 449.1,
+      "raw_label": "EBIT"
+    },
+    {
+      "quarter": "Q1 2024",
+      "field": "ebit",
+      "value": 452.11,
+      "raw_label": "EBIT"
+    },
+    {
+      "quarter": "Q4 2023",
+      "field": "ebit",
+      "value": 496.56,
+      "raw_label": "EBIT"
+    },
+    {
+      "quarter": "Q3 2023",
+      "field": "ebit",
+      "value": 492.99,
+      "raw_label": "EBIT"
+    },
+    {
+      "quarter": "Q2 2023",
+      "field": "ebit",
+      "value": 330.41,
+      "raw_label": "EBIT"
+    },
+    {
+      "quarter": "Q1 2023",
+      "field": "ebit",
+      "value": 308.9,
+      "raw_label": "EBIT"
+    },
+    {
+      "quarter": "Q4 2022",
+      "field": "ebit",
+      "value": 510.55,
+      "raw_label": "EBIT"
+    },
+    {
+      "quarter": "Q3 2022",
+      "field": "ebit",
+      "value": 602.02,
+      "raw_label": "EBIT"
+    },
+    {
+      "quarter": "Q2 2022",
+      "field": "ebit",
+      "value": 574.69,
+      "raw_label": "EBIT"
+    },
+    {
+      "quarter": "Q1 2022",
+      "field": "ebit",
+      "value": 526.24,
+      "raw_label": "EBIT"
+    },
+    {
+      "quarter": "Q4 2021",
+      "field": "ebit",
+      "value": 660.66,
+      "raw_label": "EBIT"
+    },
+    {
+      "quarter": "Q3 2021",
+      "field": "ebit",
+      "value": 633.91,
+      "raw_label": "EBIT"
+    },
+    {
+      "quarter": "Q2 2021",
+      "field": "ebit",
+      "value": 569.67,
+      "raw_label": "EBIT"
+    },
+    {
+      "quarter": "Q1 2021",
+      "field": "ebit",
+      "value": 452.61,
+      "raw_label": "EBIT"
+    }
+  ]
+}

@@ -1,0 +1,4 @@
+cagr: 0.15675600344270046
+win_rate: 0.931
+median_return: 0.5478372223868012
+expected_return: 0.170202854505

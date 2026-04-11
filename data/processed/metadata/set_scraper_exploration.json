@@ -1,0 +1,155 @@
+{
+  "explored_at_utc": "2026-04-11T09:32:51Z",
+  "scope": "SET public quote-route exploration for historical financial-statement scraping feasibility",
+  "official_host": "www.set.or.th",
+  "route_patterns": {
+    "company_highlights_en": "https://www.set.or.th/en/market/product/stock/quote/{symbol}/financial-statement/company-highlights",
+    "company_highlights_th": "https://www.set.or.th/th/market/product/stock/quote/{symbol}/financial-statement/company-highlights",
+    "latest_balance_en": "https://www.set.or.th/en/market/product/stock/quote/{symbol}/financial-statement/latest/balance",
+    "latest_income_en": "https://www.set.or.th/en/market/product/stock/quote/{symbol}/financial-statement/latest/income",
+    "latest_cashflow_en": "https://www.set.or.th/en/market/product/stock/quote/{symbol}/financial-statement/latest/cashflow"
+  },
+  "overall_findings": {
+    "company_highlights_public": true,
+    "latest_statement_routes_public": true,
+    "latest_statement_routes_confirmed": [
+      "latest/balance",
+      "latest/income",
+      "latest/cashflow"
+    ],
+    "latest_statement_payload_embeds_full_statements": true,
+    "latest_statement_payload_sections": [
+      "balanceSheet",
+      "incomeStatement",
+      "cashFlow",
+      "lastestFinancial"
+    ],
+    "latest_statement_zip_download_available": true,
+    "historical_detailed_listing_endpoint_found_in_public_quote_routes": false,
+    "historical_availability_summary": {
+      "observed_fact": "Public company-highlights pages expose summary quote data plus metadata and a downloadable latest filing link. Public latest statement pages embed the current filing's detailed balance sheet, income statement, and cash-flow accounts directly in the page payload.",
+      "inference": "The quote routes are good for scraping the latest filing. I did not find a public endpoint in the quote routes or the inspected public JS that lists older detailed filings period-by-period, so historical detailed collection likely requires archive discovery outside these pages or individual filing URLs from another SET archive surface."
+    },
+    "scraping_viability_phase_1": "good_for_latest_only",
+    "recommended_use": "Use SET quote routes as an official latest-filing supplement or validator. Keep Yahoo or another broader historical source as the primary backtest dataset unless a separate SET archive index is found."
+  },
+  "tickers": {
+    "ADVANC.BK": {
+      "set_symbol": "ADVANC",
+      "market_cap_thb": 1079638134168,
+      "industry": "TECH",
+      "sector": "ICT",
+      "company_highlights": {
+        "english_url": "https://www.set.or.th/en/market/product/stock/quote/ADVANC/financial-statement/company-highlights",
+        "thai_url": "https://www.set.or.th/th/market/product/stock/quote/ADVANC/financial-statement/company-highlights",
+        "latest_statement_en": {
+          "quarter": "Q9",
+          "year": 2025,
+          "status": "Audited",
+          "download_url": "https://weblink.set.or.th/dat/news/202602/0268FIN030220261856210594E.zip"
+        },
+        "latest_statement_th": {
+          "quarter": "Q9",
+          "year": 2025,
+          "status": "ตรวจสอบ",
+          "download_url": "https://weblink.set.or.th/dat/news/202602/0268FIN030220261902012370T.zip"
+        }
+      },
+      "latest_statement_payload": {
+        "confirmed_on_latest_balance": true,
+        "confirmed_on_latest_income": true,
+        "confirmed_on_latest_cashflow": true,
+        "account_code_count_across_embedded_sections": 175
+      },
+      "zip_contents": {
+        "english_zip_files": [
+          "AUDITOR_REPORT.DOCX",
+          "FINANCIAL_STATEMENTS.XLSX",
+          "NOTES.DOCX"
+        ],
+        "thai_zip_files": [
+          "AUDITOR_REPORT.DOCX",
+          "FINANCIAL_STATEMENTS.XLSX",
+          "NOTES.DOCX"
+        ]
+      }
+    },
+    "AOT.BK": {
+      "set_symbol": "AOT",
+      "market_cap_thb": 771427800000,
+      "industry": "SERVICE",
+      "sector": "TRANS",
+      "company_highlights": {
+        "english_url": "https://www.set.or.th/en/market/product/stock/quote/AOT/financial-statement/company-highlights",
+        "thai_url": "https://www.set.or.th/th/market/product/stock/quote/AOT/financial-statement/company-highlights",
+        "latest_statement_en": {
+          "quarter": "Q1",
+          "year": 2026,
+          "status": "Reviewed",
+          "download_url": "https://weblink.set.or.th/dat/news/202602/0765FIN120220261513170850E.zip"
+        },
+        "latest_statement_th": {
+          "quarter": "Q1",
+          "year": 2026,
+          "status": "สอบทาน",
+          "download_url": "https://weblink.set.or.th/dat/news/202602/0765FIN120220261513170588T.zip"
+        }
+      },
+      "latest_statement_payload": {
+        "confirmed_on_latest_balance": true,
+        "account_code_count_across_embedded_sections": 151
+      },
+      "zip_contents": {
+        "english_zip_files": [
+          "AUDITOR_REPORT.DOCX",
+          "FINANCIAL_STATEMENTS.XLSX",
+          "NOTES.DOCX"
+        ]
+      }
+    },
+    "PTT.BK": {
+      "set_symbol": "PTT",
+      "market_cap_thb": 992564119687,
+      "industry": "RESOURC",
+      "sector": "ENERG",
+      "company_highlights": {
+        "english_url": "https://www.set.or.th/en/market/product/stock/quote/PTT/financial-statement/company-highlights",
+        "thai_url": "https://www.set.or.th/th/market/product/stock/quote/PTT/financial-statement/company-highlights",
+        "latest_statement_en": {
+          "quarter": "Q9",
+          "year": 2025,
+          "status": "Audited",
+          "download_url": "https://weblink.set.or.th/dat/news/202602/0646FIN190220261747440451E.zip"
+        },
+        "latest_statement_th": {
+          "quarter": "Q9",
+          "year": 2025,
+          "status": "ตรวจสอบ",
+          "download_url": "https://weblink.set.or.th/dat/news/202602/0646FIN190220261747440265T.zip"
+        }
+      },
+      "latest_statement_payload": {
+        "confirmed_on_latest_balance": true,
+        "account_code_count_across_embedded_sections": 210
+      },
+      "zip_contents": {
+        "english_zip_files": [
+          "AUDITOR_REPORT.DOC",
+          "FINANCIAL_STATEMENTS.XLS",
+          "NOTES.DOC"
+        ]
+      }
+    }
+  },
+  "methods": [
+    "Fetched official SET HTML for Thai and English quote routes with curl.",
+    "Inspected embedded Nuxt state for quote metadata and financial payload markers.",
+    "Verified latest statement ZIP links by downloading and listing archive contents.",
+    "Checked public client bundles for obvious stock financial-history API paths and did not find a clean historical listing endpoint in the inspected quote-route assets."
+  ],
+  "limitations": [
+    "This exploration covered public quote routes and linked ZIPs only; it did not enumerate SET news archives outside the quote surface.",
+    "The absence of a discovered historical listing endpoint is a result of route and asset inspection, not proof that no separate SET archive service exists elsewhere.",
+    "AOT and PTT Thai-language ZIP contents were not downloaded because the English ZIPs already confirmed the packaging pattern and the task only required route exploration."
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "sector_summary_rows": 30,
+  "wacc_sensitivity_rows": 9,
+  "wacc_values": [
+    0.06,
+    0.08,
+    0.1
+  ],
+  "paths": {
+    "sector_summary": "research_data/latest/backtest/sector_summary.csv",
+    "wacc_sensitivity": "research_data/latest/backtest/wacc_sensitivity.csv",
+    "appendix": "research_data/latest/backtest/appendix.md"
+  }
+}

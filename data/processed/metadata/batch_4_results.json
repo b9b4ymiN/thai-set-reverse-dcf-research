@@ -1,0 +1,38 @@
+{
+  "batch_id": 4,
+  "started_at": "2026-04-11T11:10:50.149284",
+  "stocks_tested": [
+    {
+      "ticker": "FPT.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 40,
+      "time_seconds": 10.78089427947998
+    },
+    {
+      "ticker": "JMT.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 140,
+      "time_seconds": 3.2346343994140625
+    }
+  ],
+  "successful": [
+    "FPT.BK",
+    "JMT.BK"
+  ],
+  "failed": [
+    "IFEC.BK",
+    "LHB.BK"
+  ],
+  "rate_limited": false,
+  "total_data_points": 180,
+  "errors": [
+    "IFEC.BK: Request failed",
+    "LHB.BK: Request failed"
+  ],
+  "aborted": true,
+  "abort_reason": "Success rate 40.0% below 80% threshold",
+  "completed_at": "2026-04-11T11:14:42.545194",
+  "total_time_seconds": 232.39591002464294
+}

@@ -1,0 +1,6 @@
+{
+  "active_return_by_horizon": "research_data/latest/backtest/figures/active_return_by_horizon.png",
+  "hit_rate_by_horizon": "research_data/latest/backtest/figures/hit_rate_by_horizon.png",
+  "sector_active_return_heatmap": "research_data/latest/backtest/figures/sector_active_return_heatmap.png",
+  "wacc_sensitivity": "research_data/latest/backtest/figures/wacc_sensitivity.png"
+}

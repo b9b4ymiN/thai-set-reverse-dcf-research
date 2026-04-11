@@ -1,0 +1,226 @@
+{
+  "generated_at": "2026-04-11T09:31:09.937143",
+  "total_analyzed": 100,
+  "top_20_stocks": [
+    {
+      "ticker": "DELTA.BK",
+      "quarter_count": 5,
+      "market_cap_bht": 3954.1997568,
+      "sector": "Industrials",
+      "liquidity_score": 0.05359868481432779,
+      "diversity_score": 0.86,
+      "market_cap_score": 1.0,
+      "quarters_score": 0.7142857142857143,
+      "final_score": 0.805645582767147
+    },
+    {
+      "ticker": "PTT.BK",
+      "quarter_count": 6,
+      "market_cap_bht": 984.270635008,
+      "sector": "Energy",
+      "liquidity_score": 0.16769656619795306,
+      "diversity_score": 0.9299999999999999,
+      "market_cap_score": 0.24891778249577784,
+      "quarters_score": 0.8571428571428571,
+      "final_score": 0.49137140501054133
+    },
+    {
+      "ticker": "GULF.BK",
+      "quarter_count": 6,
+      "market_cap_bht": 888.920342528,
+      "sector": "Utilities",
+      "liquidity_score": 0.09787123078685496,
+      "diversity_score": 0.9299999999999999,
+      "market_cap_score": 0.22480410631742417,
+      "quarters_score": 0.8571428571428571,
+      "final_score": 0.47233203338025476
+    },
+    {
+      "ticker": "TTB.BK",
+      "quarter_count": 6,
+      "market_cap_bht": 225.821917184,
+      "sector": "Financial Services",
+      "liquidity_score": 1.0,
+      "diversity_score": 0.8200000000000001,
+      "market_cap_score": 0.05710938522912409,
+      "quarters_score": 0.8571428571428571,
+      "final_score": 0.46769754975741923
+    },
+    {
+      "ticker": "AOT.BK",
+      "quarter_count": 6,
+      "market_cap_bht": 771.427794944,
+      "sector": "Industrials",
+      "liquidity_score": 0.10112100072604203,
+      "diversity_score": 0.86,
+      "market_cap_score": 0.19509074968136925,
+      "quarters_score": 0.8571428571428571,
+      "final_score": 0.45080033205614595
+    },
+    {
+      "ticker": "ADVANC.BK",
+      "quarter_count": 5,
+      "market_cap_bht": 1079.638163456,
+      "sector": "Communication Services",
+      "liquidity_score": 0.017763984072223134,
+      "diversity_score": 0.95,
+      "market_cap_score": 0.27303581757582085,
+      "quarters_score": 0.7142857142857143,
+      "final_score": 0.44758002148084697
+    },
+    {
+      "ticker": "KTB.BK",
+      "quarter_count": 6,
+      "market_cap_bht": 461.210025984,
+      "sector": "Financial Services",
+      "liquidity_score": 0.15264333560422153,
+      "diversity_score": 0.8200000000000001,
+      "market_cap_score": 0.11663801890404284,
+      "quarters_score": 0.8571428571428571,
+      "final_score": 0.4127262001553007
+    },
+    {
+      "ticker": "CPALL.BK",
+      "quarter_count": 6,
+      "market_cap_bht": 425.715269632,
+      "sector": "Consumer Defensive",
+      "liquidity_score": 0.1007250949922781,
+      "diversity_score": 0.89,
+      "market_cap_score": 0.10766154868628007,
+      "quarters_score": 0.8571428571428571,
+      "final_score": 0.410046140985225
+    },
+    {
+      "ticker": "TRUE.BK",
+      "quarter_count": 5,
+      "market_cap_bht": 494.095007744,
+      "sector": "Communication Services",
+      "liquidity_score": 0.35647660783454754,
+      "diversity_score": 0.95,
+      "market_cap_score": 0.12495448842570725,
+      "quarters_score": 0.7142857142857143,
+      "final_score": 0.4074106192820227
+    },
+    {
+      "ticker": "BDMS.BK",
+      "quarter_count": 6,
+      "market_cap_bht": 295.591247872,
+      "sector": "Healthcare",
+      "liquidity_score": 0.15917908148539275,
+      "diversity_score": 0.94,
+      "market_cap_score": 0.07475374691520693,
+      "quarters_score": 0.8571428571428571,
+      "final_score": 0.40443763874899985
+    },
+    {
+      "ticker": "KBANK.BK",
+      "quarter_count": 6,
+      "market_cap_bht": 454.910902272,
+      "sector": "Financial Services",
+      "liquidity_score": 0.038602593030790465,
+      "diversity_score": 0.8200000000000001,
+      "market_cap_score": 0.11504499778740161,
+      "quarters_score": 0.8571428571428571,
+      "final_score": 0.400525615339637
+    },
+    {
+      "ticker": "KSL.BK",
+      "quarter_count": 7,
+      "market_cap_bht": 7.012270592,
+      "sector": "Consumer Defensive",
+      "liquidity_score": 0.0034501621772362466,
+      "diversity_score": 0.89,
+      "market_cap_score": 0.0017733728752425985,
+      "quarters_score": 1.0,
+      "final_score": 0.39023170265534496
+    },
+    {
+      "ticker": "PTTEP.BK",
+      "quarter_count": 5,
+      "market_cap_bht": 601.452773376,
+      "sector": "Energy",
+      "liquidity_score": 0.03437237372425611,
+      "diversity_score": 0.9299999999999999,
+      "market_cap_score": 0.15210480258153053,
+      "quarters_score": 0.7142857142857143,
+      "final_score": 0.3867753529489052
+    },
+    {
+      "ticker": "WHA.BK",
+      "quarter_count": 6,
+      "market_cap_bht": 63.9724544,
+      "sector": "Real Estate",
+      "liquidity_score": 0.3316937631625009,
+      "diversity_score": 0.88,
+      "market_cap_score": 0.016178356768645076,
+      "quarters_score": 0.8571428571428571,
+      "final_score": 0.3864014118434298
+    },
+    {
+      "ticker": "PTTGC.BK",
+      "quarter_count": 6,
+      "market_cap_bht": 164.572987392,
+      "sector": "Basic Materials",
+      "liquidity_score": 0.08644826560607252,
+      "diversity_score": 0.97,
+      "market_cap_score": 0.04161979604317799,
+      "quarters_score": 0.8571428571428571,
+      "final_score": 0.3835975817250534
+    },
+    {
+      "ticker": "CPN.BK",
+      "quarter_count": 6,
+      "market_cap_bht": 284.988014592,
+      "sector": "Real Estate",
+      "liquidity_score": 0.023330525662116845,
+      "diversity_score": 0.88,
+      "market_cap_score": 0.07207223512214041,
+      "quarters_score": 0.8571428571428571,
+      "final_score": 0.38351202727013906
+    },
+    {
+      "ticker": "BBL.BK",
+      "quarter_count": 6,
+      "market_cap_bht": 316.867903488,
+      "sector": "Financial Services",
+      "liquidity_score": 0.025513422783220763,
+      "diversity_score": 0.8200000000000001,
+      "market_cap_score": 0.0801345210097404,
+      "quarters_score": 0.8571428571428571,
+      "final_score": 0.38176145992604943
+    },
+    {
+      "ticker": "EA.BK",
+      "quarter_count": 6,
+      "market_cap_bht": 19.755290624,
+      "sector": "Utilities",
+      "liquidity_score": 0.2672048050002448,
+      "diversity_score": 0.9299999999999999,
+      "market_cap_score": 0.00499602747433966,
+      "quarters_score": 0.8571428571428571,
+      "final_score": 0.37936135138005145
+    },
+    {
+      "ticker": "IVL.BK",
+      "quarter_count": 6,
+      "market_cap_bht": 137.556525056,
+      "sector": "Basic Materials",
+      "liquidity_score": 0.06586367987508107,
+      "diversity_score": 0.97,
+      "market_cap_score": 0.034787449677888764,
+      "quarters_score": 0.8571428571428571,
+      "final_score": 0.3781229499693096
+    },
+    {
+      "ticker": "CCET.BK",
+      "quarter_count": 6,
+      "market_cap_bht": 53.817516032,
+      "sector": "Technology",
+      "liquidity_score": 0.1646959596949896,
+      "diversity_score": 0.97,
+      "market_cap_score": 0.013610216818068063,
+      "quarters_score": 0.8571428571428571,
+      "final_score": 0.37741756152139017
+    }
+  ]
+}

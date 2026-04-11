@@ -1,0 +1,14 @@
+{
+  "phase": "0.3",
+  "decision": "PATH_B",
+  "survivorship_bias_percent": 13.0,
+  "threshold_percent": 5.0,
+  "rationale": [
+    "Historical constituent data requires 20-30 hours manual work",
+    "Corporate actions data not freely available",
+    "Better to document limitation and extract bias-handling principles"
+  ],
+  "research_scope": "Path B: Extract principles for future valid system",
+  "time_estimate_hours": "25-35",
+  "decision_date": "2026-04-11T11:57:33.010990"
+}

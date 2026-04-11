@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://b9b4ymiN.github.io/thai-set-reverse-dcf-research/sitemap.xml

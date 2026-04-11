@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Thai SET Reverse DCF Research | Thesis and Backtest</title>
+    <meta name="description" content="Deployment-ready site for Thai SET reverse DCF thesis research, no-lookahead backtests, and supporting methodology." />
+    <meta name="theme-color" content="#173144" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Thai SET Reverse DCF Research | Thesis and Backtest" />
+    <meta property="og:description" content="Deployment-ready site for Thai SET reverse DCF thesis research, no-lookahead backtests, and supporting methodology." />
+    <meta property="og:url" content="https://b9b4ymiN.github.io/thai-set-reverse-dcf-research" />
+    <meta property="og:site_name" content="Thai SET Reverse DCF Research" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="stylesheet" href="css/style.css" />
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebSite", "name": "Thai SET Reverse DCF Research", "url": "https://b9b4ymiN.github.io/thai-set-reverse-dcf-research", "description": "Static documentation site for a Thai SET reverse DCF thesis, methodology, and audited backtest results."}</script>
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="topbar">
+        <a class="brand" href="index.html">
+          <span class="brand-mark">RDCF</span>
+          <span class="brand-copy">
+            <strong>Thai SET Reverse DCF</strong>
+            <span>Deployment-ready thesis and backtest documentation</span>
+          </span>
+        </a>
+        <nav aria-label="Primary"><a href="index.html" class="active">Home</a><a href="thesis.html">Thesis</a><a href="research/index.html">Research</a><a href="backtest/index.html">Backtest</a><a href="about/index.html">About</a><a href="download/index.html">Download</a></nav>
+      </header>
+      
+    <section class="hero">
+      <div class="hero-copy">
+        <span class="eyebrow">Thai equities research</span>
+        <h1>Reverse DCF evidence for the SET, built for thesis review and production deployment.</h1>
+        <p>
+          This site packages the repository’s thesis, audited backtest results, and research methodology
+          into a fast static site suitable for Netlify or GitHub Pages. The core result is a benchmark-relative
+          reverse DCF strategy that stayed positive on average across 3, 6, and 12 month holding periods.
+        </p>
+        <div class="hero-actions">
+          <a class="button primary" href="thesis.html">Read the thesis</a>
+          <a class="button secondary" href="backtest/index.html">Inspect the backtest</a>
+        </div>
+        <div class="pill-row">
+          <span class="pill">50-stock audited universe</span>
+          <span class="pill">13 quarterly rebalances</span>
+          <span class="pill">Damodaran framing</span>
+          <span class="pill">Free-data workflow</span>
+        </div>
+      </div>
+      <aside class="hero-panel">
+        <h2>Evidence at a glance</h2>
+        <div class="metric-grid">
+          
+            <div class="metric-card">
+              <span>3-month horizon</span>
+              <strong>1.68%</strong>
+              <small>Hit rate 53.85% vs. SET benchmark</small>
+            </div>
+            
+            <div class="metric-card">
+              <span>6-month horizon</span>
+              <strong>1.65%</strong>
+              <small>Hit rate 69.23% vs. SET benchmark</small>
+            </div>
+            
+            <div class="metric-card">
+              <span>12-month horizon</span>
+              <strong>0.85%</strong>
+              <small>Hit rate 61.54% vs. SET benchmark</small>
+            </div>
+            
+        <div class="metric-card">
+          <span>Audit status</span>
+          <strong>0</strong>
+          <small>No-lookahead failures across 39 portfolio rows</small>
+        </div>
+        
+        </div>
+        <p class="panel-note">
+          The stricter audited lane is kept separate from the earlier exploratory simulation so the public site
+          can present the strongest evidence without overstating what the data proves.
+        </p>
+      </aside>
+    </section>
+
+    <section class="card-grid">
+      <article class="card span-4">
+        <p class="kicker">Method</p>
+        <h2>Expectation-first valuation</h2>
+        <p>
+          The workflow starts from market price and solves backward for implied growth, then compares that
+          expectation with observed revenue growth, free cash flow, and capital structure data.
+        </p>
+      </article>
+      <article class="card span-4">
+        <p class="kicker">Research design</p>
+        <h2>No-lookahead controls</h2>
+        <p>
+          Historical scoring uses dated observations with explicit availability dates, prices on or before the
+          rebalance date, and a fixed historical WACC mode to keep the backtest thesis-safe.
+        </p>
+      </article>
+      <article class="card span-4">
+        <p class="kicker">Deployment</p>
+        <h2>Static, fast, and portable</h2>
+        <p>
+          The site uses plain HTML and CSS, local assets only, and a reproducible builder so it can deploy on
+          Netlify, GitHub Pages, or any static host without a JS toolchain.
+        </p>
+      </article>
+      <article class="card span-6">
+        <p class="kicker">Key performance summary</p>
+        <h2>Average active return remained positive in every tested horizon.</h2>
+        <p>
+          The current audited bundle reports positive benchmark-relative returns across all three holding periods,
+          with the best average active return at 3 months and the highest hit rate at 6 months.
+        </p>
+        
+    <table class="summary-table">
+      <thead>
+        <tr>
+          <th>Horizon</th>
+          <th>Portfolio return</th>
+          <th>Benchmark return</th>
+          <th>Active return</th>
+          <th>Hit rate</th>
+        </tr>
+      </thead>
+      <tbody>
+    <tr><td>3 months</td><td>1.68%</td><td>-0.00%</td><td>1.68%</td><td>53.85%</td></tr><tr><td>6 months</td><td>2.20%</td><td>0.55%</td><td>1.65%</td><td>69.23%</td></tr><tr><td>12 months</td><td>2.43%</td><td>1.58%</td><td>0.85%</td><td>61.54%</td></tr>
+      </tbody>
+    </table>
+    
+      </article>
+      <article class="card span-6">
+        <p class="kicker">What this site contains</p>
+        <h2>Thesis, research notes, and downloadable artifacts.</h2>
+        <ul class="list-clean">
+          <li><a href="thesis.html">Complete thesis HTML</a> with a generated table of contents and semantic headings.</li>
+          <li><a href="research/index.html">Research methodology page</a> covering data policy, observation dating, and validation logic.</li>
+          <li><a href="backtest/index.html">Backtest dashboard</a> with metrics, figures, and audit highlights.</li>
+          <li><a href="download/index.html">Download section</a> linking to thesis markdown, CSV summaries, figures, and notes.</li>
+        </ul>
+      </article>
+      <article class="card span-8">
+        <p class="kicker">Thesis preview</p>
+        <h2>The main argument in one page</h2>
+        <div class="content-area"><h1 id="reverse-dcf-as-a-value-investing-framework-for-thai-set-markets">Reverse DCF as a Value Investing Framework for Thai SET Markets</h1>
+<p>Authorial note: This thesis adopts a framework-first, valuation-centered style inspired by Professor Aswath Damodaran&#x27;s teaching approach, but the analysis, evidence, and wording are specific to this repository and its artifacts.</p>
+<h2 id="abstract">Abstract</h2>
+<p>This thesis evaluates whether a reverse discounted cash flow framework can be used as a practical value investing tool in Thai equity markets. The central idea is simple: instead of forecasting growth and deriving value, we begin with market price and solve backward for the growth expectations embedded in that price. In a market such as Thailand, where cross-sectional differences in quality, leverage, liquidity, and cyclicality are large, that inversion can be useful because it forces the investor to ask a disciplined question: what narrative is the market already pricing in, and is that narrative too pessimistic or too optimistic relative to business fundamentals?</p>
+<p>The repository supporting this thesis contains two distinct empirical layers. The first is an earlier broad-study lane built around a large Thai-stock universe and a simplified reverse DCF ranking simulation. Its saved output reports a 15.68% compound annual growth rate and a 93.1% win rate for a top-20 portfolio, but that lane is best interpreted as an exploratory research artifact rather than a point-in-time audited backtest. The second is a stricter thesis bundle built from dated fundamental observations, explicit availability dates, historical price series, benchmark-relative return measurement, and no-lookahead audit outputs. That audited bundle covers 50 Thai equities, 536 dated annual and quarterly observations, and 13 quarterly rebalance dates from March 31, 2023 through March 31, 2026. In that stricter design, the reverse DCF ranking strategy produced positive average active returns against the SET benchmark over 3-, 6-, and 12-month horizons, with zero no-lookahead failures in the latest audit artifact.</p>
+<p>The core conclusion of the thesis is not that reverse DCF is a magic formula for Thai stocks. It is narrower and more defensible. Reverse DCF appears to be a useful organizing framework for Thai value investing because it turns valuation into a comparison between market-implied expectations and observed operating reality. In the repository&#x27;s stricter backtest, that framework generates positive benchmark-relative evidence across all tested holding periods. However, the result remains conditional on free-data coverage, fixed-WACC historical scoring, explicit exclusions, and a relatively short audited sample window. The framework is therefore best viewed as a disciplined starting point for fundamental investing in Thai markets, not as proof of universal or persistent alpha.</p>
+<h2 id="executive-summary">Executive Summary</h2>
+<p>The thesis asks a practical question: can reverse DCF help investors identify mispriced Thai equities better than conventional screening ratios alone? In developed markets, the attraction of reverse DCF is that it strips away some of the illusion of precision embedded in conventional DCF models. In emerging markets, that attraction is even stronger. When country risk, sector cyclicality, financing structure, and disclosure quality vary across firms, the most dangerous valuation input is often the one the analyst pretends to know with confidence. Reverse DCF is useful because it converts price into an implied story and allows the investor to judge whether that story is plausible.</p>
+<p>The Thai market is a good setting for this question. It is large enough to offer cross-sectional sector diversity, but narrow enough that broad country-level risk, macro regime shifts, financing conditions, and benchmark structure matter materially. A Thai investor cannot value companies as though they were U.S. firms with identical equity risk premiums and financing conditions. The country risk premium, the local currency framework, the industry composition of the market, and the uneven availability of long historical data all matter. That is why this thesis relies heavily on Damodaran&#x27;s country risk and industry beta datasets, but refuses to import those numbers mechanically into historical backtests. For historical ranking, the methodology deliberately uses a fixed-WACC baseline to reduce lookahead bias. For interpretation, live Thai country risk estimates from Damodaran are used as valuation context and sensitivity anchors.</p>
+<p>Three headline findings emerge.</p>
+<p>First, the audited no-lookahead thesis bundle provides positive evidence for the framework. Using a quarterly top-10 equal-weight strategy and a fixed WACC assumption, the portfolio outperformed the SET benchmark on average in all tested horizons: 1.68% active return over 3 months, 1.65% over 6 months, and 0.85% over 12 months. Hit rates were 53.85%, 69.23%, and 61.54%, respectively. No lookahead failures were recorded in the latest audit file.</p>
+<p>Second, sector behavior matters. Technology, communication services, and financial services were stronger contributors in the latest appendix outputs, while industrials and basic materials were materially weaker. That is exactly the kind of result a serious valuation investor should expect. Reverse DCF is not a universal market-timing device. It is a cross-sectional expectations framework, and the usefulness of expectations gaps will vary by sector structure, cyclicality, and accounting quality.</p>
+<p>Third, evidence quality matters more than headline returns. The broader saved simulation artifact in <code>backtest_results/metrics_20260411_133531.txt</code> reports a 15.68% CAGR and a 93.1% win rate, but those outputs come from a simplified simulation path rather than the repository&#x27;s stricter dated backtest pipeline. A disciplined thesis should not blur the two. The correct interpretation is that the broader study is encouraging, while the audited bundle is the stronger evidence base.</p>
+<p>For practitioners, the payoff is practical. Reverse DCF can serve as a value investing framework for Thai equities if it is used with four disciplines: use market price to infer expectations, compare those expectations to operating reality, anchor discount rates in country and sector risk, and be explicit about what the data can and cannot prove. The moment the framework is treated as a black box, it stops being value investing and becomes parameter theater.</p>
+<h2 id="1-introduction-value-investing-in-emerging-markets">1. Introduction: Value Investing in Emerging Markets</h2>
+<p>Value investing begins with a simple proposition: price and value are not the same thing. But that proposition becomes harder to implement in emerging markets than in mature markets because the errors investors make are larger and more varied. In an emerging market, the analyst has to deal not only with business quality and competitive advantage, but also with country risk, currency risk, political uncertainty, disclosure unevenness, family control, cyclical financing structures, and sectors where accounting numbers are less informative than they appear.</p></div>
+      </article>
+      <article class="card span-4">
+        <p class="kicker">Scope</p>
+        <h2>How to read the evidence responsibly</h2>
+        <ul class="list-clean">
+          <li>The exploratory 15.68% CAGR study is retained as context, not as the primary audited proof.</li>
+          <li>The audited lane uses a narrower free-data universe and should be treated as the thesis-grade evidence base.</li>
+          <li>Exclusion files, audit artifacts, and WACC sensitivity are part of the argument, not optional appendices.</li>
+        </ul>
+        <p class="callout">The site frames reverse DCF as a disciplined decision framework, not a universal alpha claim.</p>
+      </article>
+    </section>
+    
+      
+    <footer class="site-footer">
+      <p>Built from local thesis and backtest artifacts in this repository. Designed for Netlify and GitHub Pages deployment.</p>
+      <div class="footer-links"><a href="thesis.html">Thesis</a><a href="research/index.html">Research</a><a href="backtest/index.html">Backtest</a><a href="about/index.html">About</a><a href="download/index.html">Download</a></div>
+    </footer>
+    
+    </div>
+  </body>
+</html>

@@ -1,0 +1,176 @@
+{
+  "batch_id": 2,
+  "started_at": "2026-04-11T10:34:10.108717",
+  "stocks_tested": [
+    {
+      "ticker": "AWC.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 140,
+      "time_seconds": 4.058213710784912
+    },
+    {
+      "ticker": "BANPU.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 120,
+      "time_seconds": 3.377241611480713
+    },
+    {
+      "ticker": "BEM.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 120,
+      "time_seconds": 6.445175409317017
+    },
+    {
+      "ticker": "BGRIM.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 120,
+      "time_seconds": 4.572531700134277
+    },
+    {
+      "ticker": "BH.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 140,
+      "time_seconds": 6.7932212352752686
+    },
+    {
+      "ticker": "BJC.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 140,
+      "time_seconds": 9.438359022140503
+    },
+    {
+      "ticker": "BTS.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 120,
+      "time_seconds": 3.465872049331665
+    },
+    {
+      "ticker": "CBG.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 140,
+      "time_seconds": 6.420748233795166
+    },
+    {
+      "ticker": "CENTEL.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 140,
+      "time_seconds": 4.60260534286499
+    },
+    {
+      "ticker": "COM7.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 140,
+      "time_seconds": 1.0377624034881592
+    },
+    {
+      "ticker": "CPF.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 140,
+      "time_seconds": 6.5809242725372314
+    },
+    {
+      "ticker": "EGCO.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 140,
+      "time_seconds": 1.5872166156768799
+    },
+    {
+      "ticker": "GLOBAL.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 140,
+      "time_seconds": 4.145336866378784
+    },
+    {
+      "ticker": "GPSC.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 140,
+      "time_seconds": 6.6951189041137695
+    },
+    {
+      "ticker": "HMPRO.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 140,
+      "time_seconds": 6.412978649139404
+    },
+    {
+      "ticker": "KCE.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 120,
+      "time_seconds": 0.8918697834014893
+    },
+    {
+      "ticker": "KKP.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 20,
+      "time_seconds": 7.818840503692627
+    },
+    {
+      "ticker": "KTC.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 94,
+      "time_seconds": 0.7821507453918457
+    },
+    {
+      "ticker": "LH.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 140,
+      "time_seconds": 8.857568979263306
+    },
+    {
+      "ticker": "MINT.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 140,
+      "time_seconds": 10.050414085388184
+    }
+  ],
+  "successful": [
+    "AWC.BK",
+    "BANPU.BK",
+    "BEM.BK",
+    "BGRIM.BK",
+    "BH.BK",
+    "BJC.BK",
+    "BTS.BK",
+    "CBG.BK",
+    "CENTEL.BK",
+    "COM7.BK",
+    "CPF.BK",
+    "EGCO.BK",
+    "GLOBAL.BK",
+    "GPSC.BK",
+    "HMPRO.BK",
+    "KCE.BK",
+    "KKP.BK",
+    "KTC.BK",
+    "LH.BK",
+    "MINT.BK"
+  ],
+  "failed": [],
+  "rate_limited": false,
+  "total_data_points": 2534,
+  "errors": [],
+  "aborted": false,
+  "abort_reason": null,
+  "completed_at": "2026-04-11T10:49:42.151840",
+  "total_time_seconds": 932.0431265830994
+}

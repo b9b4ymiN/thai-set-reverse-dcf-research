@@ -1,0 +1,8 @@
+{
+  "period_type": "quarterly",
+  "primary_source": "yahoo_yfinance",
+  "updated_at": "2026-04-11T09:15:43Z",
+  "row_count": 5301,
+  "ticker_count": 100,
+  "item_count": 9
+}

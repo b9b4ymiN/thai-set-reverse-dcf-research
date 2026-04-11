@@ -1,0 +1,52 @@
+{
+  "started_at": "2026-04-11T10:00:33.666422",
+  "stocks_tested": [
+    {
+      "ticker": "DELTA.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 140,
+      "time_seconds": 2.7243921756744385
+    },
+    {
+      "ticker": "PTT.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 120,
+      "time_seconds": 6.070715427398682
+    },
+    {
+      "ticker": "GULF.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 120,
+      "time_seconds": 2.3066611289978027
+    },
+    {
+      "ticker": "TTB.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 20,
+      "time_seconds": 1.0030384063720703
+    },
+    {
+      "ticker": "AOT.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 140,
+      "time_seconds": 9.49407410621643
+    }
+  ],
+  "successful": [
+    "DELTA.BK",
+    "PTT.BK",
+    "GULF.BK",
+    "TTB.BK",
+    "AOT.BK"
+  ],
+  "failed": [],
+  "rate_limited": false,
+  "total_data_points": 540,
+  "errors": [],
+  "completed_at": "2026-04-11T10:03:01.323437"
+}

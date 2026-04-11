@@ -1,0 +1,77 @@
+{
+  "output_dir": "research_data/latest/thesis_bundle",
+  "copied_count": 17,
+  "missing_count": 0,
+  "copied": [
+    {
+      "source": "docs/thesis-methodology.md",
+      "dest": "research_data/latest/thesis_bundle/thesis-methodology.md"
+    },
+    {
+      "source": "docs/thesis-results.md",
+      "dest": "research_data/latest/thesis_bundle/thesis-results.md"
+    },
+    {
+      "source": "docs/executive-summary.md",
+      "dest": "research_data/latest/thesis_bundle/executive-summary.md"
+    },
+    {
+      "source": "docs/presentation-script.md",
+      "dest": "research_data/latest/thesis_bundle/presentation-script.md"
+    },
+    {
+      "source": "docs/defense-outline.md",
+      "dest": "research_data/latest/thesis_bundle/defense-outline.md"
+    },
+    {
+      "source": "docs/q-and-a-sheet.md",
+      "dest": "research_data/latest/thesis_bundle/q-and-a-sheet.md"
+    },
+    {
+      "source": "research_data/latest/backtest/report.md",
+      "dest": "research_data/latest/thesis_bundle/report.md"
+    },
+    {
+      "source": "research_data/latest/backtest/appendix.md",
+      "dest": "research_data/latest/thesis_bundle/appendix.md"
+    },
+    {
+      "source": "research_data/latest/backtest/summary.csv",
+      "dest": "research_data/latest/thesis_bundle/summary.csv"
+    },
+    {
+      "source": "research_data/latest/backtest/exclusions.csv",
+      "dest": "research_data/latest/thesis_bundle/exclusions.csv"
+    },
+    {
+      "source": "research_data/latest/backtest/no_lookahead_audit.md",
+      "dest": "research_data/latest/thesis_bundle/no_lookahead_audit.md"
+    },
+    {
+      "source": "research_data/latest/backtest/sector_summary.csv",
+      "dest": "research_data/latest/thesis_bundle/sector_summary.csv"
+    },
+    {
+      "source": "research_data/latest/backtest/wacc_sensitivity.csv",
+      "dest": "research_data/latest/thesis_bundle/wacc_sensitivity.csv"
+    },
+    {
+      "source": "research_data/latest/backtest/figures/active_return_by_horizon.png",
+      "dest": "research_data/latest/thesis_bundle/active_return_by_horizon.png"
+    },
+    {
+      "source": "research_data/latest/backtest/figures/hit_rate_by_horizon.png",
+      "dest": "research_data/latest/thesis_bundle/hit_rate_by_horizon.png"
+    },
+    {
+      "source": "research_data/latest/backtest/figures/sector_active_return_heatmap.png",
+      "dest": "research_data/latest/thesis_bundle/sector_active_return_heatmap.png"
+    },
+    {
+      "source": "research_data/latest/backtest/figures/wacc_sensitivity.png",
+      "dest": "research_data/latest/thesis_bundle/wacc_sensitivity.png"
+    }
+  ],
+  "missing": [],
+  "readme": "research_data/latest/thesis_bundle/README.md"
+}

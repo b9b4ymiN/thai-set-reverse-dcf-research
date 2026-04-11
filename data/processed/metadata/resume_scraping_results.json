@@ -1,0 +1,12 @@
+{
+  "started_at": "2026-04-11T12:23:50.398027",
+  "total_attempted": 14,
+  "successful": 0,
+  "failed": 14,
+  "not_available": 14,
+  "total_data_points": 0,
+  "rate_limited": false,
+  "aborted": false,
+  "completed_at": "2026-04-11T12:33:54.411076",
+  "total_time_seconds": 604.0130431652069
+}

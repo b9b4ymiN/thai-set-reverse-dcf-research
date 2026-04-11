@@ -1,0 +1,16 @@
+{
+  "output_dir": "research_data/latest/backtest/sensitivity_runs/wacc_10",
+  "horizons_months": [
+    3,
+    6,
+    12
+  ],
+  "top_n": 10,
+  "rebalance_frequency": "Q",
+  "signals": 403,
+  "portfolio_rows": 39,
+  "exclusion_rows": 247,
+  "summary_rows": 3,
+  "no_lookahead_failures": 0,
+  "wacc_mode": "fixed"
+}

@@ -1,0 +1,34 @@
+{
+  "tickers": [
+    "CPALL.BK",
+    "DELTA.BK",
+    "SCC.BK"
+  ],
+  "benchmark_ticker": "^SET.BK",
+  "period": "10y",
+  "interval": "1d",
+  "reporting_lag_days": 45,
+  "rows": {
+    "fundamentals": 3,
+    "observations": 32,
+    "fundamental_coverage": 3,
+    "prices": 7284,
+    "benchmark": 2422,
+    "price_coverage": 3
+  },
+  "paths": {
+    "fundamentals": "research_data/test_update/fundamentals_snapshot.csv",
+    "quality": "research_data/test_update/datasource_quality.csv",
+    "exclusions": "research_data/test_update/reverse_dcf_exclusions.csv",
+    "validation": "research_data/test_update/set_validation_references.csv",
+    "observations": "research_data/test_update/fundamental_observations.csv",
+    "fundamental_coverage": "research_data/test_update/fundamental_coverage.csv",
+    "prices": "research_data/test_update/price_history.csv",
+    "benchmark": "research_data/test_update/benchmark_history.csv",
+    "price_coverage": "research_data/test_update/price_coverage.csv",
+    "manifest": "research_data/test_update/manifest.json"
+  },
+  "missing_fundamental_tickers": [],
+  "missing_price_tickers": [],
+  "root_snapshot_synced": false
+}

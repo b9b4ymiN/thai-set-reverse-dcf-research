@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>About | Thai SET Reverse DCF</title>
+    <meta name="description" content="Project overview for the Thai SET reverse DCF thesis and audited backtest documentation site." />
+    <meta name="theme-color" content="#173144" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="About | Thai SET Reverse DCF" />
+    <meta property="og:description" content="Project overview for the Thai SET reverse DCF thesis and audited backtest documentation site." />
+    <meta property="og:url" content="https://b9b4ymiN.github.io/thai-set-reverse-dcf-research/about/" />
+    <meta property="og:site_name" content="Thai SET Reverse DCF Research" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="stylesheet" href="../css/style.css" />
+    
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="topbar">
+        <a class="brand" href="../index.html">
+          <span class="brand-mark">RDCF</span>
+          <span class="brand-copy">
+            <strong>Thai SET Reverse DCF</strong>
+            <span>Deployment-ready thesis and backtest documentation</span>
+          </span>
+        </a>
+        <nav aria-label="Primary"><a href="../index.html">Home</a><a href="../thesis.html">Thesis</a><a href="../research/index.html">Research</a><a href="../backtest/index.html">Backtest</a><a href="../about/index.html" class="active">About</a><a href="../download/index.html">Download</a></nav>
+      </header>
+      
+    <section class="page-intro">
+      <span class="eyebrow">Project overview</span>
+      <h1>What this repository is trying to prove, and what it refuses to claim</h1>
+      <p>
+        The project evaluates whether reverse discounted cash flow can function as a practical value-investing
+        framework in Thai equities when the data budget is constrained to free sources.
+      </p>
+    </section>
+    <section class="card-grid">
+      <article class="card span-4">
+        <p class="kicker">Objective</p>
+        <h2>Frame price as an expectation</h2>
+        <p>
+          Rather than pretending to know the future with precise forecasts, the workflow uses price to infer the
+          growth story already embedded in Thai stocks and then tests whether those implied expectations are too high or too low.
+        </p>
+      </article>
+      <article class="card span-4">
+        <p class="kicker">Evidence layers</p>
+        <h2>Exploratory and audited lanes are separated</h2>
+        <p>
+          The broad 15.68% CAGR result remains in the repository as exploratory context, while the audited thesis
+          bundle serves as the public proof layer because it includes availability dates, benchmark-relative returns,
+          and no-lookahead controls.
+        </p>
+      </article>
+      <article class="card span-4">
+        <p class="kicker">Constraints</p>
+        <h2>Free data, transparent exclusions, modest claims</h2>
+        <p>
+          Yahoo Finance is used as the primary source because it supports the strongest free historical coverage.
+          The site presents the limits alongside the upside so the result is readable without overselling the model.
+        </p>
+      </article>
+      <article class="card span-6">
+        <p class="kicker">Audience</p>
+        <h2>Built for thesis reviewers, investors, and technical readers</h2>
+        <ul class="list-clean">
+          <li>Reviewers can read the full thesis and jump to methods, results, and limitations quickly.</li>
+          <li>Investors can inspect benchmark-relative evidence, sector behavior, and sensitivity outputs.</li>
+          <li>Developers can deploy the static site without a build pipeline and trace each page back to source artifacts in the repo.</li>
+        </ul>
+      </article>
+      <article class="card span-6">
+        <p class="kicker">Repository map</p>
+        <h2>How the site maps to repo artifacts</h2>
+        <ul class="list-clean">
+          <li><code>docs/thesis_reverse_dcf_thai_set.md</code> → thesis page</li>
+          <li><code>docs/thesis-methodology.md</code> + <code>docs/datasource-decision.md</code> → research page</li>
+          <li><code>research_data/latest/backtest/</code> → backtest page and downloads</li>
+          <li><code>research_data/latest/thesis_bundle/</code> → downloadable bundle references</li>
+        </ul>
+      </article>
+    </section>
+    
+      
+    <footer class="site-footer">
+      <p>Built from local thesis and backtest artifacts in this repository. Designed for Netlify and GitHub Pages deployment.</p>
+      <div class="footer-links"><a href="../thesis.html">Thesis</a><a href="../research/index.html">Research</a><a href="../backtest/index.html">Backtest</a><a href="../about/index.html">About</a><a href="../download/index.html">Download</a></div>
+    </footer>
+    
+    </div>
+  </body>
+</html>

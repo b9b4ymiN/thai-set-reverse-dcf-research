@@ -1,0 +1,176 @@
+{
+  "batch_id": 1,
+  "started_at": "2026-04-11T10:13:24.172330",
+  "stocks_tested": [
+    {
+      "ticker": "DELTA.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 140,
+      "time_seconds": 7.252421617507935
+    },
+    {
+      "ticker": "PTT.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 120,
+      "time_seconds": 1.92637038230896
+    },
+    {
+      "ticker": "GULF.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 120,
+      "time_seconds": 4.2653961181640625
+    },
+    {
+      "ticker": "TTB.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 20,
+      "time_seconds": 8.325080633163452
+    },
+    {
+      "ticker": "AOT.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 140,
+      "time_seconds": 3.771980047225952
+    },
+    {
+      "ticker": "ADVANC.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 120,
+      "time_seconds": 5.881826162338257
+    },
+    {
+      "ticker": "KTB.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 20,
+      "time_seconds": 7.352165222167969
+    },
+    {
+      "ticker": "CPALL.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 140,
+      "time_seconds": 8.972926616668701
+    },
+    {
+      "ticker": "TRUE.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 120,
+      "time_seconds": 5.506258010864258
+    },
+    {
+      "ticker": "BDMS.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 140,
+      "time_seconds": 10.08110237121582
+    },
+    {
+      "ticker": "KBANK.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 20,
+      "time_seconds": 7.458692789077759
+    },
+    {
+      "ticker": "KSL.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 120,
+      "time_seconds": 7.6390221118927
+    },
+    {
+      "ticker": "PTTEP.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 140,
+      "time_seconds": 6.4888386726379395
+    },
+    {
+      "ticker": "WHA.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 40,
+      "time_seconds": 4.855867385864258
+    },
+    {
+      "ticker": "PTTGC.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 120,
+      "time_seconds": 9.199396133422852
+    },
+    {
+      "ticker": "CPN.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 40,
+      "time_seconds": 1.4152793884277344
+    },
+    {
+      "ticker": "BBL.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 20,
+      "time_seconds": 3.8817496299743652
+    },
+    {
+      "ticker": "EA.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 140,
+      "time_seconds": 0.9260725975036621
+    },
+    {
+      "ticker": "IVL.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 140,
+      "time_seconds": 2.858206272125244
+    },
+    {
+      "ticker": "CCET.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 140,
+      "time_seconds": 5.280022859573364
+    }
+  ],
+  "successful": [
+    "DELTA.BK",
+    "PTT.BK",
+    "GULF.BK",
+    "TTB.BK",
+    "AOT.BK",
+    "ADVANC.BK",
+    "KTB.BK",
+    "CPALL.BK",
+    "TRUE.BK",
+    "BDMS.BK",
+    "KBANK.BK",
+    "KSL.BK",
+    "PTTEP.BK",
+    "WHA.BK",
+    "PTTGC.BK",
+    "CPN.BK",
+    "BBL.BK",
+    "EA.BK",
+    "IVL.BK",
+    "CCET.BK"
+  ],
+  "failed": [],
+  "rate_limited": false,
+  "total_data_points": 2000,
+  "errors": [],
+  "aborted": false,
+  "abort_reason": null,
+  "completed_at": "2026-04-11T10:28:56.207976",
+  "total_time_seconds": 932.0356433391571
+}

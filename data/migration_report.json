@@ -1,0 +1,28 @@
+{
+  "timestamp": "2026-04-11T08:56:22.791247",
+  "source_dir": "research_data/set100_working",
+  "dest_dir": "data",
+  "dry_run": false,
+  "migrated_files": [
+    {
+      "source": "research_data/set100_working/fundamentals_snapshot.csv",
+      "destination": "data/processed/fundamentals/quarterly/fundamentals.csv",
+      "rows": 100,
+      "columns": 30
+    },
+    {
+      "source": "research_data/set100_working/price_history.csv",
+      "destination": "data/processed/prices/daily/prices.csv",
+      "rows": 228457,
+      "columns": 8
+    }
+  ],
+  "skipped_files": [],
+  "errors": [],
+  "summary": {
+    "total_files": 2,
+    "total_rows": 228557,
+    "errors": 0,
+    "skipped": 0
+  }
+}

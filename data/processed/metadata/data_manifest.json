@@ -1,0 +1,1446 @@
+{
+  "run_id": "acq-20260411T091543Z",
+  "acquired_at": "2026-04-11T09:15:43Z",
+  "primary_source": "yahoo_yfinance",
+  "requested_tickers": [
+    "ADVANC.BK",
+    "AKR.BK",
+    "AOT.BK",
+    "AP.BK",
+    "ASAP.BK",
+    "ASIAN.BK",
+    "AWC.BK",
+    "BANPU.BK",
+    "BAY.BK",
+    "BBL.BK",
+    "BCH.BK",
+    "BCPG.BK",
+    "BCT.BK",
+    "BDMS.BK",
+    "BEM.BK",
+    "BGRIM.BK",
+    "BH.BK",
+    "BJC.BK",
+    "BRR.BK",
+    "BTS.BK",
+    "CBG.BK",
+    "CCET.BK",
+    "CENTEL.BK",
+    "CGD.BK",
+    "CHG.BK",
+    "CIMBT.BK",
+    "COM7.BK",
+    "CPALL.BK",
+    "CPF.BK",
+    "CPN.BK",
+    "CRC.BK",
+    "DELTA.BK",
+    "DRT.BK",
+    "EA.BK",
+    "EGCO.BK",
+    "ERW.BK",
+    "FPI.BK",
+    "FPT.BK",
+    "GLOBAL.BK",
+    "GPI.BK",
+    "GPSC.BK",
+    "GULF.BK",
+    "HANA.BK",
+    "HMPRO.BK",
+    "IRPC.BK",
+    "ITD.BK",
+    "IVL.BK",
+    "JAS.BK",
+    "JMART.BK",
+    "JMT.BK",
+    "KBANK.BK",
+    "KBS.BK",
+    "KCE.BK",
+    "KKP.BK",
+    "KSL.BK",
+    "KTB.BK",
+    "KTC.BK",
+    "LH.BK",
+    "MEGA.BK",
+    "MINT.BK",
+    "MTC.BK",
+    "NCH.BK",
+    "NOBLE.BK",
+    "OR.BK",
+    "OSP.BK",
+    "PF.BK",
+    "PG.BK",
+    "PRIN.BK",
+    "PSL.BK",
+    "PTT.BK",
+    "PTTEP.BK",
+    "PTTGC.BK",
+    "RATCH.BK",
+    "RBF.BK",
+    "RCL.BK",
+    "RML.BK",
+    "RS.BK",
+    "SAWAD.BK",
+    "SCB.BK",
+    "SCC.BK",
+    "SCGP.BK",
+    "SITHAI.BK",
+    "SPALI.BK",
+    "SPRC.BK",
+    "STPI.BK",
+    "TCAP.BK",
+    "THANI.BK",
+    "TIDLOR.BK",
+    "TISCO.BK",
+    "TLI.BK",
+    "TOP.BK",
+    "TR.BK",
+    "TRUE.BK",
+    "TTB.BK",
+    "TU.BK",
+    "TVO.BK",
+    "VGI.BK",
+    "WHA.BK",
+    "WPH.BK",
+    "XPG.BK"
+  ],
+  "benchmark_ticker": "^SET.BK",
+  "period": "10y",
+  "interval": "1d",
+  "reporting_lag_days": 45,
+  "source_review": {
+    "decision_rule": "Prefer the strongest free datasource for historical backtest completeness; keep official/manual sources optional.",
+    "chosen_source": {
+      "id": "yahoo_yfinance",
+      "label": "Yahoo Finance via yfinance",
+      "role": "primary",
+      "completeness_rank": 1,
+      "automation_rank": 1,
+      "status": "chosen",
+      "rationale": "Best balance of free historical coverage, scriptability, and existing repo support for repeatable backtests."
+    },
+    "alternatives": [
+      {
+        "id": "set_website_scraping",
+        "label": "SET website scraping",
+        "role": "validation",
+        "completeness_rank": 3,
+        "automation_rank": 3,
+        "status": "validation_only",
+        "rationale": "Useful for official spot checks, but bulk historical depth and scraper stability are weaker than the primary Yahoo path."
+      },
+      {
+        "id": "investing_com_scraping",
+        "label": "Investing.com scraping",
+        "role": "fallback",
+        "completeness_rank": 2,
+        "automation_rank": 4,
+        "status": "rejected",
+        "rationale": "Can help with ad hoc market-history checks, but HTML scraping is brittle and less reusable for a single-source research pipeline."
+      },
+      {
+        "id": "smartxl_trial",
+        "label": "SmartXL trial workflow",
+        "role": "fallback",
+        "completeness_rank": 4,
+        "automation_rank": 5,
+        "status": "rejected",
+        "rationale": "Trial-based spreadsheet access is not durable enough for a reproducible free pipeline or unattended refresh jobs."
+      }
+    ]
+  },
+  "quality_summary": {
+    "required_fields": [
+      "Current_Price",
+      "FCF",
+      "Market_Cap",
+      "WACC"
+    ],
+    "excluded_ticker_count": 15,
+    "missing_fundamental_tickers": [],
+    "missing_price_tickers": []
+  },
+  "rows": {
+    "fundamentals_snapshot": 100,
+    "fundamental_observations": 1081,
+    "quality_report": 30,
+    "reverse_dcf_exclusions": 100,
+    "validation_references": 100,
+    "fundamental_coverage": 100,
+    "price_coverage": 100
+  },
+  "files": [
+    {
+      "label": "metadata_fundamental_coverage",
+      "path": "data/processed/metadata/fundamental_coverage.csv",
+      "size_bytes": 1616,
+      "sha256": "17a97e9f18cc77476f38100c518fa772dd5e35c22ca820f080bfe9c7e1240aa3"
+    },
+    {
+      "label": "metadata_price_coverage",
+      "path": "data/processed/metadata/price_coverage.csv",
+      "size_bytes": 1790,
+      "sha256": "9f0a0016597ea9650709060e0c9c8c1fc478bb2390fc32dc5c855cc6b3d7df4a"
+    },
+    {
+      "label": "metadata_quality_report",
+      "path": "data/processed/metadata/quality_report.csv",
+      "size_bytes": 865,
+      "sha256": "ee7aa32017983b6f7bbfc810c23b82c63314c84c2ab3d59c234f85b6ec3abb25"
+    },
+    {
+      "label": "metadata_reverse_dcf_exclusions",
+      "path": "data/processed/metadata/reverse_dcf_exclusions.csv",
+      "size_bytes": 2021,
+      "sha256": "a245681b1bb3f7cc749a54151638e895391d92e739502945755eb3ab74f776d7"
+    },
+    {
+      "label": "metadata_validation_references",
+      "path": "data/processed/metadata/set_validation_references.csv",
+      "size_bytes": 14181,
+      "sha256": "998b340c082e88f913d8f3d83ee9cac524302c3313e3744862356678ee71af1c"
+    },
+    {
+      "label": "processed_adjusted_prices",
+      "path": "data/processed/prices/adjusted/prices.parquet",
+      "size_bytes": 2809514,
+      "sha256": "1ec0a2c7cea93e604cbd109ed1f42cb89d3cd15261dffffdace1cd250959e794"
+    },
+    {
+      "label": "processed_annual_fundamentals",
+      "path": "data/processed/fundamentals/annual/fundamentals.parquet",
+      "size_bytes": 34826,
+      "sha256": "4535bced5cce71b445ad31e7003782083da67265744d97d11fac14b65b6f3df0"
+    },
+    {
+      "label": "processed_annual_metadata",
+      "path": "data/processed/fundamentals/annual/metadata.json",
+      "size_bytes": 170,
+      "sha256": "c11c0d3aedf1176dc549e5250f38b5ae9a01d89583bfcf0cd7a934aa6b6c3aaf"
+    },
+    {
+      "label": "processed_daily_prices",
+      "path": "data/processed/prices/daily/prices.parquet",
+      "size_bytes": 4157847,
+      "sha256": "0c66ec485ed3f92d8227d3f5094c414c13ccff1aaaa82a01c65fdcf823841cb3"
+    },
+    {
+      "label": "processed_quarterly_fundamentals",
+      "path": "data/processed/fundamentals/quarterly/fundamentals.parquet",
+      "size_bytes": 41332,
+      "sha256": "645d69a08963eef3dfbb3158814f1d0da5238c7f3f6ab11f3d74e76f73b11f96"
+    },
+    {
+      "label": "processed_quarterly_metadata",
+      "path": "data/processed/fundamentals/quarterly/metadata.json",
+      "size_bytes": 173,
+      "sha256": "59baf181b46ace421863370de7c6c0936aa4f80162b80b03517bde7099191204"
+    },
+    {
+      "label": "raw_ADVANC.BK_fundamentals",
+      "path": "data/raw/set100/ADVANC.BK/fundamentals.json",
+      "size_bytes": 6235,
+      "sha256": "12bd07252cd204730abc91775731fff82d7091f1acbb91b311f245ca44799019"
+    },
+    {
+      "label": "raw_ADVANC.BK_prices",
+      "path": "data/raw/set100/ADVANC.BK/prices.csv",
+      "size_bytes": 178061,
+      "sha256": "aecb27eb3255d67deb442f5b1b5bfafaa4a1557cafa2ee19ab5c78a2b3d94873"
+    },
+    {
+      "label": "raw_AKR.BK_fundamentals",
+      "path": "data/raw/set100/AKR.BK/fundamentals.json",
+      "size_bytes": 6476,
+      "sha256": "07e9780afa85386fcb853c9b56ebafd32ceab9329e8cba9ab105c3b68df1308f"
+    },
+    {
+      "label": "raw_AKR.BK_prices",
+      "path": "data/raw/set100/AKR.BK/prices.csv",
+      "size_bytes": 288134,
+      "sha256": "1031dea2bf6cfb5712485d57e776f57b8aaae9564fcdc92ff4dab83b076c510f"
+    },
+    {
+      "label": "raw_AOT.BK_fundamentals",
+      "path": "data/raw/set100/AOT.BK/fundamentals.json",
+      "size_bytes": 6579,
+      "sha256": "6397dbdf93432336bffe06fe0a00d397d7c8d3a6c0ed62e17ad5dab86900c2ef"
+    },
+    {
+      "label": "raw_AOT.BK_prices",
+      "path": "data/raw/set100/AOT.BK/prices.csv",
+      "size_bytes": 174057,
+      "sha256": "d2cb7b70cd99c89ecd55b5e8593e942f21dc669b946d1b9194d2086f19fd96fa"
+    },
+    {
+      "label": "raw_AP.BK_fundamentals",
+      "path": "data/raw/set100/AP.BK/fundamentals.json",
+      "size_bytes": 6520,
+      "sha256": "3ea327e678c49476d28c26ad0ff152d7d9b61758dc2f598bd98b206496e4bbca"
+    },
+    {
+      "label": "raw_AP.BK_prices",
+      "path": "data/raw/set100/AP.BK/prices.csv",
+      "size_bytes": 259830,
+      "sha256": "17f3ce4fd1b94023abb8be73e78d09d8a5f8ce45f8d1605ce2dc4969b6e4dd2b"
+    },
+    {
+      "label": "raw_ASAP.BK_fundamentals",
+      "path": "data/raw/set100/ASAP.BK/fundamentals.json",
+      "size_bytes": 6475,
+      "sha256": "b65952b517dfd81591d02077e803484e6b31ef1f83f143861557c93b93ece0f3"
+    },
+    {
+      "label": "raw_ASAP.BK_prices",
+      "path": "data/raw/set100/ASAP.BK/prices.csv",
+      "size_bytes": 254959,
+      "sha256": "a0f30f058e0f84e01e60d45b516c2588d1f0f4785a7117f4a31ec4b5a4c76722"
+    },
+    {
+      "label": "raw_ASIAN.BK_fundamentals",
+      "path": "data/raw/set100/ASIAN.BK/fundamentals.json",
+      "size_bytes": 6506,
+      "sha256": "d3d01aac2c084736352568382bac0659ea5c973be103994f38120245f759dc58"
+    },
+    {
+      "label": "raw_ASIAN.BK_prices",
+      "path": "data/raw/set100/ASIAN.BK/prices.csv",
+      "size_bytes": 277972,
+      "sha256": "2622f19e091311b25eb8786896f77859ad364fbb4978b12bad12141692149f8c"
+    },
+    {
+      "label": "raw_AWC.BK_fundamentals",
+      "path": "data/raw/set100/AWC.BK/fundamentals.json",
+      "size_bytes": 6533,
+      "sha256": "9cd16b9b0d89852d5585ad10ba4c81c2ff703becbabd21d87ef8f8ee50ec14c5"
+    },
+    {
+      "label": "raw_AWC.BK_prices",
+      "path": "data/raw/set100/AWC.BK/prices.csv",
+      "size_bytes": 181647,
+      "sha256": "30e3d0a357aca92cb39808786c6d84a93871edcb4f5de189f998a6ef9c4d5355"
+    },
+    {
+      "label": "raw_BANPU.BK_fundamentals",
+      "path": "data/raw/set100/BANPU.BK/fundamentals.json",
+      "size_bytes": 6515,
+      "sha256": "7b88c129fcc291efc42bf63cc4867d4e8548685ff5e844e5e9108aabda9caed9"
+    },
+    {
+      "label": "raw_BANPU.BK_prices",
+      "path": "data/raw/set100/BANPU.BK/prices.csv",
+      "size_bytes": 288547,
+      "sha256": "528fe87042e0fae1b9959be17dc099991cb924c6ffc87e80e03f80b592db68dd"
+    },
+    {
+      "label": "raw_BAY.BK_fundamentals",
+      "path": "data/raw/set100/BAY.BK/fundamentals.json",
+      "size_bytes": 6486,
+      "sha256": "88673892ba230d21a545671018d052388f748cb8102cea1adef8cc0d53122312"
+    },
+    {
+      "label": "raw_BAY.BK_prices",
+      "path": "data/raw/set100/BAY.BK/prices.csv",
+      "size_bytes": 183329,
+      "sha256": "c486a9f2a6ca906c200615f9096e5c0d82152db9d02a650537363f28aa60fc63"
+    },
+    {
+      "label": "raw_BBL.BK_fundamentals",
+      "path": "data/raw/set100/BBL.BK/fundamentals.json",
+      "size_bytes": 6487,
+      "sha256": "348f044eb1a5ff2bf72c0f39e86dd8240fe170884448b96a233a9fd9835a7e94"
+    },
+    {
+      "label": "raw_BBL.BK_prices",
+      "path": "data/raw/set100/BBL.BK/prices.csv",
+      "size_bytes": 169320,
+      "sha256": "662a4b6b65d4c42fef75bbfa148334f1847f1820ad26d9b09a561bea74c0a670"
+    },
+    {
+      "label": "raw_BCH.BK_fundamentals",
+      "path": "data/raw/set100/BCH.BK/fundamentals.json",
+      "size_bytes": 6506,
+      "sha256": "3f338d0e809556a687d4347f3248ce6148eee0ddedf03edff78ff8d9dfda522b"
+    },
+    {
+      "label": "raw_BCH.BK_prices",
+      "path": "data/raw/set100/BCH.BK/prices.csv",
+      "size_bytes": 270959,
+      "sha256": "d5c45f644ccfaa0543ee0b797bcbce557576844802ac0e7607b6762b2e6fe846"
+    },
+    {
+      "label": "raw_BCPG.BK_fundamentals",
+      "path": "data/raw/set100/BCPG.BK/fundamentals.json",
+      "size_bytes": 6098,
+      "sha256": "a628c8cff21f105a037631fb232356a8ee4d55776466b8ec76723ccd4eba366a"
+    },
+    {
+      "label": "raw_BCPG.BK_prices",
+      "path": "data/raw/set100/BCPG.BK/prices.csv",
+      "size_bytes": 266517,
+      "sha256": "1b9594782bf71ba00f3f7c58c74266f6fed1ba8354b767cfa59c96bfbea91826"
+    },
+    {
+      "label": "raw_BCT.BK_fundamentals",
+      "path": "data/raw/set100/BCT.BK/fundamentals.json",
+      "size_bytes": 6033,
+      "sha256": "8f3a40e5c8d7202e756f4eab11d516efa4bbfe15deb37ca85af9e0ed8c6a5078"
+    },
+    {
+      "label": "raw_BCT.BK_prices",
+      "path": "data/raw/set100/BCT.BK/prices.csv",
+      "size_bytes": 160430,
+      "sha256": "4837997320674775f24541776d1dbce3bd22298806e61f204edda109bd8fb706"
+    },
+    {
+      "label": "raw_BDMS.BK_fundamentals",
+      "path": "data/raw/set100/BDMS.BK/fundamentals.json",
+      "size_bytes": 6602,
+      "sha256": "aa8cb72501e6e83165c0eceb715b657f4fc28291381e9ee5aad6137058e97acf"
+    },
+    {
+      "label": "raw_BDMS.BK_prices",
+      "path": "data/raw/set100/BDMS.BK/prices.csv",
+      "size_bytes": 236409,
+      "sha256": "67778446716c2b761154d80782bf62a09b7c03037d3e9142aa297f3cb3008502"
+    },
+    {
+      "label": "raw_BEM.BK_fundamentals",
+      "path": "data/raw/set100/BEM.BK/fundamentals.json",
+      "size_bytes": 6569,
+      "sha256": "b27cefc14d50605d050695a5fd00a88813e8631ffba9867997b4e1abe3a918eb"
+    },
+    {
+      "label": "raw_BEM.BK_prices",
+      "path": "data/raw/set100/BEM.BK/prices.csv",
+      "size_bytes": 262284,
+      "sha256": "4b507a8acbbbce9904300e75fae91b2c59a3fed865db2a520446a7b752c91e04"
+    },
+    {
+      "label": "raw_BGRIM.BK_fundamentals",
+      "path": "data/raw/set100/BGRIM.BK/fundamentals.json",
+      "size_bytes": 6614,
+      "sha256": "a6e7eb2b70b1e42c42a370e3b4f1c80aacef3f4a9eeccfb1f2d404bfd9b3adef"
+    },
+    {
+      "label": "raw_BGRIM.BK_prices",
+      "path": "data/raw/set100/BGRIM.BK/prices.csv",
+      "size_bytes": 175542,
+      "sha256": "a69983898b8065aa1450a64cc63ee21a896957ec0bc9cf5d5fd04c7541d5d972"
+    },
+    {
+      "label": "raw_BH.BK_fundamentals",
+      "path": "data/raw/set100/BH.BK/fundamentals.json",
+      "size_bytes": 6498,
+      "sha256": "69bcd7e07b44692ddb7ba86f25b52b27d030c7fafc3b0c2f5f0dc11bec90e2f9"
+    },
+    {
+      "label": "raw_BH.BK_prices",
+      "path": "data/raw/set100/BH.BK/prices.csv",
+      "size_bytes": 167707,
+      "sha256": "04c2755ae732a3d8d2969d3a955abade9efe22580580d5f980e98012df9d3d45"
+    },
+    {
+      "label": "raw_BJC.BK_fundamentals",
+      "path": "data/raw/set100/BJC.BK/fundamentals.json",
+      "size_bytes": 6558,
+      "sha256": "499ee6115f2926f2001894cf2d02929efe3ade4be4f46fc8b4d5167178f11879"
+    },
+    {
+      "label": "raw_BJC.BK_prices",
+      "path": "data/raw/set100/BJC.BK/prices.csv",
+      "size_bytes": 189891,
+      "sha256": "2f802f5a8447831c1ac7504eeec9f1354c7befc1b48293e44b86034e6506a3fc"
+    },
+    {
+      "label": "raw_BRR.BK_fundamentals",
+      "path": "data/raw/set100/BRR.BK/fundamentals.json",
+      "size_bytes": 6470,
+      "sha256": "39921b0a52f588cc30e2ac646d3b105661dc2392ae7a3cf6ee8439c1c8ff8845"
+    },
+    {
+      "label": "raw_BRR.BK_prices",
+      "path": "data/raw/set100/BRR.BK/prices.csv",
+      "size_bytes": 264577,
+      "sha256": "bb4e3ea5464d50ae432cde6118debbb2f86a2f3576fad71776d03bea5f36d7d8"
+    },
+    {
+      "label": "raw_BTS.BK_fundamentals",
+      "path": "data/raw/set100/BTS.BK/fundamentals.json",
+      "size_bytes": 6165,
+      "sha256": "76cfdb314eddf7f9afbd3886505b6dcb5a2641457b9495e8a408c059dd179bd0"
+    },
+    {
+      "label": "raw_BTS.BK_prices",
+      "path": "data/raw/set100/BTS.BK/prices.csv",
+      "size_bytes": 266845,
+      "sha256": "6f22b57b04c89c954b773f38826e9aae5ea178bec7d9127831f965d4025081b6"
+    },
+    {
+      "label": "raw_CBG.BK_fundamentals",
+      "path": "data/raw/set100/CBG.BK/fundamentals.json",
+      "size_bytes": 6528,
+      "sha256": "a2ef44812386e7031129ccd6ead2c3e09fc1cccc35c59949cddffea3e310961b"
+    },
+    {
+      "label": "raw_CBG.BK_prices",
+      "path": "data/raw/set100/CBG.BK/prices.csv",
+      "size_bytes": 165888,
+      "sha256": "fc8dbfdc8a88d5a08f1f21badb793d4db3ddf0a2cf7efad3cc5bed7b4b2ef866"
+    },
+    {
+      "label": "raw_CCET.BK_fundamentals",
+      "path": "data/raw/set100/CCET.BK/fundamentals.json",
+      "size_bytes": 6574,
+      "sha256": "4ee2cc31d5acbe9986601791ec16616c3636b02aa3c005b2a5c6d3a83d5db9e6"
+    },
+    {
+      "label": "raw_CCET.BK_prices",
+      "path": "data/raw/set100/CCET.BK/prices.csv",
+      "size_bytes": 291624,
+      "sha256": "a91d538466fed670f2387cb28939e02f752b86aaebdbde699f98d312da90b57a"
+    },
+    {
+      "label": "raw_CENTEL.BK_fundamentals",
+      "path": "data/raw/set100/CENTEL.BK/fundamentals.json",
+      "size_bytes": 6583,
+      "sha256": "baf715095a28ff7c432e043c46c6cdb257aaf5619730478bd9f98a0a3f227c25"
+    },
+    {
+      "label": "raw_CENTEL.BK_prices",
+      "path": "data/raw/set100/CENTEL.BK/prices.csv",
+      "size_bytes": 181000,
+      "sha256": "a7a263230815e9c4832ad2939481a96ca454277879f5a84b30edd90bdefeaadd"
+    },
+    {
+      "label": "raw_CGD.BK_fundamentals",
+      "path": "data/raw/set100/CGD.BK/fundamentals.json",
+      "size_bytes": 6468,
+      "sha256": "8b113ab71453fb8a2175d6bf4bcd3143f7a8b1c12036170895936aba7cca07b1"
+    },
+    {
+      "label": "raw_CGD.BK_prices",
+      "path": "data/raw/set100/CGD.BK/prices.csv",
+      "size_bytes": 291939,
+      "sha256": "72059363a58295db197f8e889a5ac56fd42afcb7361a138281abec54980694d2"
+    },
+    {
+      "label": "raw_CHG.BK_fundamentals",
+      "path": "data/raw/set100/CHG.BK/fundamentals.json",
+      "size_bytes": 6519,
+      "sha256": "816d6e4a88694f0c03e34cc1cc93024e88abb6ef3b3d182842d5d9633c794e04"
+    },
+    {
+      "label": "raw_CHG.BK_prices",
+      "path": "data/raw/set100/CHG.BK/prices.csv",
+      "size_bytes": 290015,
+      "sha256": "34c79525789a182c4cfc8df8ef14ed2459d182aa7289bddc0df7b45a7d1a32ba"
+    },
+    {
+      "label": "raw_CIMBT.BK_fundamentals",
+      "path": "data/raw/set100/CIMBT.BK/fundamentals.json",
+      "size_bytes": 6504,
+      "sha256": "7aeade64f2598bdfff0dc14c3c89b9c8b3fa4e9e76a0f85d54cfd1fbaae44f44"
+    },
+    {
+      "label": "raw_CIMBT.BK_prices",
+      "path": "data/raw/set100/CIMBT.BK/prices.csv",
+      "size_bytes": 296254,
+      "sha256": "f52981a974bbb18686585975e8a613c27d68ef61b55ad24bd485c9d10ebf79f5"
+    },
+    {
+      "label": "raw_COM7.BK_fundamentals",
+      "path": "data/raw/set100/COM7.BK/fundamentals.json",
+      "size_bytes": 6546,
+      "sha256": "10e4ce7e88a7de4d0736d5697ecda45a7e12f8ef1713df9f04edd5f95a789329"
+    },
+    {
+      "label": "raw_COM7.BK_prices",
+      "path": "data/raw/set100/COM7.BK/prices.csv",
+      "size_bytes": 227152,
+      "sha256": "e3d7612235d48eb3392ea4be4d5aa95d21511f070acdb28ec2b7121dbdb02537"
+    },
+    {
+      "label": "raw_CPALL.BK_fundamentals",
+      "path": "data/raw/set100/CPALL.BK/fundamentals.json",
+      "size_bytes": 6618,
+      "sha256": "d3677be6c49b0411e6dd2a682c62600a10de923d76e24af992c6f9c77f79c1ad"
+    },
+    {
+      "label": "raw_CPALL.BK_prices",
+      "path": "data/raw/set100/CPALL.BK/prices.csv",
+      "size_bytes": 169034,
+      "sha256": "8f8ed672db607407f66089e8d2b38ed4805678c4c6b0bd2f7e91fe26edf0d2b3"
+    },
+    {
+      "label": "raw_CPF.BK_fundamentals",
+      "path": "data/raw/set100/CPF.BK/fundamentals.json",
+      "size_bytes": 6624,
+      "sha256": "9b075cf39db12c0043bc6c134f36798d2d408a2f5445a455767f075a8c6072d2"
+    },
+    {
+      "label": "raw_CPF.BK_prices",
+      "path": "data/raw/set100/CPF.BK/prices.csv",
+      "size_bytes": 214416,
+      "sha256": "945bf0b7e3ff858d358b170039636ab5764ac9e464220d56ef32c16525749d0f"
+    },
+    {
+      "label": "raw_CPN.BK_fundamentals",
+      "path": "data/raw/set100/CPN.BK/fundamentals.json",
+      "size_bytes": 6579,
+      "sha256": "0d06ccfe7fb8a6c477fcbca50bd2e850a40dc37f918ae40b7ab4188a3889681a"
+    },
+    {
+      "label": "raw_CPN.BK_prices",
+      "path": "data/raw/set100/CPN.BK/prices.csv",
+      "size_bytes": 165070,
+      "sha256": "cc61b4478af517cb2203dc0011ad9e248a65b3cd144e8fa3d09c3075ca18b473"
+    },
+    {
+      "label": "raw_CRC.BK_fundamentals",
+      "path": "data/raw/set100/CRC.BK/fundamentals.json",
+      "size_bytes": 6595,
+      "sha256": "80b94b80d630622547aa5f5a856116d538313ef58b8122b4d5aca9b930c0d64d"
+    },
+    {
+      "label": "raw_CRC.BK_prices",
+      "path": "data/raw/set100/CRC.BK/prices.csv",
+      "size_bytes": 112746,
+      "sha256": "de8580c0ebed53077bf417a95965675029e279e5d1d1ae3aa7d9ee302af741d3"
+    },
+    {
+      "label": "raw_DELTA.BK_fundamentals",
+      "path": "data/raw/set100/DELTA.BK/fundamentals.json",
+      "size_bytes": 6199,
+      "sha256": "63b63dc847ffb64e7c90584e06e31f09e5468d27033e61cd52164b6e6c3aea70"
+    },
+    {
+      "label": "raw_DELTA.BK_prices",
+      "path": "data/raw/set100/DELTA.BK/prices.csv",
+      "size_bytes": 240910,
+      "sha256": "578d191b079ba3f78bffc82509a85ab0c6e87202898877792d83602145588a78"
+    },
+    {
+      "label": "raw_DRT.BK_fundamentals",
+      "path": "data/raw/set100/DRT.BK/fundamentals.json",
+      "size_bytes": 6440,
+      "sha256": "5f80388ad8a8b697125daae6810b3fb2c8fb35f9b4c8b2713371f4627205c839"
+    },
+    {
+      "label": "raw_DRT.BK_prices",
+      "path": "data/raw/set100/DRT.BK/prices.csv",
+      "size_bytes": 258022,
+      "sha256": "e1217773b732ef3ed2db5992dbaa06f0b325db6f33a294d42919507a9afdec36"
+    },
+    {
+      "label": "raw_EA.BK_fundamentals",
+      "path": "data/raw/set100/EA.BK/fundamentals.json",
+      "size_bytes": 6507,
+      "sha256": "83a08c8a324891eb3d613b2b349e2d5331d593eb5267f695a01698ed146ca447"
+    },
+    {
+      "label": "raw_EA.BK_prices",
+      "path": "data/raw/set100/EA.BK/prices.csv",
+      "size_bytes": 190066,
+      "sha256": "fde65a785420cd68b5268be4b2f0e18845f68034a518b0fe043942436f2180fa"
+    },
+    {
+      "label": "raw_EGCO.BK_fundamentals",
+      "path": "data/raw/set100/EGCO.BK/fundamentals.json",
+      "size_bytes": 6589,
+      "sha256": "d8e0768c4774ee4c3de64e216757049afbb5362c3fd8b1a62651bc2019a30538"
+    },
+    {
+      "label": "raw_EGCO.BK_prices",
+      "path": "data/raw/set100/EGCO.BK/prices.csv",
+      "size_bytes": 171559,
+      "sha256": "e694add2292256f808c58468fdd83cd700e8ef08ed4d1efd576f1b9e6600bfd8"
+    },
+    {
+      "label": "raw_ERW.BK_fundamentals",
+      "path": "data/raw/set100/ERW.BK/fundamentals.json",
+      "size_bytes": 6501,
+      "sha256": "b4911e96cbd29144526ecbad2663acfa32c0e124aabd42d545069a2ceab22532"
+    },
+    {
+      "label": "raw_ERW.BK_prices",
+      "path": "data/raw/set100/ERW.BK/prices.csv",
+      "size_bytes": 287937,
+      "sha256": "4d4def3676b410ec7c7ba1c9aad15c85e5da4cc9deb275b0857da1a29b5c56c5"
+    },
+    {
+      "label": "raw_FPI.BK_fundamentals",
+      "path": "data/raw/set100/FPI.BK/fundamentals.json",
+      "size_bytes": 6467,
+      "sha256": "f5d0810fcc9027edcdcc3fbc0b8c4028a69b3ee1d3b0ab93c32d62d0d21d0182"
+    },
+    {
+      "label": "raw_FPI.BK_prices",
+      "path": "data/raw/set100/FPI.BK/prices.csv",
+      "size_bytes": 280242,
+      "sha256": "c410c69e206d92d18a666f540b774163d3faa5b4ab0b0c0ed35e8a6fb4ed9c8f"
+    },
+    {
+      "label": "raw_FPT.BK_fundamentals",
+      "path": "data/raw/set100/FPT.BK/fundamentals.json",
+      "size_bytes": 6545,
+      "sha256": "d4f1b45d60a5c4ec0783e95f856c3b00d134565c5e944c3745e981b46451365a"
+    },
+    {
+      "label": "raw_FPT.BK_prices",
+      "path": "data/raw/set100/FPT.BK/prices.csv",
+      "size_bytes": 274163,
+      "sha256": "97c860734a70b8bf903db61098abcf0436fa8754ce55a0ce03ad5491cfaaa0df"
+    },
+    {
+      "label": "raw_GLOBAL.BK_fundamentals",
+      "path": "data/raw/set100/GLOBAL.BK/fundamentals.json",
+      "size_bytes": 6567,
+      "sha256": "773c9d1a639aabb1f68d03156181767feefed7d66130a9d283ee8f78ae9a9e2b"
+    },
+    {
+      "label": "raw_GLOBAL.BK_prices",
+      "path": "data/raw/set100/GLOBAL.BK/prices.csv",
+      "size_bytes": 299544,
+      "sha256": "b4565f6a7cbeed53259e1ea09a19d26f0433d98a0788865d9542ccba014cab3a"
+    },
+    {
+      "label": "raw_GPI.BK_fundamentals",
+      "path": "data/raw/set100/GPI.BK/fundamentals.json",
+      "size_bytes": 6490,
+      "sha256": "016a784fb684346967141f8e64cb56a76c658d561f322a06301057471f0e3355"
+    },
+    {
+      "label": "raw_GPI.BK_prices",
+      "path": "data/raw/set100/GPI.BK/prices.csv",
+      "size_bytes": 240749,
+      "sha256": "fae44c992d62b70cf28dd77ac559d02a8790a82f1fd0a7b25ba7b01fd009596e"
+    },
+    {
+      "label": "raw_GPSC.BK_fundamentals",
+      "path": "data/raw/set100/GPSC.BK/fundamentals.json",
+      "size_bytes": 6190,
+      "sha256": "8abcb343d77afc2a508f385a64598f37b96dc8b2bbab92c95986ab15c1d4a71c"
+    },
+    {
+      "label": "raw_GPSC.BK_prices",
+      "path": "data/raw/set100/GPSC.BK/prices.csv",
+      "size_bytes": 211305,
+      "sha256": "0f4914f79b0f1dae990adb2c148b876d07586a7af89568689d866fdf8e16ed35"
+    },
+    {
+      "label": "raw_GULF.BK_fundamentals",
+      "path": "data/raw/set100/GULF.BK/fundamentals.json",
+      "size_bytes": 6628,
+      "sha256": "ad4f7b70224b9155dc074213c02e52929033d9fe7f1d8b94762652f4560439c8"
+    },
+    {
+      "label": "raw_GULF.BK_prices",
+      "path": "data/raw/set100/GULF.BK/prices.csv",
+      "size_bytes": 16819,
+      "sha256": "88efef13e1bc60739dbc1f2605654a31642c87c07b32fc7a6145b14f88b33da9"
+    },
+    {
+      "label": "raw_HANA.BK_fundamentals",
+      "path": "data/raw/set100/HANA.BK/fundamentals.json",
+      "size_bytes": 6509,
+      "sha256": "31bba77fc245ae6a2a68145590eb119c1d2ffd6a2da56f9d5e32af9549020ada"
+    },
+    {
+      "label": "raw_HANA.BK_prices",
+      "path": "data/raw/set100/HANA.BK/prices.csv",
+      "size_bytes": 181675,
+      "sha256": "522cb3f64cf8484367f1d6d07735f37d7a3ed5fbc124023cf4c9ab1fb456c2e2"
+    },
+    {
+      "label": "raw_HMPRO.BK_fundamentals",
+      "path": "data/raw/set100/HMPRO.BK/fundamentals.json",
+      "size_bytes": 6572,
+      "sha256": "ced5e29bdab44d111129a4c4d30fc4100ff4bd1e9ab432fd6fcecbe94d275d58"
+    },
+    {
+      "label": "raw_HMPRO.BK_prices",
+      "path": "data/raw/set100/HMPRO.BK/prices.csv",
+      "size_bytes": 273510,
+      "sha256": "4b20c6d11802607a601eb90356c1ff76f5365eaf3ba2a963779245a2070c4639"
+    },
+    {
+      "label": "raw_IRPC.BK_fundamentals",
+      "path": "data/raw/set100/IRPC.BK/fundamentals.json",
+      "size_bytes": 6164,
+      "sha256": "d612c1c6bdfb889ec03e212918d259d9c142d9a75ed8d550128473b19606328e"
+    },
+    {
+      "label": "raw_IRPC.BK_prices",
+      "path": "data/raw/set100/IRPC.BK/prices.csv",
+      "size_bytes": 284880,
+      "sha256": "b9f55d2b913b11e84477c33676e405d50f1e066296622187a36081224dc48a25"
+    },
+    {
+      "label": "raw_ITD.BK_fundamentals",
+      "path": "data/raw/set100/ITD.BK/fundamentals.json",
+      "size_bytes": 6538,
+      "sha256": "57b55f67915290238619a6b195b768d1050da21e41d4ceb3056fd541a680a0ad"
+    },
+    {
+      "label": "raw_ITD.BK_prices",
+      "path": "data/raw/set100/ITD.BK/prices.csv",
+      "size_bytes": 286611,
+      "sha256": "555e17e07a75ba33b0970859d616e61020fe03449cb847fa6c55ec2faf400fb8"
+    },
+    {
+      "label": "raw_IVL.BK_fundamentals",
+      "path": "data/raw/set100/IVL.BK/fundamentals.json",
+      "size_bytes": 6582,
+      "sha256": "79b3fde8465ea44aa59cd4cb7353f94d87377b1af149c2989c674a9dcc027585"
+    },
+    {
+      "label": "raw_IVL.BK_prices",
+      "path": "data/raw/set100/IVL.BK/prices.csv",
+      "size_bytes": 192681,
+      "sha256": "70ab5a528916c3b6cb60f3c0930159f9b044ef89bccd2f4b80daebfc15b16b48"
+    },
+    {
+      "label": "raw_JAS.BK_fundamentals",
+      "path": "data/raw/set100/JAS.BK/fundamentals.json",
+      "size_bytes": 6503,
+      "sha256": "51151972f727388b300beb5f8448b5bd5882631a9d27602fd47dd9d996827e02"
+    },
+    {
+      "label": "raw_JAS.BK_prices",
+      "path": "data/raw/set100/JAS.BK/prices.csv",
+      "size_bytes": 280574,
+      "sha256": "acfb287d45b1dd0f05ca395350b837c0163f9b31858528d09ea60e726347bef9"
+    },
+    {
+      "label": "raw_JMART.BK_fundamentals",
+      "path": "data/raw/set100/JMART.BK/fundamentals.json",
+      "size_bytes": 6550,
+      "sha256": "9778b9354f52eb75c7283c644a6dcccd86d30de95f01c5537338c58bb423b49d"
+    },
+    {
+      "label": "raw_JMART.BK_prices",
+      "path": "data/raw/set100/JMART.BK/prices.csv",
+      "size_bytes": 258415,
+      "sha256": "a5d608240461798cbffd6309d992c0cc7d2b1e81fec1749ec78bb29e88ec0bd7"
+    },
+    {
+      "label": "raw_JMT.BK_fundamentals",
+      "path": "data/raw/set100/JMT.BK/fundamentals.json",
+      "size_bytes": 6526,
+      "sha256": "a375acc8e916f24e4ff1f3cdd76f3b9472f30b2b6523cc2acc3aa2e4c44dd94b"
+    },
+    {
+      "label": "raw_JMT.BK_prices",
+      "path": "data/raw/set100/JMT.BK/prices.csv",
+      "size_bytes": 259255,
+      "sha256": "7e6e4c7d48544355f4c97313b7b122bd4505bd39079286f6585b41feae0d4607"
+    },
+    {
+      "label": "raw_KBANK.BK_fundamentals",
+      "path": "data/raw/set100/KBANK.BK/fundamentals.json",
+      "size_bytes": 6526,
+      "sha256": "a761357b8db590eea6eff39c8f9575d9fc03b3351bae12e9b505a07e770cc0c5"
+    },
+    {
+      "label": "raw_KBANK.BK_prices",
+      "path": "data/raw/set100/KBANK.BK/prices.csv",
+      "size_bytes": 174620,
+      "sha256": "75d4f74444a2a4cbe475c052c3a2eb1268de8dd4ad2946eb2aa042198dc23855"
+    },
+    {
+      "label": "raw_KBS.BK_fundamentals",
+      "path": "data/raw/set100/KBS.BK/fundamentals.json",
+      "size_bytes": 6464,
+      "sha256": "e5415fcbce72a5bfef6b5e67a11533f1ffcbbbbe688c5521abed2b23ec98b255"
+    },
+    {
+      "label": "raw_KBS.BK_prices",
+      "path": "data/raw/set100/KBS.BK/prices.csv",
+      "size_bytes": 267292,
+      "sha256": "afd2a0c86bbabce0ab053f96a8dfd5bd474d4bda7fa15b530e8173d24c7ff268"
+    },
+    {
+      "label": "raw_KCE.BK_fundamentals",
+      "path": "data/raw/set100/KCE.BK/fundamentals.json",
+      "size_bytes": 6503,
+      "sha256": "d7bf2146e0873159ee9a69a4631249e4533a9512217d4c2dc650cde19cbea247"
+    },
+    {
+      "label": "raw_KCE.BK_prices",
+      "path": "data/raw/set100/KCE.BK/prices.csv",
+      "size_bytes": 192394,
+      "sha256": "beab1ae5e01674b48f7f7c082aa714f4a178552c3734e4deac1b596c73d123b4"
+    },
+    {
+      "label": "raw_KKP.BK_fundamentals",
+      "path": "data/raw/set100/KKP.BK/fundamentals.json",
+      "size_bytes": 6440,
+      "sha256": "32f9d63e0736bdd5c0485edf90f4aeda571e6fc5e3763423c456502248bc9061"
+    },
+    {
+      "label": "raw_KKP.BK_prices",
+      "path": "data/raw/set100/KKP.BK/prices.csv",
+      "size_bytes": 163247,
+      "sha256": "28b31ad2f10d35762b5900c2b93648cf52afa7883fd56fd9c5c920938da05741"
+    },
+    {
+      "label": "raw_KSL.BK_fundamentals",
+      "path": "data/raw/set100/KSL.BK/fundamentals.json",
+      "size_bytes": 6951,
+      "sha256": "82432a951d5f55c6f13fdba731b1ca34a2a3f17e66ce83d7bd71caa21fac0e59"
+    },
+    {
+      "label": "raw_KSL.BK_prices",
+      "path": "data/raw/set100/KSL.BK/prices.csv",
+      "size_bytes": 283932,
+      "sha256": "9818a4e48a1b795bc7df36659f994b0a25188827bc0d561afdcf279029c0b13a"
+    },
+    {
+      "label": "raw_KTB.BK_fundamentals",
+      "path": "data/raw/set100/KTB.BK/fundamentals.json",
+      "size_bytes": 6514,
+      "sha256": "bb3a883a6da39ea833516b4bf79d0aef39dd6b771fb644c8d2f2812fbfdaa653"
+    },
+    {
+      "label": "raw_KTB.BK_prices",
+      "path": "data/raw/set100/KTB.BK/prices.csv",
+      "size_bytes": 265090,
+      "sha256": "6e7f880a0c8c2ccbedb2183c8effb767f3205f3b13ad12aaa04a54896e413582"
+    },
+    {
+      "label": "raw_KTC.BK_fundamentals",
+      "path": "data/raw/set100/KTC.BK/fundamentals.json",
+      "size_bytes": 6435,
+      "sha256": "c7f3de59dc25a2b699bdbdfa9db1fa59b62bf9c5ead4858fa0d90844b5868e66"
+    },
+    {
+      "label": "raw_KTC.BK_prices",
+      "path": "data/raw/set100/KTC.BK/prices.csv",
+      "size_bytes": 189914,
+      "sha256": "9bad6ee6ecb32c90049f53cb6458ee04b9794168c12b6bab6d5350fc487ff093"
+    },
+    {
+      "label": "raw_LH.BK_fundamentals",
+      "path": "data/raw/set100/LH.BK/fundamentals.json",
+      "size_bytes": 6537,
+      "sha256": "c2f8cfd0e3bbb84baf24a7c6c660a99e5bb1f0c8d0f553a6d9c53cc8237d426c"
+    },
+    {
+      "label": "raw_LH.BK_prices",
+      "path": "data/raw/set100/LH.BK/prices.csv",
+      "size_bytes": 263758,
+      "sha256": "b0a618f472f7e7e75f854934d8cf3ba6fd412c0deee717f3fa0eaea055991aba"
+    },
+    {
+      "label": "raw_MEGA.BK_fundamentals",
+      "path": "data/raw/set100/MEGA.BK/fundamentals.json",
+      "size_bytes": 6535,
+      "sha256": "8d8404f9050c0eb8aec777d1b228d18a87679442a3fe24db35dadf0ef5641910"
+    },
+    {
+      "label": "raw_MEGA.BK_prices",
+      "path": "data/raw/set100/MEGA.BK/prices.csv",
+      "size_bytes": 174896,
+      "sha256": "c8bb9a4b06a229d1f3826c5ed36e848b13a8477f817317b7f4e9c680318b17af"
+    },
+    {
+      "label": "raw_MINT.BK_fundamentals",
+      "path": "data/raw/set100/MINT.BK/fundamentals.json",
+      "size_bytes": 6591,
+      "sha256": "35f05984118c91e41dd7c0a2442f173c91cf55a4ce32f86514ce6b3588f0baef"
+    },
+    {
+      "label": "raw_MINT.BK_prices",
+      "path": "data/raw/set100/MINT.BK/prices.csv",
+      "size_bytes": 235112,
+      "sha256": "b3a4dc3455906a3b990854ee0d9e9492e05f778fffc2c349794bea54e8653a3c"
+    },
+    {
+      "label": "raw_MTC.BK_fundamentals",
+      "path": "data/raw/set100/MTC.BK/fundamentals.json",
+      "size_bytes": 6463,
+      "sha256": "72579b72d9cb9700702e7d50e2a513d4a24712d9f28593ccd03bdc3ff9a02c11"
+    },
+    {
+      "label": "raw_MTC.BK_prices",
+      "path": "data/raw/set100/MTC.BK/prices.csv",
+      "size_bytes": 170197,
+      "sha256": "313efd0f9fb1fc989374cf7baf45d5e3d158e8c97e2d327679179259c1618d19"
+    },
+    {
+      "label": "raw_NCH.BK_fundamentals",
+      "path": "data/raw/set100/NCH.BK/fundamentals.json",
+      "size_bytes": 6503,
+      "sha256": "22d76dbe16fcefc9312b340f4a00d6e4bc6b3434de5b55da47a7e396262b51aa"
+    },
+    {
+      "label": "raw_NCH.BK_prices",
+      "path": "data/raw/set100/NCH.BK/prices.csv",
+      "size_bytes": 284655,
+      "sha256": "a91de49496cddf34d51bba8e143828771e27304943e83eeb0c63ecccd0b38200"
+    },
+    {
+      "label": "raw_NOBLE.BK_fundamentals",
+      "path": "data/raw/set100/NOBLE.BK/fundamentals.json",
+      "size_bytes": 6554,
+      "sha256": "96796db844eb46332653945c1fe8be307a9a8bb10c1e35c61ecb38a7ffab4f16"
+    },
+    {
+      "label": "raw_NOBLE.BK_prices",
+      "path": "data/raw/set100/NOBLE.BK/prices.csv",
+      "size_bytes": 281923,
+      "sha256": "2652663b7b323e00bd2dcc39b0003e8a2293af541baf34c3066ed4623cd00cfb"
+    },
+    {
+      "label": "raw_OR.BK_fundamentals",
+      "path": "data/raw/set100/OR.BK/fundamentals.json",
+      "size_bytes": 6596,
+      "sha256": "a1cade9895e913d63bfe221a8184fee5d518f26a11214ffd1c28bcc550f17e39"
+    },
+    {
+      "label": "raw_OR.BK_prices",
+      "path": "data/raw/set100/OR.BK/prices.csv",
+      "size_bytes": 122276,
+      "sha256": "7758bdd7e4630a16d1d2a2b2108a33edb0a55cc5ad54ffbad19324faa2c03209"
+    },
+    {
+      "label": "raw_OSP.BK_fundamentals",
+      "path": "data/raw/set100/OSP.BK/fundamentals.json",
+      "size_bytes": 6508,
+      "sha256": "176e05f4a2593d5dbff02fffbc3ff8d05477ba6677000aa11739ac110a18381c"
+    },
+    {
+      "label": "raw_OSP.BK_prices",
+      "path": "data/raw/set100/OSP.BK/prices.csv",
+      "size_bytes": 153295,
+      "sha256": "61a29ba8c0b5ca7fbe459d2ddd5a1f039f83ffcb961689934bd2b4284ff806e9"
+    },
+    {
+      "label": "raw_PF.BK_fundamentals",
+      "path": "data/raw/set100/PF.BK/fundamentals.json",
+      "size_bytes": 6511,
+      "sha256": "17cf8e7e95b76b23ae24083ca1138ad968ebb19e9f595ea89b806ea5eeda0acd"
+    },
+    {
+      "label": "raw_PF.BK_prices",
+      "path": "data/raw/set100/PF.BK/prices.csv",
+      "size_bytes": 300125,
+      "sha256": "cb48b26013f06708d18809277dfe4d31fbed976085dbab219c51a82907d57a99"
+    },
+    {
+      "label": "raw_PG.BK_fundamentals",
+      "path": "data/raw/set100/PG.BK/fundamentals.json",
+      "size_bytes": 6339,
+      "sha256": "f41ce55bb0ad601ce64442d535dcba63188cef0d9bb2c7c31e91a37b2d8451f6"
+    },
+    {
+      "label": "raw_PG.BK_prices",
+      "path": "data/raw/set100/PG.BK/prices.csv",
+      "size_bytes": 246066,
+      "sha256": "2851983a68ad6fce50713d8c154bc385eb68fe928f590b1f87fb7c18d0ae91f8"
+    },
+    {
+      "label": "raw_PRIN.BK_fundamentals",
+      "path": "data/raw/set100/PRIN.BK/fundamentals.json",
+      "size_bytes": 6496,
+      "sha256": "4da1cd67189e16f22e68896a9979ff6b53f989fc5e71f2b3f53f9ee7c59f8f46"
+    },
+    {
+      "label": "raw_PRIN.BK_prices",
+      "path": "data/raw/set100/PRIN.BK/prices.csv",
+      "size_bytes": 277522,
+      "sha256": "c625a02e63466335b6df5ce3f18ef4b07f22230aff747afa8c7affe119ec4038"
+    },
+    {
+      "label": "raw_PSL.BK_fundamentals",
+      "path": "data/raw/set100/PSL.BK/fundamentals.json",
+      "size_bytes": 6085,
+      "sha256": "383a7b2d012833de4b3da7d58a623753cf59a508b26541c1be937f2bcaaff51d"
+    },
+    {
+      "label": "raw_PSL.BK_prices",
+      "path": "data/raw/set100/PSL.BK/prices.csv",
+      "size_bytes": 264167,
+      "sha256": "4ce3c1f056dad45d1f40bd7b627c7801fb1c11a91f236191849c7a8753b09741"
+    },
+    {
+      "label": "raw_PTT.BK_fundamentals",
+      "path": "data/raw/set100/PTT.BK/fundamentals.json",
+      "size_bytes": 6646,
+      "sha256": "72f658a33095f6a90abe0943238019a6ad4442a5e169d4e242438d797919b17a"
+    },
+    {
+      "label": "raw_PTT.BK_prices",
+      "path": "data/raw/set100/PTT.BK/prices.csv",
+      "size_bytes": 187989,
+      "sha256": "29dda202be89c804ddfcc38c8534561808c521c2478147fa7bcbf23d29107b46"
+    },
+    {
+      "label": "raw_PTTEP.BK_fundamentals",
+      "path": "data/raw/set100/PTTEP.BK/fundamentals.json",
+      "size_bytes": 6212,
+      "sha256": "e9cc5d7190f6ad37b500be40d307b7bf534b754fc3ebb559df360d1f330f34bf"
+    },
+    {
+      "label": "raw_PTTEP.BK_prices",
+      "path": "data/raw/set100/PTTEP.BK/prices.csv",
+      "size_bytes": 174499,
+      "sha256": "0aa9be5b1e747f335c965e52e3c96abb94fec4b7d1dc5dadf7b22b294a55cd26"
+    },
+    {
+      "label": "raw_PTTGC.BK_fundamentals",
+      "path": "data/raw/set100/PTTGC.BK/fundamentals.json",
+      "size_bytes": 6617,
+      "sha256": "f63254794fe7bc5b13e56fe9b26f23dbd85e224e2625ad0709c13b07fee96e3f"
+    },
+    {
+      "label": "raw_PTTGC.BK_prices",
+      "path": "data/raw/set100/PTTGC.BK/prices.csv",
+      "size_bytes": 182440,
+      "sha256": "a05ed85696b4eba83965198c0e09c587c03eec6bcd558e20e70e67d5d6faa1e3"
+    },
+    {
+      "label": "raw_RATCH.BK_fundamentals",
+      "path": "data/raw/set100/RATCH.BK/fundamentals.json",
+      "size_bytes": 6585,
+      "sha256": "580c691fadcb20a4f609b5bc0abf7736c9e53cd42242d51c538d60d15a70a4c1"
+    },
+    {
+      "label": "raw_RATCH.BK_prices",
+      "path": "data/raw/set100/RATCH.BK/prices.csv",
+      "size_bytes": 246540,
+      "sha256": "a113e75fd3a5f0ff0db490c5e3d89b3b1a7acf1132a02ef565057c0ccc6ef9a8"
+    },
+    {
+      "label": "raw_RBF.BK_fundamentals",
+      "path": "data/raw/set100/RBF.BK/fundamentals.json",
+      "size_bytes": 6469,
+      "sha256": "6b9921b4d0644a61bb29bd2831c7223a894036a97d8af9dc6bf4a137eec231e3"
+    },
+    {
+      "label": "raw_RBF.BK_prices",
+      "path": "data/raw/set100/RBF.BK/prices.csv",
+      "size_bytes": 176073,
+      "sha256": "08a13fb8bc867ceb539c552b56453e97e98f32f86bbc7d0295265e83fa68375d"
+    },
+    {
+      "label": "raw_RCL.BK_fundamentals",
+      "path": "data/raw/set100/RCL.BK/fundamentals.json",
+      "size_bytes": 6535,
+      "sha256": "4b559f5fcb8b97d6a37e77c091cdddb05a2fe9815531d7d5f73ae453601224a8"
+    },
+    {
+      "label": "raw_RCL.BK_prices",
+      "path": "data/raw/set100/RCL.BK/prices.csv",
+      "size_bytes": 230075,
+      "sha256": "33cc98ac69fbf992a8155f4c02129bce214efc1c92c5f22eff7a6ce03e6e6b40"
+    },
+    {
+      "label": "raw_RML.BK_fundamentals",
+      "path": "data/raw/set100/RML.BK/fundamentals.json",
+      "size_bytes": 6453,
+      "sha256": "be541c29019cecfa87cd3ad025cadac981821b662cde9c60191d033b5c86ee99"
+    },
+    {
+      "label": "raw_RML.BK_prices",
+      "path": "data/raw/set100/RML.BK/prices.csv",
+      "size_bytes": 292257,
+      "sha256": "dad1e13695ff19eb45aebc3bd4000823a27799e5be3dae690024a7adcb6e55a8"
+    },
+    {
+      "label": "raw_RS.BK_fundamentals",
+      "path": "data/raw/set100/RS.BK/fundamentals.json",
+      "size_bytes": 6451,
+      "sha256": "dd2be1c8513999b0a7ebcbe69b88aafe1544b972e05e95ac4afbecad4f82a624"
+    },
+    {
+      "label": "raw_RS.BK_prices",
+      "path": "data/raw/set100/RS.BK/prices.csv",
+      "size_bytes": 271858,
+      "sha256": "b0ace29c4d9b6d6faca1f295b95d4e6125928a759d629ea5ba6bd3af0a9a996d"
+    },
+    {
+      "label": "raw_SAWAD.BK_fundamentals",
+      "path": "data/raw/set100/SAWAD.BK/fundamentals.json",
+      "size_bytes": 6490,
+      "sha256": "825e62c55515a9216272f355748066ee2af4ca67053269f2e2ff5bde32a8c2a6"
+    },
+    {
+      "label": "raw_SAWAD.BK_prices",
+      "path": "data/raw/set100/SAWAD.BK/prices.csv",
+      "size_bytes": 286288,
+      "sha256": "c6a1bc832ae963c0326f153ad51ced0447e4dd889b5d46cc2ce3e57851c18be7"
+    },
+    {
+      "label": "raw_SCB.BK_fundamentals",
+      "path": "data/raw/set100/SCB.BK/fundamentals.json",
+      "size_bytes": 4558,
+      "sha256": "e104e4bcf8720538efea2a52d4026406c0bfa178bc6fc714dfcc878429725fc5"
+    },
+    {
+      "label": "raw_SCB.BK_prices",
+      "path": "data/raw/set100/SCB.BK/prices.csv",
+      "size_bytes": 65583,
+      "sha256": "4554a5571c3e3895f3bdb8176ce425bfc37e774c8596c55648f626d7d926864c"
+    },
+    {
+      "label": "raw_SCC.BK_fundamentals",
+      "path": "data/raw/set100/SCC.BK/fundamentals.json",
+      "size_bytes": 6591,
+      "sha256": "a55fe5ccc270f9c4b3b4be21c687db213d58d208495930414b252cf283fadc31"
+    },
+    {
+      "label": "raw_SCC.BK_prices",
+      "path": "data/raw/set100/SCC.BK/prices.csv",
+      "size_bytes": 169887,
+      "sha256": "f3cd6b1a13161465a5d70d19b038ecd3ad0279093f0456f5037c1a8bf32a4c57"
+    },
+    {
+      "label": "raw_SCGP.BK_fundamentals",
+      "path": "data/raw/set100/SCGP.BK/fundamentals.json",
+      "size_bytes": 6139,
+      "sha256": "072f51d1a53f04bfa89afbef8b7bf471d78a4961138408bc37a8ee3634aaea2f"
+    },
+    {
+      "label": "raw_SCGP.BK_prices",
+      "path": "data/raw/set100/SCGP.BK/prices.csv",
+      "size_bytes": 107828,
+      "sha256": "80a475a76faceb8ff8f6c80251944be8033ecb504d985ee606de0e7969bb37cd"
+    },
+    {
+      "label": "raw_SITHAI.BK_fundamentals",
+      "path": "data/raw/set100/SITHAI.BK/fundamentals.json",
+      "size_bytes": 6528,
+      "sha256": "b244067f48aa97e9f7da37a142f532c3ef8a18668b7ccd9347c6945b22b09fb7"
+    },
+    {
+      "label": "raw_SITHAI.BK_prices",
+      "path": "data/raw/set100/SITHAI.BK/prices.csv",
+      "size_bytes": 297092,
+      "sha256": "95e1125d75e573128d9f3eefe885019dd7822be8b477dc36dc89f1862e38728d"
+    },
+    {
+      "label": "raw_SPALI.BK_fundamentals",
+      "path": "data/raw/set100/SPALI.BK/fundamentals.json",
+      "size_bytes": 6556,
+      "sha256": "07d4c723e254e136d705564873617c270ee343f9f46ae5baf4aa8f8e4fc8d92d"
+    },
+    {
+      "label": "raw_SPALI.BK_prices",
+      "path": "data/raw/set100/SPALI.BK/prices.csv",
+      "size_bytes": 269137,
+      "sha256": "2b316996c6be51198cc733b246a676c509189908d26d2382788c57477494b340"
+    },
+    {
+      "label": "raw_SPRC.BK_fundamentals",
+      "path": "data/raw/set100/SPRC.BK/fundamentals.json",
+      "size_bytes": 6545,
+      "sha256": "4517dd0c353cf0a6d89c8be17e1730dd725f8742fa35636d97a7e633522a6331"
+    },
+    {
+      "label": "raw_SPRC.BK_prices",
+      "path": "data/raw/set100/SPRC.BK/prices.csv",
+      "size_bytes": 270206,
+      "sha256": "8b2748fca68b8b6f2d9898c221c925ec5bcfce4211a94bd687cda8f820819097"
+    },
+    {
+      "label": "raw_STPI.BK_fundamentals",
+      "path": "data/raw/set100/STPI.BK/fundamentals.json",
+      "size_bytes": 6472,
+      "sha256": "a0a2dc598244a58a85332b48873207c803f0639848aff8838b5b24b17f216902"
+    },
+    {
+      "label": "raw_STPI.BK_prices",
+      "path": "data/raw/set100/STPI.BK/prices.csv",
+      "size_bytes": 275215,
+      "sha256": "7788afea0c66db93c729472405dc8cfb1dcb439a051caca1fdf8023d117f4d92"
+    },
+    {
+      "label": "raw_TCAP.BK_fundamentals",
+      "path": "data/raw/set100/TCAP.BK/fundamentals.json",
+      "size_bytes": 6452,
+      "sha256": "e0262e0eef12186119144b73b650e23203a9d308cbe217d7f12ad57253d28857"
+    },
+    {
+      "label": "raw_TCAP.BK_prices",
+      "path": "data/raw/set100/TCAP.BK/prices.csv",
+      "size_bytes": 166192,
+      "sha256": "a632258c15b694d98acb2e2723fecf8478015d234d443de0f9f9a6d792417876"
+    },
+    {
+      "label": "raw_THANI.BK_fundamentals",
+      "path": "data/raw/set100/THANI.BK/fundamentals.json",
+      "size_bytes": 6536,
+      "sha256": "d5c3d9d2d2220b5c515e2e6e3e75da7b16e95dfea90c30bd800eb45217ba580d"
+    },
+    {
+      "label": "raw_THANI.BK_prices",
+      "path": "data/raw/set100/THANI.BK/prices.csv",
+      "size_bytes": 296033,
+      "sha256": "516adb4cb007c7330ca2ff055b4c6809ed8f478b56a786d59eb5f5fe2a8d3c84"
+    },
+    {
+      "label": "raw_TIDLOR.BK_fundamentals",
+      "path": "data/raw/set100/TIDLOR.BK/fundamentals.json",
+      "size_bytes": 5117,
+      "sha256": "3ebe8c0a3314a1e76a9063210c46eab54ea701043a9c6b749bbfeddb06f2eae2"
+    },
+    {
+      "label": "raw_TIDLOR.BK_prices",
+      "path": "data/raw/set100/TIDLOR.BK/prices.csv",
+      "size_bytes": 24946,
+      "sha256": "d5db0731760305e83346ee81c4f6fcbae225d4dbb9aeb38fd1455b3f3b88c207"
+    },
+    {
+      "label": "raw_TISCO.BK_fundamentals",
+      "path": "data/raw/set100/TISCO.BK/fundamentals.json",
+      "size_bytes": 6460,
+      "sha256": "5c18205834d9064f672830b99315d349dfc4e9364b2e19d67fc1e55296cb7106"
+    },
+    {
+      "label": "raw_TISCO.BK_prices",
+      "path": "data/raw/set100/TISCO.BK/prices.csv",
+      "size_bytes": 168730,
+      "sha256": "c5744a55bb7a40035ef4eb194b4bcae7ea2ed8cc1f2624d1af601dec3fb21dc8"
+    },
+    {
+      "label": "raw_TLI.BK_fundamentals",
+      "path": "data/raw/set100/TLI.BK/fundamentals.json",
+      "size_bytes": 6357,
+      "sha256": "2081aa7359a0cc1e6a25777b2d094fe98003c038fed1390327420045220b3a0a"
+    },
+    {
+      "label": "raw_TLI.BK_prices",
+      "path": "data/raw/set100/TLI.BK/prices.csv",
+      "size_bytes": 98573,
+      "sha256": "da04b45152ed5506d332fd8649dd350486c5645234fde0b1b351ace38fae1caf"
+    },
+    {
+      "label": "raw_TOP.BK_fundamentals",
+      "path": "data/raw/set100/TOP.BK/fundamentals.json",
+      "size_bytes": 6597,
+      "sha256": "1f1b59be22963789535046aae08f06e4823157219fbc820de8a585b81f96b9a9"
+    },
+    {
+      "label": "raw_TOP.BK_prices",
+      "path": "data/raw/set100/TOP.BK/prices.csv",
+      "size_bytes": 244415,
+      "sha256": "f5d1be7e7d2edc0ba00646018bd4d0ce0806cfa9673148ece3e1e81c6b0aa720"
+    },
+    {
+      "label": "raw_TR.BK_fundamentals",
+      "path": "data/raw/set100/TR.BK/fundamentals.json",
+      "size_bytes": 6050,
+      "sha256": "244d2491d7bb07a5c0abd3c65598d0234f90d85b557542a27156257b1f4d59d9"
+    },
+    {
+      "label": "raw_TR.BK_prices",
+      "path": "data/raw/set100/TR.BK/prices.csv",
+      "size_bytes": 157433,
+      "sha256": "a02492421ca930448f87c90c7da3a37bd5950691a7941f5925ce5aeed0f68bbf"
+    },
+    {
+      "label": "raw_TRUE.BK_fundamentals",
+      "path": "data/raw/set100/TRUE.BK/fundamentals.json",
+      "size_bytes": 6194,
+      "sha256": "a22c2d38808feb6546941c29561859368a79664cab38c4d6c93067ecb33c7dbf"
+    },
+    {
+      "label": "raw_TRUE.BK_prices",
+      "path": "data/raw/set100/TRUE.BK/prices.csv",
+      "size_bytes": 274595,
+      "sha256": "3c09bd618a81af7f82c8106147774270a59256365ba21788eabe9ab44d45bc38"
+    },
+    {
+      "label": "raw_TTB.BK_fundamentals",
+      "path": "data/raw/set100/TTB.BK/fundamentals.json",
+      "size_bytes": 6504,
+      "sha256": "03ea1dfc48591f59250297199be492bfd2068678de766885fde31ddf17db8933"
+    },
+    {
+      "label": "raw_TTB.BK_prices",
+      "path": "data/raw/set100/TTB.BK/prices.csv",
+      "size_bytes": 296195,
+      "sha256": "61d3692a4062bc1c422a1bf4f2ae0d85501ee40adaf6a15ab7f56088a1a797f3"
+    },
+    {
+      "label": "raw_TU.BK_fundamentals",
+      "path": "data/raw/set100/TU.BK/fundamentals.json",
+      "size_bytes": 6134,
+      "sha256": "565c201eb0356d7fb874b119304750e48ee0b4c306617b454884529b0802a4d5"
+    },
+    {
+      "label": "raw_TU.BK_prices",
+      "path": "data/raw/set100/TU.BK/prices.csv",
+      "size_bytes": 268801,
+      "sha256": "e9fb9dc4452783dd1b845737e0be29bb51ec7f7bfda1f2a7ce14160453162961"
+    },
+    {
+      "label": "raw_TVO.BK_fundamentals",
+      "path": "data/raw/set100/TVO.BK/fundamentals.json",
+      "size_bytes": 6466,
+      "sha256": "fced272d53e74c5c01d21d853d7484f0c487c2ab19df26f63a542f22df953fd3"
+    },
+    {
+      "label": "raw_TVO.BK_prices",
+      "path": "data/raw/set100/TVO.BK/prices.csv",
+      "size_bytes": 264813,
+      "sha256": "fde19e936573dfb8d9fd1d0c0b08013a9467430d476983ff8685ea92df293709"
+    },
+    {
+      "label": "raw_VGI.BK_fundamentals",
+      "path": "data/raw/set100/VGI.BK/fundamentals.json",
+      "size_bytes": 6101,
+      "sha256": "2a35b44af50670af5feeccb67552b6f137de11d8f2fb050ceaf83a26e7b39fff"
+    },
+    {
+      "label": "raw_VGI.BK_prices",
+      "path": "data/raw/set100/VGI.BK/prices.csv",
+      "size_bytes": 287799,
+      "sha256": "ba8a364335fcc3acc712dea2957ebe9008fa7b89c9f0aa841dc6c9590b14113e"
+    },
+    {
+      "label": "raw_WHA.BK_fundamentals",
+      "path": "data/raw/set100/WHA.BK/fundamentals.json",
+      "size_bytes": 6568,
+      "sha256": "4b281bf61fc52f7f76ee111185bd8acf64d61d4807d30f8dd939a0d7d3ee5ba4"
+    },
+    {
+      "label": "raw_WHA.BK_prices",
+      "path": "data/raw/set100/WHA.BK/prices.csv",
+      "size_bytes": 285337,
+      "sha256": "64c696192578e0858d85cacac9158f33dfd1b67d920a842b5990aa391d8ea27d"
+    },
+    {
+      "label": "raw_WPH.BK_fundamentals",
+      "path": "data/raw/set100/WPH.BK/fundamentals.json",
+      "size_bytes": 6461,
+      "sha256": "f86689c42dd03a2ba76f869fc48280a4270ceaee3ca0e155e33473f50c07eb3f"
+    },
+    {
+      "label": "raw_WPH.BK_prices",
+      "path": "data/raw/set100/WPH.BK/prices.csv",
+      "size_bytes": 246597,
+      "sha256": "76480f43b47fa72ad18fe7718957c123b58bf22670e9b34dcc3bc0d99580e81d"
+    },
+    {
+      "label": "raw_XPG.BK_fundamentals",
+      "path": "data/raw/set100/XPG.BK/fundamentals.json",
+      "size_bytes": 6465,
+      "sha256": "a409d1faf5223eb2c5dd9f03c3adde904b26d3c9d3f1b63d804591da43f62151"
+    },
+    {
+      "label": "raw_XPG.BK_prices",
+      "path": "data/raw/set100/XPG.BK/prices.csv",
+      "size_bytes": 296356,
+      "sha256": "0310a3a5eafbefcd9b32406ed5ed56b84940c31bbbd7b7a591871729cf80d948"
+    },
+    {
+      "label": "raw_benchmark_prices",
+      "path": "data/raw/benchmarks/SET.BK.csv",
+      "size_bytes": 281095,
+      "sha256": "ed06e0a999433cd7b06634c324c181448547ee3dbeb377c02e6d2b78143243a2"
+    }
+  ]
+}

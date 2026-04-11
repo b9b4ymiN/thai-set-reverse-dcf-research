@@ -1,0 +1,4 @@
+﻿Ticker,SET_Symbol,SET_Price_URL,SET_Factsheet_URL
+CPALL.BK,CPALL,https://www.set.or.th/en/market/product/stock/quote/CPALL/price,https://www.set.or.th/en/market/product/stock/quote/CPALL/factsheet
+DELTA.BK,DELTA,https://www.set.or.th/en/market/product/stock/quote/DELTA/price,https://www.set.or.th/en/market/product/stock/quote/DELTA/factsheet
+SCC.BK,SCC,https://www.set.or.th/en/market/product/stock/quote/SCC/price,https://www.set.or.th/en/market/product/stock/quote/SCC/factsheet

@@ -1,0 +1,166 @@
+{
+  "batch_id": 3,
+  "started_at": "2026-04-11T10:51:48.877899",
+  "stocks_tested": [
+    {
+      "ticker": "OR.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 120,
+      "time_seconds": 5.754337310791016
+    },
+    {
+      "ticker": "OSP.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 140,
+      "time_seconds": 5.180248975753784
+    },
+    {
+      "ticker": "RATCH.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 120,
+      "time_seconds": 1.6887245178222656
+    },
+    {
+      "ticker": "SAWAD.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 100,
+      "time_seconds": 10.440248489379883
+    },
+    {
+      "ticker": "SCB.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 20,
+      "time_seconds": 6.143425941467285
+    },
+    {
+      "ticker": "SCC.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 120,
+      "time_seconds": 3.0761666297912598
+    },
+    {
+      "ticker": "SCGP.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 120,
+      "time_seconds": 7.922548770904541
+    },
+    {
+      "ticker": "TCAP.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 20,
+      "time_seconds": 4.847326040267944
+    },
+    {
+      "ticker": "TIDLOR.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 100,
+      "time_seconds": 1.131901502609253
+    },
+    {
+      "ticker": "TISCO.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 20,
+      "time_seconds": 4.286526679992676
+    },
+    {
+      "ticker": "TLI.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 100,
+      "time_seconds": 4.03671669960022
+    },
+    {
+      "ticker": "TOP.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 140,
+      "time_seconds": 6.433769702911377
+    },
+    {
+      "ticker": "TU.BK",
+      "status": "success",
+      "quarters": 19,
+      "data_points": 114,
+      "time_seconds": 9.863377571105957
+    },
+    {
+      "ticker": "VGI.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 140,
+      "time_seconds": 9.166698455810547
+    },
+    {
+      "ticker": "BAY.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 20,
+      "time_seconds": 7.410546779632568
+    },
+    {
+      "ticker": "CIMBT.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 20,
+      "time_seconds": 6.5637218952178955
+    },
+    {
+      "ticker": "CRC.BK",
+      "status": "success",
+      "quarters": 18,
+      "data_points": 126,
+      "time_seconds": 9.487602472305298
+    },
+    {
+      "ticker": "DRT.BK",
+      "status": "success",
+      "quarters": 20,
+      "data_points": 140,
+      "time_seconds": 9.663435220718384
+    }
+  ],
+  "successful": [
+    "OR.BK",
+    "OSP.BK",
+    "RATCH.BK",
+    "SAWAD.BK",
+    "SCB.BK",
+    "SCC.BK",
+    "SCGP.BK",
+    "TCAP.BK",
+    "TIDLOR.BK",
+    "TISCO.BK",
+    "TLI.BK",
+    "TOP.BK",
+    "TU.BK",
+    "VGI.BK",
+    "BAY.BK",
+    "CIMBT.BK",
+    "CRC.BK",
+    "DRT.BK"
+  ],
+  "failed": [
+    "BANK.BK",
+    "CIP.BK"
+  ],
+  "rate_limited": false,
+  "total_data_points": 1680,
+  "errors": [
+    "BANK.BK: Request failed",
+    "CIP.BK: Request failed"
+  ],
+  "aborted": false,
+  "abort_reason": null,
+  "completed_at": "2026-04-11T11:07:56.784971",
+  "total_time_seconds": 967.907060623169
+}
