@@ -2459,8 +2459,8 @@ def render_about_page(site_url: str) -> str:
         <ul class="list-clean">
           <li><code>docs/thesis_reverse_dcf_thai_set.md</code> → หน้า thesis</li>
           <li><code>docs/thesis-methodology.md</code> + <code>docs/datasource-decision.md</code> → หน้าวิจัย</li>
-          <li><code>research_data/latest/backtest/</code> → หน้า backtest และ downloads</li>
-          <li><code>research_data/latest/thesis_bundle/</code> → bundle references</li>
+          <li><code>research_data/source_of_truth_100/backtest/</code> → หน้า backtest และ downloads</li>
+          <li><code>research_data/source_of_truth_100/thesis_bundle/</code> → bundle references</li>
         </ul>
       </article>
     </section>
@@ -2623,26 +2623,26 @@ python scripts/build_netlify_site.py --site-url "$URL"
 
 def build_asset_sources() -> dict[Path, Path]:
     return {
-        ROOT / "research_data/latest/backtest/figures/active_return_by_horizon.png": NETLIFY / "assets/figures/active_return_by_horizon.png",
-        ROOT / "research_data/latest/backtest/figures/hit_rate_by_horizon.png": NETLIFY / "assets/figures/hit_rate_by_horizon.png",
-        ROOT / "research_data/latest/backtest/figures/sector_active_return_heatmap.png": NETLIFY / "assets/figures/sector_active_return_heatmap.png",
-        ROOT / "research_data/latest/backtest/figures/wacc_sensitivity.png": NETLIFY / "assets/figures/wacc_sensitivity.png",
+        ROOT / "research_data/source_of_truth_100/backtest/figures/active_return_by_horizon.png": NETLIFY / "assets/figures/active_return_by_horizon.png",
+        ROOT / "research_data/source_of_truth_100/backtest/figures/hit_rate_by_horizon.png": NETLIFY / "assets/figures/hit_rate_by_horizon.png",
+        ROOT / "research_data/source_of_truth_100/backtest/figures/sector_active_return_heatmap.png": NETLIFY / "assets/figures/sector_active_return_heatmap.png",
+        ROOT / "research_data/source_of_truth_100/backtest/figures/wacc_sensitivity.png": NETLIFY / "assets/figures/wacc_sensitivity.png",
         ROOT / "docs/reader-first-thai.md": NETLIFY / "assets/docs/reader-first-thai.md",
         ROOT / "docs/thesis_reverse_dcf_thai_set.md": NETLIFY / "assets/docs/thesis_reverse_dcf_thai_set.md",
         ROOT / "docs/executive-summary.md": NETLIFY / "assets/docs/executive-summary.md",
         ROOT / "docs/thesis-methodology.md": NETLIFY / "assets/docs/thesis-methodology.md",
         ROOT / "docs/thesis-results.md": NETLIFY / "assets/docs/thesis-results.md",
         ROOT / "docs/damodaran-stern-datasets-thai-set.md": NETLIFY / "assets/docs/damodaran-stern-datasets-thai-set.md",
-        ROOT / "research_data/latest/backtest/report.md": NETLIFY / "assets/docs/report.md",
-        ROOT / "research_data/latest/backtest/appendix.md": NETLIFY / "assets/docs/appendix.md",
-        ROOT / "research_data/latest/backtest/no_lookahead_audit.md": NETLIFY / "assets/docs/no_lookahead_audit.md",
-        ROOT / "research_data/latest/backtest/summary.csv": NETLIFY / "assets/data/summary.csv",
-        ROOT / "research_data/latest/backtest/sector_summary.csv": NETLIFY / "assets/data/sector_summary.csv",
-        ROOT / "research_data/latest/backtest/wacc_sensitivity.csv": NETLIFY / "assets/data/wacc_sensitivity.csv",
-        ROOT / "research_data/latest/backtest/exclusions.csv": NETLIFY / "assets/data/exclusions.csv",
-        ROOT / "research_data/latest/backtest/portfolio_returns.csv": NETLIFY / "assets/data/portfolio_returns.csv",
-        ROOT / "research_data/latest/backtest/manifest.json": NETLIFY / "assets/data/backtest_manifest.json",
-        ROOT / "research_data/latest/manifest.json": NETLIFY / "assets/data/research_manifest.json",
+        ROOT / "research_data/source_of_truth_100/backtest/report.md": NETLIFY / "assets/docs/report.md",
+        ROOT / "research_data/source_of_truth_100/backtest/appendix.md": NETLIFY / "assets/docs/appendix.md",
+        ROOT / "research_data/source_of_truth_100/backtest/no_lookahead_audit.md": NETLIFY / "assets/docs/no_lookahead_audit.md",
+        ROOT / "research_data/source_of_truth_100/backtest/summary.csv": NETLIFY / "assets/data/summary.csv",
+        ROOT / "research_data/source_of_truth_100/backtest/sector_summary.csv": NETLIFY / "assets/data/sector_summary.csv",
+        ROOT / "research_data/source_of_truth_100/backtest/wacc_sensitivity.csv": NETLIFY / "assets/data/wacc_sensitivity.csv",
+        ROOT / "research_data/source_of_truth_100/backtest/exclusions.csv": NETLIFY / "assets/data/exclusions.csv",
+        ROOT / "research_data/source_of_truth_100/backtest/portfolio_returns.csv": NETLIFY / "assets/data/portfolio_returns.csv",
+        ROOT / "research_data/source_of_truth_100/backtest/manifest.json": NETLIFY / "assets/data/backtest_manifest.json",
+        ROOT / "research_data/source_of_truth_100/manifest.json": NETLIFY / "assets/data/research_manifest.json",
         ROOT / "backtest_results/metrics_20260411_133531.txt": NETLIFY / "assets/data/metrics_20260411_133531.txt",
         ROOT / "backtest_results/portfolio_20260411_133531.csv": NETLIFY / "assets/data/portfolio_20260411_133531.csv",
         ROOT / "run_full_backtest.py": NETLIFY / "assets/code/run_full_backtest.py",
@@ -2674,9 +2674,9 @@ def main() -> None:
     thesis_md = read_text(ROOT / "docs/thesis_reverse_dcf_thai_set.md")
     methodology_md = read_text(ROOT / "docs/thesis-methodology.md")
     datasource_md = read_text(ROOT / "docs/datasource-decision.md")
-    audit_md = read_text(ROOT / "research_data/latest/backtest/no_lookahead_audit.md")
-    report_md = read_text(ROOT / "research_data/latest/backtest/report.md")
-    appendix_md = read_text(ROOT / "research_data/latest/backtest/appendix.md")
+    audit_md = read_text(ROOT / "research_data/source_of_truth_100/backtest/no_lookahead_audit.md")
+    report_md = read_text(ROOT / "research_data/source_of_truth_100/backtest/report.md")
+    appendix_md = read_text(ROOT / "research_data/source_of_truth_100/backtest/appendix.md")
 
     root_link_map = build_link_map("")
     nested_link_map = build_link_map("../")
@@ -2692,12 +2692,12 @@ def main() -> None:
     thesis_excerpt = "\n".join(thesis_md.splitlines()[:32])
     thesis_excerpt_html, _ = markdown_to_html(thesis_excerpt, toc_levels=(2,), link_map=root_link_map)
 
-    summary_rows = read_csv(ROOT / "research_data/latest/backtest/summary.csv")
-    sector_rows = read_csv(ROOT / "research_data/latest/backtest/sector_summary.csv")
-    wacc_rows = read_csv(ROOT / "research_data/latest/backtest/wacc_sensitivity.csv")
-    manifest = read_json(ROOT / "research_data/latest/backtest/manifest.json")
-    research_manifest = read_json(ROOT / "research_data/latest/manifest.json")
-    quarterly_story = build_quarterly_story(ROOT / "research_data/latest/backtest")
+    summary_rows = read_csv(ROOT / "research_data/source_of_truth_100/backtest/summary.csv")
+    sector_rows = read_csv(ROOT / "research_data/source_of_truth_100/backtest/sector_summary.csv")
+    wacc_rows = read_csv(ROOT / "research_data/source_of_truth_100/backtest/wacc_sensitivity.csv")
+    manifest = read_json(ROOT / "research_data/source_of_truth_100/backtest/manifest.json")
+    research_manifest = read_json(ROOT / "research_data/source_of_truth_100/manifest.json")
+    quarterly_story = build_quarterly_story(ROOT / "research_data/source_of_truth_100/backtest")
 
     if NETLIFY.exists():
         shutil.rmtree(NETLIFY)
