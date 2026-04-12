@@ -57,6 +57,31 @@ class ReverseDCFBacktester:
         self.max_price_date = pd.Timestamp(self.prices['Date'].max()) if not self.prices.empty else None
         self.max_benchmark_date = pd.Timestamp(self.benchmark['Date'].max()) if not self.benchmark.empty else None
 
+        # Fallback mappings for missing historical metadata (shares, net debt)
+        self.earliest_shares: Dict[str, float] = {}
+        self.earliest_net_debt: Dict[str, float] = {}
+        for ticker, frame in self.observation_lookup.items():
+            # Earliest non-zero shares from observations
+            valid_shares = frame.loc[frame['Shares_Issued'] > 0, 'Shares_Issued']
+            if not valid_shares.empty:
+                self.earliest_shares[ticker] = float(valid_shares.iloc[0])
+            else:
+                # Last resort: snapshot data
+                snap = self.snapshot_lookup.get(ticker, {})
+                s = snap.get('Shares_Issued') or snap.get('Diluted_Average_Shares')
+                if s and s > 0:
+                    self.earliest_shares[ticker] = float(s)
+
+            # Earliest non-zero net debt from observations
+            valid_debt = frame.loc[frame['Net_Debt'] != 0, 'Net_Debt']
+            if not valid_debt.empty:
+                self.earliest_net_debt[ticker] = float(valid_debt.iloc[0])
+            else:
+                # Last resort: snapshot data
+                snap = self.snapshot_lookup.get(ticker, {})
+                d = snap.get('Net_Debt') or 0
+                self.earliest_net_debt[ticker] = float(d)
+
     def run(
         self,
         output_dir: str = 'research_data/source_of_truth_100/backtest',
@@ -489,12 +514,30 @@ class ReverseDCFBacktester:
     ) -> Tuple[Optional[Dict[str, object]], Optional[str]]:
         shares = observation.get('Diluted_Average_Shares') or observation.get('Shares_Issued')
         if pd.isna(shares) or shares is None or shares <= 0:
-            return None, 'invalid_shares'
+            # Fallback to earliest known valid shares if observation is missing it
+            shares = self.earliest_shares.get(ticker)
+            if not shares:
+                return None, 'invalid_shares'
+
         fcf = observation.get('FCF', 0)
         if pd.isna(fcf) or fcf <= 0:
             return None, 'invalid_fcf'
+
+        # Unit normalization: StockAnalysis scraping uses millions, whereas yfinance uses units.
+        # Heuristic: If FCF is < 1M for a SET100 stock (which always has > 1M shares), it is likely in millions.
+        if fcf < 1000000 and shares > 1000000:
+            fcf *= 1000000
+
         wacc = self._resolve_wacc(ticker)
-        net_debt = observation.get('Net_Debt', 0) or 0
+        net_debt = observation.get('Net_Debt', 0)
+        if pd.isna(net_debt) or net_debt == 0:
+            # Fallback to earliest known valid net debt if observation is missing it
+            net_debt = self.earliest_net_debt.get(ticker, 0)
+
+        # Ensure net_debt is also scaled if it appears to be in millions
+        if 0 < abs(net_debt) < 1000000 and shares > 1000000:
+            net_debt *= 1000000
+
         implied_growth, details = self.signal_solver(
             base_fcf=float(fcf),
             wacc=float(wacc),
@@ -865,11 +908,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument('--start-date', default=None, help='Backtest start date (YYYY-MM-DD)')
     parser.add_argument('--end-date', default=None, help='Backtest end date (YYYY-MM-DD)')
     parser.add_argument('--wacc-mode', default='fixed', choices=['fixed', 'snapshot'], help='WACC calculation mode (fixed 8 percent per Damodaran Thai equity risk premium norms or snapshot-based)')
-    parser.add_argument('--case-name', default=DEFAULT_CASE_NAME, choices=[BASELINE_CASE_NAME, RISK_CONTROL_CASE_NAME], help='Case name for single run')
-    parser.add_argument('--stop-loss-pct', type=float, default=None, help='Stop loss percentage (e.g., 0.1 for 10 percent)')
-    parser.add_argument('--stop-loss-values', nargs='*', type=float, default=list(DEFAULT_STOP_LOSS_VALUES), help='Stop loss values for matrix run')
-    parser.add_argument('--max-losing-buy-rounds', type=int, default=2, help='Maximum number of losing buy rounds before permanent ban')
-    parser.add_argument('--matrix', action='store_true', help='Run a matrix of backtest cases based on the Damodaran quarterly rebalance plan')
+    parser.add_argument('--case-name', default=DEFAULT_CASE_NAME, choices=[BASELINE_CASE_NAME, RISK_CONTROL_CASE_NAME], help='Case name for single run (baseline: Damodaran-style portfolio; risk_control: includes daily stop-loss)')
+    parser.add_argument('--stop-loss-pct', type=float, default=None, help='Stop loss percentage for risk_control case (e.g., 0.1 for 10 percent)')
+    parser.add_argument('--stop-loss-values', nargs='*', type=float, default=list(DEFAULT_STOP_LOSS_VALUES), help='Stop loss values for matrix run (risk_control cases)')
+    parser.add_argument('--max-losing-buy-rounds', type=int, default=2, help='Maximum number of losing buy rounds before permanent ban (Damodaran-style persistence check)')
+    parser.add_argument('--matrix', action='store_true', help='Run a matrix of backtest cases based on the Damodaran quarterly rebalance plan (baseline + risk_control)')
     return parser.parse_args()
 
 
