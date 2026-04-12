@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://rdcf.netlify.app/sitemap.xml
+Sitemap: https://b9b4ymin.github.io/thai-set-reverse-dcf-research/sitemap.xml
