@@ -15,17 +15,17 @@ DEFAULT_FILES = [
     'docs/presentation-script.md',
     'docs/defense-outline.md',
     'docs/q-and-a-sheet.md',
-    'research_data/latest/backtest/report.md',
-    'research_data/latest/backtest/appendix.md',
-    'research_data/latest/backtest/summary.csv',
-    'research_data/latest/backtest/exclusions.csv',
-    'research_data/latest/backtest/no_lookahead_audit.md',
-    'research_data/latest/backtest/sector_summary.csv',
-    'research_data/latest/backtest/wacc_sensitivity.csv',
-    'research_data/latest/backtest/figures/active_return_by_horizon.png',
-    'research_data/latest/backtest/figures/hit_rate_by_horizon.png',
-    'research_data/latest/backtest/figures/sector_active_return_heatmap.png',
-    'research_data/latest/backtest/figures/wacc_sensitivity.png',
+    'research_data/source_of_truth_100/backtest/report.md',
+    'research_data/source_of_truth_100/backtest/appendix.md',
+    'research_data/source_of_truth_100/backtest/summary.csv',
+    'research_data/source_of_truth_100/backtest/exclusions.csv',
+    'research_data/source_of_truth_100/backtest/no_lookahead_audit.md',
+    'research_data/source_of_truth_100/backtest/sector_summary.csv',
+    'research_data/source_of_truth_100/backtest/wacc_sensitivity.csv',
+    'research_data/source_of_truth_100/backtest/figures/active_return_by_horizon.png',
+    'research_data/source_of_truth_100/backtest/figures/hit_rate_by_horizon.png',
+    'research_data/source_of_truth_100/backtest/figures/sector_active_return_heatmap.png',
+    'research_data/source_of_truth_100/backtest/figures/wacc_sensitivity.png',
 ]
 
 
@@ -36,7 +36,7 @@ class ThesisBundleBuilder:
     def __post_init__(self) -> None:
         self.files = list(DEFAULT_FILES if self.files is None else self.files)
 
-    def build(self, output_dir: str = 'research_data/latest/thesis_bundle') -> Dict[str, object]:
+    def build(self, output_dir: str = 'research_data/source_of_truth_100/thesis_bundle') -> Dict[str, object]:
         output = Path(output_dir)
         output.mkdir(parents=True, exist_ok=True)
 
@@ -85,7 +85,7 @@ class ThesisBundleBuilder:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description='Package thesis-ready artifacts into one bundle directory.')
-    parser.add_argument('--output-dir', default='research_data/latest/thesis_bundle')
+    parser.add_argument('--output-dir', default='research_data/source_of_truth_100/thesis_bundle')
     return parser.parse_args()
 
 

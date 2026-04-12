@@ -1,16 +1,23 @@
 {
   "output_dir": "research_data/latest/backtest",
+  "case_name": "baseline",
+  "daily_stop_loss_enabled": false,
+  "stop_loss_pct": 0.0,
+  "max_losing_buy_rounds": 2,
   "horizons_months": [
-    3,
-    6,
-    12
+    3
   ],
-  "top_n": 10,
+  "top_n": 5,
   "rebalance_frequency": "Q",
-  "signals": 408,
-  "portfolio_rows": 39,
-  "exclusion_rows": 242,
-  "summary_rows": 3,
+  "signals": 397,
+  "portfolio_rows": 13,
+  "trade_rows": 65,
+  "buy_ban_rows": 2,
+  "exclusion_rows": 1603,
+  "summary_rows": 1,
   "no_lookahead_failures": 0,
-  "wacc_mode": "fixed"
+  "wacc_mode": "fixed",
+  "input_bundle_dir": "research_data/latest",
+  "input_bundle_source": "scraping_first_hybrid",
+  "universe_size": 50
 }

@@ -8,11 +8,17 @@ from .yahoo_source import (
     build_datasource_quality_report,
     build_reverse_dcf_exclusion_report,
 )
+from .stockanalysis_source import (
+    CachedYahooBundleSource,
+    StockAnalysisHybridSource,
+)
 
 __all__ = [
     "DEFAULT_REQUIRED_FIELDS",
     "DEFAULT_SNAPSHOT_FIELDS",
     "YahooFinanceSource",
+    "CachedYahooBundleSource",
+    "StockAnalysisHybridSource",
     "build_datasource_quality_report",
     "build_reverse_dcf_exclusion_report",
     "build_validation_reference",

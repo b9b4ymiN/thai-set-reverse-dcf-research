@@ -25,19 +25,19 @@ python3 set_stock_fetcher.py
 python3 -m src.pipeline.demo --output-dir research_data/demo
 
 # สร้าง research bundle สำหรับ backtest
-python3 -m rdcf.data_pipeline --output-dir research_data/latest --period 10y --sync-root-snapshot
+python3 -m rdcf.data_pipeline --output-dir research_data/source_of_truth_100 --period 10y --sync-root-snapshot
 
 # รัน backtest
-python3 -m src.pipeline.backtest --output-dir research_data/latest/backtest --top-n 10 --horizons 3 6 12 --rebalance-frequency Q --start-date 2020-01-01 --wacc-mode fixed
+python3 -m src.pipeline.backtest --output-dir research_data/source_of_truth_100/backtest --top-n 10 --horizons 3 6 12 --rebalance-frequency Q --start-date 2020-01-01 --wacc-mode fixed
 
 # สร้าง sector + sensitivity appendix
-python3 -m src.pipeline.backtest_analysis --output-dir research_data/latest/backtest --wacc-values 0.06 0.08 0.10 --top-n 10 --horizons 3 6 12 --rebalance-frequency Q --start-date 2020-01-01
+python3 -m src.pipeline.backtest_analysis --output-dir research_data/source_of_truth_100/backtest --wacc-values 0.06 0.08 0.10 --top-n 10 --horizons 3 6 12 --rebalance-frequency Q --start-date 2020-01-01
 
 # สร้าง figure สำหรับ thesis
-python3 -m src.pipeline.backtest_visuals --output-dir research_data/latest/backtest/figures
+python3 -m src.pipeline.backtest_visuals --output-dir research_data/source_of_truth_100/backtest/figures
 
 # รวม thesis bundle
-python3 -m src.pipeline.thesis_bundle --output-dir research_data/latest/thesis_bundle
+python3 -m src.pipeline.thesis_bundle --output-dir research_data/source_of_truth_100/thesis_bundle
 
 # วิเคราะห์ DCF
 python3 reverse_dcf_model.py
@@ -53,22 +53,22 @@ python3 visualize_results.py
 - `set_stock_data_quality.csv` - คุณภาพข้อมูล/coverage ของ datasource
 - `reverse_dcf_input_exclusions.csv` - หุ้นที่ไม่ผ่าน input filter ของ Reverse DCF
 - `set_validation_references.csv` - ลิงก์ SET สำหรับตรวจสอบแบบ manual
-- `research_data/latest/manifest.json` - สรุป research bundle สำหรับ backtest
-- `research_data/latest/fundamental_observations.csv` - historical statement observations + availability dates
-- `research_data/latest/fundamental_coverage.csv` - coverage ของข้อมูล fundamentals แต่ละ ticker
-- `research_data/latest/price_history.csv` - ประวัติราคา
-- `research_data/latest/price_coverage.csv` - coverage ของประวัติราคาแต่ละ ticker
-- `research_data/latest/benchmark_history.csv` - ประวัติ benchmark
-- `research_data/latest/backtest/summary.csv` - summary ผลตอบแทนเทียบ benchmark
-- `research_data/latest/backtest/exclusions.csv` - หุ้นที่ถูกตัดออกในแต่ละ rebalance พร้อมเหตุผล
-- `research_data/latest/backtest/audit_sample.csv` - sample audit สำหรับ no-look-ahead check
-- `research_data/latest/backtest/no_lookahead_audit.md` - สรุป no-look-ahead audit แบบ markdown
-- `research_data/latest/backtest/report.md` - รายงาน markdown สำหรับ thesis/review
-- `research_data/latest/backtest/sector_summary.csv` - สรุปผลตาม sector
-- `research_data/latest/backtest/wacc_sensitivity.csv` - sensitivity ต่อสมมติฐาน WACC
-- `research_data/latest/backtest/appendix.md` - appendix สำหรับ thesis
-- `research_data/latest/backtest/figures/*.png` - figure สำหรับ thesis/presentation
-- `research_data/latest/thesis_bundle/` - ชุดไฟล์พร้อมส่งต่อ/แนบ thesis
+- `research_data/source_of_truth_100/manifest.json` - สรุป research bundle สำหรับ backtest
+- `research_data/source_of_truth_100/fundamental_observations.csv` - historical statement observations + availability dates
+- `research_data/source_of_truth_100/fundamental_coverage.csv` - coverage ของข้อมูล fundamentals แต่ละ ticker
+- `research_data/source_of_truth_100/price_history.csv` - ประวัติราคา
+- `research_data/source_of_truth_100/price_coverage.csv` - coverage ของประวัติราคาแต่ละ ticker
+- `research_data/source_of_truth_100/benchmark_history.csv` - ประวัติ benchmark
+- `research_data/source_of_truth_100/backtest/summary.csv` - summary ผลตอบแทนเทียบ benchmark
+- `research_data/source_of_truth_100/backtest/exclusions.csv` - หุ้นที่ถูกตัดออกในแต่ละ rebalance พร้อมเหตุผล
+- `research_data/source_of_truth_100/backtest/audit_sample.csv` - sample audit สำหรับ no-look-ahead check
+- `research_data/source_of_truth_100/backtest/no_lookahead_audit.md` - สรุป no-look-ahead audit แบบ markdown
+- `research_data/source_of_truth_100/backtest/report.md` - รายงาน markdown สำหรับ thesis/review
+- `research_data/source_of_truth_100/backtest/sector_summary.csv` - สรุปผลตาม sector
+- `research_data/source_of_truth_100/backtest/wacc_sensitivity.csv` - sensitivity ต่อสมมติฐาน WACC
+- `research_data/source_of_truth_100/backtest/appendix.md` - appendix สำหรับ thesis
+- `research_data/source_of_truth_100/backtest/figures/*.png` - figure สำหรับ thesis/presentation
+- `research_data/source_of_truth_100/thesis_bundle/` - ชุดไฟล์พร้อมส่งต่อ/แนบ thesis
 - ภายใน bundle จะรวม executive summary และ presentation script ด้วย
 - และรวม defense outline / Q&A sheet สำหรับการนำเสนอด้วย
 - `reverse_dcf_results.csv` - ผลวิเคราะห์ **(สำคัญที่สุด)**

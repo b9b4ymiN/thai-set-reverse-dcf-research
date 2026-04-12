@@ -4,10 +4,10 @@
 
 This document summarizes the current backtest outputs generated from:
 
-- `research_data/latest/backtest/summary.csv`
-- `research_data/latest/backtest/report.md`
-- `research_data/latest/backtest/manifest.json`
-- `research_data/latest/backtest/exclusions.csv`
+- `research_data/source_of_truth_100/backtest/summary.csv`
+- `research_data/source_of_truth_100/backtest/report.md`
+- `research_data/source_of_truth_100/backtest/manifest.json`
+- `research_data/source_of_truth_100/backtest/exclusions.csv`
 
 ## Sample window
 
@@ -66,7 +66,7 @@ Current backtest manifest:
 
 Average summary diagnostics:
 
-- average universe count: **50**
+- average universe count: **100**
 - average excluded count: **18.62**
 - average turnover: **0.43**
 
@@ -95,7 +95,7 @@ Suggested wording:
 
 ### Sector appendix highlights
 
-From `research_data/latest/backtest/sector_summary.csv`:
+From `research_data/source_of_truth_100/backtest/sector_summary.csv`:
 
 - **Technology** showed the strongest average active return in all three tested horizons in the current sample
 - **Communication Services** also remained positive across all tested horizons
@@ -106,7 +106,7 @@ This suggests the aggregate result is not uniform across sectors and should be d
 
 ### WACC sensitivity highlights
 
-From `research_data/latest/backtest/wacc_sensitivity.csv`:
+From `research_data/source_of_truth_100/backtest/wacc_sensitivity.csv`:
 
 - The strategy remained **positive on average** across the tested fixed-WACC assumptions of **6%, 8%, and 10%**
 - The **6-month** and **12-month** active returns improved as the fixed WACC assumption increased in the current run
@@ -133,12 +133,12 @@ This does not remove model risk, but it does show that the current result is not
 
 After running the extended analysis step, use:
 
-- `research_data/latest/backtest/sector_summary.csv`
-- `research_data/latest/backtest/wacc_sensitivity.csv`
-- `research_data/latest/backtest/appendix.md`
-- `research_data/latest/backtest/figures/active_return_by_horizon.png`
-- `research_data/latest/backtest/figures/hit_rate_by_horizon.png`
-- `research_data/latest/backtest/figures/sector_active_return_heatmap.png`
-- `research_data/latest/backtest/figures/wacc_sensitivity.png`
+- `research_data/source_of_truth_100/backtest/sector_summary.csv`
+- `research_data/source_of_truth_100/backtest/wacc_sensitivity.csv`
+- `research_data/source_of_truth_100/backtest/appendix.md`
+- `research_data/source_of_truth_100/backtest/figures/active_return_by_horizon.png`
+- `research_data/source_of_truth_100/backtest/figures/hit_rate_by_horizon.png`
+- `research_data/source_of_truth_100/backtest/figures/sector_active_return_heatmap.png`
+- `research_data/source_of_truth_100/backtest/figures/wacc_sensitivity.png`
 
 to extend the thesis discussion with sector behavior and robustness checks.

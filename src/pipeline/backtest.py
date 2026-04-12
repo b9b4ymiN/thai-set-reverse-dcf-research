@@ -12,14 +12,19 @@ from reverse_dcf_model import solve_reverse_dcf
 
 
 DEFAULT_HORIZONS = (3, 6, 12)
+DEFAULT_CASE_NAME = 'baseline'
+BASELINE_CASE_NAME = 'baseline'
+RISK_CONTROL_CASE_NAME = 'risk_control'
+DEFAULT_TOP_N_VALUES = (5, 10)
+DEFAULT_STOP_LOSS_VALUES = (0.05, 0.10)
 
 
 @dataclass
 class ReverseDCFBacktester:
-    snapshot_path: str = 'research_data/latest/fundamentals_snapshot.csv'
-    observations_path: str = 'research_data/latest/fundamental_observations.csv'
-    price_history_path: str = 'research_data/latest/price_history.csv'
-    benchmark_history_path: str = 'research_data/latest/benchmark_history.csv'
+    snapshot_path: str = 'research_data/source_of_truth_100/fundamentals_snapshot.csv'
+    observations_path: str = 'research_data/source_of_truth_100/fundamental_observations.csv'
+    price_history_path: str = 'research_data/source_of_truth_100/price_history.csv'
+    benchmark_history_path: str = 'research_data/source_of_truth_100/benchmark_history.csv'
     signal_solver: Callable[..., Tuple[float, dict]] = solve_reverse_dcf
     default_wacc: float = 0.08
     wacc_mode: str = 'fixed'
@@ -49,16 +54,22 @@ class ReverseDCFBacktester:
         }
         self.snapshot_lookup = self.snapshot.set_index('Ticker').to_dict('index') if not self.snapshot.empty else {}
         self.universe_tickers = sorted(set(self.observation_lookup) | set(self.price_lookup))
+        self.max_price_date = pd.Timestamp(self.prices['Date'].max()) if not self.prices.empty else None
+        self.max_benchmark_date = pd.Timestamp(self.benchmark['Date'].max()) if not self.benchmark.empty else None
 
     def run(
         self,
-        output_dir: str = 'research_data/latest/backtest',
+        output_dir: str = 'research_data/source_of_truth_100/backtest',
         horizons: Sequence[int] = DEFAULT_HORIZONS,
         top_n: int = 10,
         rebalance_frequency: str = 'Q',
         start_date: Optional[str] = None,
         end_date: Optional[str] = None,
+        case_name: str = DEFAULT_CASE_NAME,
+        stop_loss_pct: Optional[float] = None,
+        max_losing_buy_rounds: int = 2,
     ) -> Dict[str, object]:
+        effective_case_name, effective_stop_loss_pct = self._normalize_case(case_name, stop_loss_pct)
         output_path = Path(output_dir)
         output_path.mkdir(parents=True, exist_ok=True)
 
@@ -67,39 +78,111 @@ class ReverseDCFBacktester:
         holding_rows: List[Dict[str, object]] = []
         exclusion_rows: List[Dict[str, object]] = []
         audit_rows: List[Dict[str, object]] = []
+        trade_rows: List[Dict[str, object]] = []
+        buy_ban_rows: List[Dict[str, object]] = []
         previous_portfolio: List[str] = []
+        losing_buy_rounds: Dict[str, int] = {}
+        banned_tickers: set[str] = set()
 
-        for rebalance_date in rebalance_dates:
-            cross_section, exclusions = self._build_cross_section(rebalance_date)
+        for index, rebalance_date in enumerate(rebalance_dates):
+            next_rebalance_date = self._next_rebalance_date(rebalance_dates, index, rebalance_date)
+            cross_section, exclusions = self._build_cross_section(
+                rebalance_date,
+                banned_tickers=banned_tickers,
+                losing_buy_rounds=losing_buy_rounds,
+            )
             if cross_section.empty:
+                if not exclusions.empty:
+                    exclusions = exclusions.copy()
+                    exclusions['Rebalance_Date'] = rebalance_date.date().isoformat()
+                    exclusions['Universe_Count'] = len(self.universe_tickers)
+                    exclusions['Case_Name'] = effective_case_name
+                    exclusions['Top_N_Requested'] = top_n
+                    exclusions['Stop_Loss_Pct'] = effective_stop_loss_pct or 0.0
+                    exclusion_rows.extend(exclusions.to_dict('records'))
                 continue
+
             universe_count = len(self.universe_tickers)
             excluded_count = len(exclusions)
             ranked = cross_section.sort_values('Signal_Score', ascending=False).reset_index(drop=True)
             ranked['Rebalance_Date'] = rebalance_date.date().isoformat()
             ranked['Universe_Count'] = universe_count
+            ranked['Eligible_Count'] = len(ranked)
             ranked['Excluded_Count'] = excluded_count
+            ranked['Case_Name'] = effective_case_name
+            ranked['Top_N_Requested'] = top_n
+            ranked['Stop_Loss_Pct'] = effective_stop_loss_pct or 0.0
             signal_rows.extend(ranked.to_dict('records'))
+
             if not exclusions.empty:
                 exclusions = exclusions.copy()
                 exclusions['Rebalance_Date'] = rebalance_date.date().isoformat()
                 exclusions['Universe_Count'] = universe_count
+                exclusions['Eligible_Count'] = len(ranked)
+                exclusions['Case_Name'] = effective_case_name
+                exclusions['Top_N_Requested'] = top_n
+                exclusions['Stop_Loss_Pct'] = effective_stop_loss_pct or 0.0
                 exclusion_rows.extend(exclusions.to_dict('records'))
+
             if not audit_rows:
                 audit_rows = ranked.head(min(10, len(ranked))).to_dict('records')
 
             portfolio = ranked.head(min(top_n, len(ranked))).copy()
             turnover = self._calculate_turnover(previous_portfolio, portfolio['Ticker'].tolist())
             previous_portfolio = portfolio['Ticker'].tolist()
+
+            round_results = self._evaluate_portfolio_round(
+                portfolio=portfolio,
+                rebalance_date=rebalance_date,
+                next_rebalance_date=next_rebalance_date,
+                stop_loss_pct=effective_stop_loss_pct,
+                case_name=effective_case_name,
+            )
+            for round_result in round_results:
+                ticker = str(round_result['Ticker'])
+                prior_losses = losing_buy_rounds.get(ticker, 0)
+                is_losing_round = float(round_result['Realized_Return']) < 0
+                updated_losses = prior_losses + int(is_losing_round)
+                losing_buy_rounds[ticker] = updated_losses
+                ban_triggered = updated_losses > max_losing_buy_rounds
+                if ban_triggered:
+                    banned_tickers.add(ticker)
+                round_result['Prior_Losing_Buy_Rounds'] = prior_losses
+                round_result['Losing_Buy_Rounds'] = updated_losses
+                round_result['Buy_Ban_Triggered'] = ban_triggered
+                round_result['Max_Losing_Buy_Rounds'] = max_losing_buy_rounds
+                trade_rows.append(round_result)
+                if ban_triggered and prior_losses <= max_losing_buy_rounds:
+                    buy_ban_rows.append({
+                        'Ticker': ticker,
+                        'Ban_Rebalance_Date': rebalance_date.date().isoformat(),
+                        'Triggered_By_Exit_Date': round_result['Exit_Date'],
+                        'Triggered_By_Return': float(round_result['Realized_Return']),
+                        'Losing_Buy_Rounds': updated_losses,
+                        'Max_Losing_Buy_Rounds': max_losing_buy_rounds,
+                        'Case_Name': effective_case_name,
+                        'Top_N': top_n,
+                        'Stop_Loss_Pct': effective_stop_loss_pct or 0.0,
+                    })
+
             for horizon in horizons:
-                portfolio_holding, benchmark_return = self._evaluate_portfolio_horizon(portfolio, rebalance_date, horizon)
+                portfolio_holding, benchmark_return = self._evaluate_portfolio_horizon(
+                    portfolio=portfolio,
+                    rebalance_date=rebalance_date,
+                    horizon_months=horizon,
+                    stop_loss_pct=effective_stop_loss_pct,
+                    case_name=effective_case_name,
+                )
                 if portfolio_holding.empty:
                     continue
                 portfolio_return = portfolio_holding['Forward_Return'].mean()
                 holding_rows.append({
                     'Rebalance_Date': rebalance_date.date().isoformat(),
                     'Horizon_Months': horizon,
+                    'Case_Name': effective_case_name,
                     'Top_N': len(portfolio_holding),
+                    'Top_N_Requested': top_n,
+                    'Stop_Loss_Pct': effective_stop_loss_pct or 0.0,
                     'Portfolio_Return': portfolio_return,
                     'Benchmark_Return': benchmark_return,
                     'Active_Return': portfolio_return - benchmark_return,
@@ -111,23 +194,38 @@ class ReverseDCFBacktester:
                 })
                 portfolio_holding['Rebalance_Date'] = rebalance_date.date().isoformat()
                 portfolio_holding['Horizon_Months'] = horizon
-                portfolio_holding.to_csv(output_path / f"portfolio_{rebalance_date.date().isoformat()}_{horizon}m.csv", index=False, encoding='utf-8-sig')
+                portfolio_holding['Case_Name'] = effective_case_name
+                portfolio_holding['Top_N_Requested'] = top_n
+                portfolio_holding['Stop_Loss_Pct'] = effective_stop_loss_pct or 0.0
+                portfolio_holding.to_csv(
+                    output_path / f"portfolio_{rebalance_date.date().isoformat()}_{horizon}m.csv",
+                    index=False,
+                    encoding='utf-8-sig',
+                )
 
         signals_df = pd.DataFrame(signal_rows)
         holdings_df = pd.DataFrame(holding_rows)
         exclusions_df = pd.DataFrame(exclusion_rows)
         audit_df = pd.DataFrame(audit_rows)
+        trade_df = pd.DataFrame(trade_rows)
+        buy_ban_df = pd.DataFrame(buy_ban_rows)
         summary_df = self._build_summary(holdings_df)
+        summary_df = self._attach_run_metadata(summary_df, effective_case_name, top_n, effective_stop_loss_pct)
         manifest = self._build_manifest(
             signals_df=signals_df,
             holdings_df=holdings_df,
             exclusions_df=exclusions_df,
             summary_df=summary_df,
+            trade_df=trade_df,
+            buy_ban_df=buy_ban_df,
             output_path=output_path,
             horizons=horizons,
             top_n=top_n,
             rebalance_frequency=rebalance_frequency,
             wacc_mode=self.wacc_mode,
+            case_name=effective_case_name,
+            stop_loss_pct=effective_stop_loss_pct,
+            max_losing_buy_rounds=max_losing_buy_rounds,
         )
 
         paths = {
@@ -136,6 +234,8 @@ class ReverseDCFBacktester:
             'portfolio_returns': output_path / 'portfolio_returns.csv',
             'summary': output_path / 'summary.csv',
             'audit_sample': output_path / 'audit_sample.csv',
+            'trade_log': output_path / 'trade_log.csv',
+            'buy_ban_ledger': output_path / 'buy_ban_ledger.csv',
             'audit_report': output_path / 'no_lookahead_audit.md',
             'report': output_path / 'report.md',
             'manifest': output_path / 'manifest.json',
@@ -145,6 +245,8 @@ class ReverseDCFBacktester:
         holdings_df.to_csv(paths['portfolio_returns'], index=False, encoding='utf-8-sig')
         summary_df.to_csv(paths['summary'], index=False, encoding='utf-8-sig')
         audit_df.to_csv(paths['audit_sample'], index=False, encoding='utf-8-sig')
+        trade_df.to_csv(paths['trade_log'], index=False, encoding='utf-8-sig')
+        buy_ban_df.to_csv(paths['buy_ban_ledger'], index=False, encoding='utf-8-sig')
         paths['audit_report'].write_text(self._build_audit_report(audit_df, manifest), encoding='utf-8')
         paths['report'].write_text(self._build_report(summary_df, manifest), encoding='utf-8')
         paths['manifest'].write_text(json.dumps(manifest, indent=2), encoding='utf-8')
@@ -153,8 +255,114 @@ class ReverseDCFBacktester:
             'signals': len(signals_df),
             'portfolio_rows': len(holdings_df),
             'summary_rows': len(summary_df),
+            'trade_rows': len(trade_df),
+            'buy_ban_rows': len(buy_ban_df),
             'paths': {key: str(value) for key, value in paths.items()},
         }
+
+    def run_case_matrix(
+        self,
+        output_root: str = 'research_data/source_of_truth_100/backtest_cases',
+        horizons: Sequence[int] = DEFAULT_HORIZONS,
+        top_n_values: Sequence[int] = DEFAULT_TOP_N_VALUES,
+        rebalance_frequency: str = 'Q',
+        start_date: Optional[str] = None,
+        end_date: Optional[str] = None,
+        risk_control_stop_losses: Sequence[float] = DEFAULT_STOP_LOSS_VALUES,
+        max_losing_buy_rounds: int = 2,
+    ) -> Dict[str, object]:
+        output_path = Path(output_root)
+        output_path.mkdir(parents=True, exist_ok=True)
+
+        summary_frames: List[pd.DataFrame] = []
+        case_rows: List[Dict[str, object]] = []
+        case_dirs: List[str] = []
+
+        for top_n in top_n_values:
+            baseline_dir = output_path / f'baseline_top{top_n}'
+            baseline_result = self.run(
+                output_dir=str(baseline_dir),
+                horizons=horizons,
+                top_n=top_n,
+                rebalance_frequency=rebalance_frequency,
+                start_date=start_date,
+                end_date=end_date,
+                case_name=BASELINE_CASE_NAME,
+                stop_loss_pct=None,
+                max_losing_buy_rounds=max_losing_buy_rounds,
+            )
+            case_dirs.append(str(baseline_dir))
+            case_rows.append({
+                'Case_Name': BASELINE_CASE_NAME,
+                'Top_N': top_n,
+                'Stop_Loss_Pct': 0.0,
+                'Output_Dir': str(baseline_dir),
+                'Signals': baseline_result['signals'],
+                'Portfolio_Rows': baseline_result['portfolio_rows'],
+                'Trade_Rows': baseline_result['trade_rows'],
+                'Buy_Ban_Rows': baseline_result['buy_ban_rows'],
+            })
+            summary_frames.append(pd.read_csv(baseline_dir / 'summary.csv'))
+
+            for stop_loss_pct in risk_control_stop_losses:
+                sl_label = int(round(stop_loss_pct * 100))
+                risk_dir = output_path / f'risk_control_top{top_n}_sl{sl_label}'
+                risk_result = self.run(
+                    output_dir=str(risk_dir),
+                    horizons=horizons,
+                    top_n=top_n,
+                    rebalance_frequency=rebalance_frequency,
+                    start_date=start_date,
+                    end_date=end_date,
+                    case_name=RISK_CONTROL_CASE_NAME,
+                    stop_loss_pct=stop_loss_pct,
+                    max_losing_buy_rounds=max_losing_buy_rounds,
+                )
+                case_dirs.append(str(risk_dir))
+                case_rows.append({
+                    'Case_Name': RISK_CONTROL_CASE_NAME,
+                    'Top_N': top_n,
+                    'Stop_Loss_Pct': stop_loss_pct,
+                    'Output_Dir': str(risk_dir),
+                    'Signals': risk_result['signals'],
+                    'Portfolio_Rows': risk_result['portfolio_rows'],
+                    'Trade_Rows': risk_result['trade_rows'],
+                    'Buy_Ban_Rows': risk_result['buy_ban_rows'],
+                })
+                summary_frames.append(pd.read_csv(risk_dir / 'summary.csv'))
+
+        comparison_summary = pd.concat(summary_frames, ignore_index=True, sort=False) if summary_frames else pd.DataFrame()
+        case_manifest_df = pd.DataFrame(case_rows)
+        comparison_path = output_path / 'comparison_summary.csv'
+        case_manifest_path = output_path / 'case_manifest.csv'
+        manifest_path = output_path / 'manifest.json'
+
+        comparison_summary.to_csv(comparison_path, index=False, encoding='utf-8-sig')
+        case_manifest_df.to_csv(case_manifest_path, index=False, encoding='utf-8-sig')
+        manifest = {
+            'case_count': int(len(case_rows)),
+            'top_n_values': list(top_n_values),
+            'risk_control_stop_losses': list(risk_control_stop_losses),
+            'case_output_dirs': case_dirs,
+            'paths': {
+                'comparison_summary': str(comparison_path),
+                'case_manifest': str(case_manifest_path),
+            },
+        }
+        manifest_path.write_text(json.dumps(manifest, indent=2), encoding='utf-8')
+        return manifest
+
+    def _normalize_case(self, case_name: str, stop_loss_pct: Optional[float]) -> Tuple[str, Optional[float]]:
+        normalized = (case_name or DEFAULT_CASE_NAME).strip().lower()
+        if normalized not in {BASELINE_CASE_NAME, RISK_CONTROL_CASE_NAME}:
+            raise ValueError(f'Unsupported case_name: {case_name}')
+        if normalized == BASELINE_CASE_NAME:
+            return normalized, None
+        if stop_loss_pct is None:
+            raise ValueError('risk_control case requires --stop-loss-pct')
+        if stop_loss_pct <= 0 or stop_loss_pct >= 1:
+            raise ValueError('stop_loss_pct must be between 0 and 1')
+        return normalized, float(stop_loss_pct)
 
     def _build_rebalance_dates(
         self,
@@ -178,10 +386,34 @@ class ReverseDCFBacktester:
             rebalance_dates.append(pd.Timestamp(eligible.iloc[0]))
         return list(dict.fromkeys(rebalance_dates))
 
-    def _build_cross_section(self, rebalance_date: pd.Timestamp) -> Tuple[pd.DataFrame, pd.DataFrame]:
+    def _next_rebalance_date(
+        self,
+        rebalance_dates: Sequence[pd.Timestamp],
+        index: int,
+        rebalance_date: pd.Timestamp,
+    ) -> pd.Timestamp:
+        if index + 1 < len(rebalance_dates):
+            return pd.Timestamp(rebalance_dates[index + 1])
+        return self.max_price_date or rebalance_date
+
+    def _build_cross_section(
+        self,
+        rebalance_date: pd.Timestamp,
+        banned_tickers: Optional[set[str]] = None,
+        losing_buy_rounds: Optional[Dict[str, int]] = None,
+    ) -> Tuple[pd.DataFrame, pd.DataFrame]:
         rows = []
         exclusions = []
+        banned_tickers = banned_tickers or set()
+        losing_buy_rounds = losing_buy_rounds or {}
         for ticker in self.universe_tickers:
+            if ticker in banned_tickers:
+                exclusions.append({
+                    'Ticker': ticker,
+                    'Exclusion_Reason': 'buy_ban_active',
+                    'Losing_Buy_Rounds': losing_buy_rounds.get(ticker, 0),
+                })
+                continue
             observation = self._latest_available_observation(ticker, rebalance_date)
             if observation is None:
                 exclusions.append({'Ticker': ticker, 'Exclusion_Reason': 'no_available_observation'})
@@ -196,6 +428,8 @@ class ReverseDCFBacktester:
                 continue
             row, reason = self._score_observation(ticker, observation, price, price_date, rebalance_date)
             if row is not None:
+                row['Losing_Buy_Rounds'] = losing_buy_rounds.get(ticker, 0)
+                row['Buy_Ban_Active'] = False
                 rows.append(row)
             else:
                 exclusions.append({'Ticker': ticker, 'Exclusion_Reason': reason or 'signal_rejected'})
@@ -219,12 +453,16 @@ class ReverseDCFBacktester:
         if eligible.empty:
             return None
         row = eligible.iloc[-1]
-        price = float(row['Adj Close'] if pd.notna(row['Adj Close']) else row['Close'])
+        price = self._row_price(row)
         return price, pd.Timestamp(row['Date'])
 
     def _benchmark_return(self, start_date: pd.Timestamp, horizon_months: int) -> Optional[float]:
+        end_date = start_date + pd.DateOffset(months=horizon_months)
+        return self._benchmark_return_between(start_date, end_date)
+
+    def _benchmark_return_between(self, start_date: pd.Timestamp, end_date: pd.Timestamp) -> Optional[float]:
         benchmark_start = self._series_price_on_or_before(self.benchmark, start_date)
-        benchmark_end = self._series_price_on_or_before(self.benchmark, start_date + pd.DateOffset(months=horizon_months))
+        benchmark_end = self._series_price_on_or_before(self.benchmark, end_date)
         if benchmark_start is None or benchmark_end is None or benchmark_start <= 0:
             return None
         return (benchmark_end / benchmark_start) - 1
@@ -235,6 +473,10 @@ class ReverseDCFBacktester:
         if eligible.empty:
             return None
         row = eligible.iloc[-1]
+        return float(row['Adj Close'] if pd.notna(row['Adj Close']) else row['Close'])
+
+    @staticmethod
+    def _row_price(row: pd.Series) -> float:
         return float(row['Adj Close'] if pd.notna(row['Adj Close']) else row['Close'])
 
     def _score_observation(
@@ -296,11 +538,55 @@ class ReverseDCFBacktester:
             return float(snapshot.get('WACC', self.default_wacc) or self.default_wacc)
         return float(self.default_wacc)
 
+    def _evaluate_portfolio_round(
+        self,
+        portfolio: pd.DataFrame,
+        rebalance_date: pd.Timestamp,
+        next_rebalance_date: pd.Timestamp,
+        stop_loss_pct: Optional[float],
+        case_name: str,
+    ) -> List[Dict[str, object]]:
+        round_rows: List[Dict[str, object]] = []
+        benchmark_return = self._benchmark_return_between(rebalance_date, next_rebalance_date)
+        benchmark_return = 0.0 if benchmark_return is None else float(benchmark_return)
+        for _, row in portfolio.iterrows():
+            evaluation = self._evaluate_position_window(
+                ticker=row['Ticker'],
+                entry_price=float(row['Price']),
+                entry_date=rebalance_date,
+                end_date=next_rebalance_date,
+                stop_loss_pct=stop_loss_pct,
+                terminal_exit_reason='rebalance',
+            )
+            if evaluation is None:
+                continue
+            round_rows.append({
+                'Ticker': row['Ticker'],
+                'Rebalance_Date': rebalance_date.date().isoformat(),
+                'Round_End_Date': next_rebalance_date.date().isoformat(),
+                'Case_Name': case_name,
+                'Stop_Loss_Pct': stop_loss_pct or 0.0,
+                'Entry_Price': float(row['Price']),
+                'Target_Exit_Date': evaluation['Target_End_Date'],
+                'Exit_Date': evaluation['Exit_Date'],
+                'Exit_Price_Date': evaluation['Exit_Price_Date'],
+                'Exit_Price': evaluation['Exit_Price'],
+                'Exit_Reason': evaluation['Exit_Reason'],
+                'Realized_Return': evaluation['Forward_Return'],
+                'Benchmark_Return': benchmark_return,
+                'Active_Return': float(evaluation['Forward_Return']) - benchmark_return,
+                'Stop_Loss_Hit': evaluation['Stop_Loss_Hit'],
+                'Stop_Loss_Trigger_Price': evaluation['Stop_Loss_Trigger_Price'],
+            })
+        return round_rows
+
     def _evaluate_portfolio_horizon(
         self,
         portfolio: pd.DataFrame,
         rebalance_date: pd.Timestamp,
         horizon_months: int,
+        stop_loss_pct: Optional[float] = None,
+        case_name: str = DEFAULT_CASE_NAME,
     ) -> Tuple[pd.DataFrame, float]:
         rows = []
         benchmark_return = self._benchmark_return(rebalance_date, horizon_months)
@@ -308,27 +594,113 @@ class ReverseDCFBacktester:
             return pd.DataFrame(), 0.0
         end_date = rebalance_date + pd.DateOffset(months=horizon_months)
         for _, row in portfolio.iterrows():
-            price_info = self._price_info_on_or_before(row['Ticker'], end_date)
-            if price_info is None or row['Price'] <= 0:
+            evaluation = self._evaluate_position_window(
+                ticker=row['Ticker'],
+                entry_price=float(row['Price']),
+                entry_date=rebalance_date,
+                end_date=end_date,
+                stop_loss_pct=stop_loss_pct,
+                terminal_exit_reason='horizon_end',
+            )
+            if evaluation is None or row['Price'] <= 0:
                 continue
-            end_price, end_price_date = price_info
-            forward_return = (end_price / row['Price']) - 1
             enriched = row.to_dict()
             enriched.update({
-                'End_Date': end_date.date().isoformat(),
-                'End_Price_Date': end_price_date.date().isoformat(),
-                'End_Price': float(end_price),
-                'Forward_Return': float(forward_return),
+                'Case_Name': case_name,
+                'Target_End_Date': evaluation['Target_End_Date'],
+                'End_Date': evaluation['Exit_Date'],
+                'End_Price_Date': evaluation['Exit_Price_Date'],
+                'End_Price': float(evaluation['Exit_Price']),
+                'Exit_Reason': evaluation['Exit_Reason'],
+                'Stop_Loss_Hit': evaluation['Stop_Loss_Hit'],
+                'Stop_Loss_Pct': stop_loss_pct or 0.0,
+                'Stop_Loss_Trigger_Price': evaluation['Stop_Loss_Trigger_Price'],
+                'Forward_Return': float(evaluation['Forward_Return']),
                 'Benchmark_Return': float(benchmark_return),
-                'Active_Return': float(forward_return - benchmark_return),
+                'Active_Return': float(evaluation['Forward_Return'] - benchmark_return),
             })
             rows.append(enriched)
         return pd.DataFrame(rows), float(benchmark_return)
 
+    def _evaluate_position_window(
+        self,
+        ticker: str,
+        entry_price: float,
+        entry_date: pd.Timestamp,
+        end_date: pd.Timestamp,
+        stop_loss_pct: Optional[float],
+        terminal_exit_reason: str,
+    ) -> Optional[Dict[str, object]]:
+        if entry_price <= 0:
+            return None
+        final_price_info = self._price_info_on_or_before(ticker, end_date)
+        if final_price_info is None:
+            return None
+        exit_price, exit_date = final_price_info
+        exit_reason = terminal_exit_reason
+        stop_loss_hit = False
+        trigger_price = entry_price * (1 - stop_loss_pct) if stop_loss_pct is not None else None
+
+        if stop_loss_pct is not None:
+            stop_loss_event = self._first_stop_loss_event(
+                ticker=ticker,
+                entry_date=entry_date,
+                end_date=end_date,
+                trigger_price=trigger_price,
+            )
+            if stop_loss_event is not None:
+                exit_price, exit_date = stop_loss_event
+                exit_reason = 'stop_loss'
+                stop_loss_hit = True
+
+        forward_return = (exit_price / entry_price) - 1
+        return {
+            'Target_End_Date': pd.Timestamp(end_date).date().isoformat(),
+            'Exit_Date': pd.Timestamp(exit_date).date().isoformat(),
+            'Exit_Price_Date': pd.Timestamp(exit_date).date().isoformat(),
+            'Exit_Price': float(exit_price),
+            'Exit_Reason': exit_reason,
+            'Forward_Return': float(forward_return),
+            'Stop_Loss_Hit': stop_loss_hit,
+            'Stop_Loss_Trigger_Price': float(trigger_price) if trigger_price is not None else 0.0,
+        }
+
+    def _first_stop_loss_event(
+        self,
+        ticker: str,
+        entry_date: pd.Timestamp,
+        end_date: pd.Timestamp,
+        trigger_price: Optional[float],
+    ) -> Optional[Tuple[float, pd.Timestamp]]:
+        if trigger_price is None:
+            return None
+        frame = self.price_lookup.get(ticker)
+        if frame is None or frame.empty:
+            return None
+        eligible = frame.loc[(frame['Date'] > entry_date) & (frame['Date'] <= end_date)].copy()
+        if eligible.empty:
+            return None
+        eligible['Effective_Close'] = eligible.apply(self._row_price, axis=1)
+        triggered = eligible.loc[eligible['Effective_Close'] <= trigger_price]
+        if triggered.empty:
+            return None
+        row = triggered.iloc[0]
+        return float(row['Effective_Close']), pd.Timestamp(row['Date'])
+
     @staticmethod
     def _build_summary(holdings_df: pd.DataFrame) -> pd.DataFrame:
         if holdings_df.empty:
-            return pd.DataFrame(columns=['Horizon_Months', 'Portfolio_Return', 'Benchmark_Return', 'Active_Return', 'Hit_Rate', 'Observations'])
+            return pd.DataFrame(columns=[
+                'Horizon_Months',
+                'Portfolio_Return',
+                'Benchmark_Return',
+                'Active_Return',
+                'Hit_Rate',
+                'Observations',
+                'Avg_Turnover',
+                'Avg_Universe_Count',
+                'Avg_Excluded_Count',
+            ])
         summary = holdings_df.groupby('Horizon_Months').agg(
             Portfolio_Return=('Portfolio_Return', 'mean'),
             Benchmark_Return=('Benchmark_Return', 'mean'),
@@ -343,29 +715,64 @@ class ReverseDCFBacktester:
         return summary
 
     @staticmethod
+    def _attach_run_metadata(
+        summary_df: pd.DataFrame,
+        case_name: str,
+        top_n: int,
+        stop_loss_pct: Optional[float],
+    ) -> pd.DataFrame:
+        if summary_df.empty:
+            summary_df = summary_df.copy()
+            summary_df['Case_Name'] = pd.Series(dtype='object')
+            summary_df['Top_N'] = pd.Series(dtype='int64')
+            summary_df['Stop_Loss_Pct'] = pd.Series(dtype='float64')
+            return summary_df
+        summary_df = summary_df.copy()
+        summary_df['Case_Name'] = case_name
+        summary_df['Top_N'] = top_n
+        summary_df['Stop_Loss_Pct'] = stop_loss_pct or 0.0
+        return summary_df
+
     def _build_manifest(
+        self,
         *,
         signals_df: pd.DataFrame,
         holdings_df: pd.DataFrame,
         exclusions_df: pd.DataFrame,
         summary_df: pd.DataFrame,
+        trade_df: pd.DataFrame,
+        buy_ban_df: pd.DataFrame,
         output_path: Path,
         horizons: Sequence[int],
         top_n: int,
         rebalance_frequency: str,
         wacc_mode: str,
+        case_name: str,
+        stop_loss_pct: Optional[float],
+        max_losing_buy_rounds: int,
     ) -> Dict[str, object]:
         return {
             'output_dir': str(output_path),
+            'case_name': case_name,
+            'daily_stop_loss_enabled': stop_loss_pct is not None,
+            'stop_loss_pct': float(stop_loss_pct) if stop_loss_pct is not None else 0.0,
+            'max_losing_buy_rounds': max_losing_buy_rounds,
             'horizons_months': list(horizons),
             'top_n': top_n,
             'rebalance_frequency': rebalance_frequency,
             'signals': int(len(signals_df)),
             'portfolio_rows': int(len(holdings_df)),
+            'trade_rows': int(len(trade_df)),
+            'buy_ban_rows': int(len(buy_ban_df)),
             'exclusion_rows': int(len(exclusions_df)),
             'summary_rows': int(len(summary_df)),
             'no_lookahead_failures': int((~signals_df['No_Lookahead_Pass']).sum()) if 'No_Lookahead_Pass' in signals_df.columns else 0,
             'wacc_mode': wacc_mode,
+            'input_bundle_dir': str(Path(self.observations_path).parent),
+            'input_bundle_source': 'scraping_first_hybrid',
+            'universe_size': len(self.universe_tickers),
+            'methodology': 'Damodaran Stern Reverse DCF',
+            'framework_reference': 'https://pages.stern.nyu.edu/~adamodar/New_Home_Page/home.htm',
         }
 
     @staticmethod
@@ -384,9 +791,13 @@ class ReverseDCFBacktester:
         lines = [
             '# Reverse DCF Backtest Report',
             '',
+            f"- Case: {manifest['case_name']}",
             f"- Rebalance frequency: {manifest['rebalance_frequency']}",
             f"- Horizons (months): {manifest['horizons_months']}",
             f"- Top N portfolio: {manifest['top_n']}",
+            f"- Daily stop-loss enabled: {manifest['daily_stop_loss_enabled']}",
+            f"- Stop-loss pct: {manifest['stop_loss_pct']}",
+            f"- Buy ban threshold (losing buy rounds): {manifest['max_losing_buy_rounds']}",
             f"- Signals generated: {manifest['signals']}",
             '',
             '## Summary',
@@ -400,6 +811,15 @@ class ReverseDCFBacktester:
             lines.append('| ' + ' | '.join(['---'] * len(columns)) + ' |')
             for _, row in summary_df.iterrows():
                 lines.append('| ' + ' | '.join(str(row[column]) for column in columns) + ' |')
+        
+        lines.extend([
+            '',
+            '---',
+            '**Methodology Note**: This backtest employs the Damodaran Stern Reverse DCF framework for growth implication analysis.',
+            'For detailed formula mapping and theoretical foundations, see `METHODOLOGY.md` and Damodaran\'s lecture materials on intrinsic valuation.',
+            f"Framework Reference: {manifest.get('framework_reference', 'N/A')}"
+        ])
+        
         return '\n'.join(lines) + '\n'
 
     @staticmethod
@@ -407,6 +827,7 @@ class ReverseDCFBacktester:
         lines = [
             '# No-Lookahead Audit',
             '',
+            f"- Case: {manifest['case_name']}",
             f"- WACC mode: {manifest['wacc_mode']}",
             f"- No-lookahead failures: {manifest['no_lookahead_failures']}",
             '',
@@ -428,18 +849,27 @@ class ReverseDCFBacktester:
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description='Run a reverse DCF backtest on the research bundle.')
-    parser.add_argument('--snapshot-path', default='research_data/latest/fundamentals_snapshot.csv')
-    parser.add_argument('--observations-path', default='research_data/latest/fundamental_observations.csv')
-    parser.add_argument('--price-history-path', default='research_data/latest/price_history.csv')
-    parser.add_argument('--benchmark-history-path', default='research_data/latest/benchmark_history.csv')
-    parser.add_argument('--output-dir', default='research_data/latest/backtest')
-    parser.add_argument('--top-n', type=int, default=10)
-    parser.add_argument('--horizons', nargs='*', type=int, default=list(DEFAULT_HORIZONS))
-    parser.add_argument('--rebalance-frequency', default='Q')
-    parser.add_argument('--start-date', default=None)
-    parser.add_argument('--end-date', default=None)
-    parser.add_argument('--wacc-mode', default='fixed', choices=['fixed', 'snapshot'])
+    parser = argparse.ArgumentParser(
+        description='Run a reverse DCF backtest on the research bundle using the Damodaran Stern framework.',
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter
+    )
+    parser.add_argument('--snapshot-path', default='research_data/source_of_truth_100/fundamentals_snapshot.csv', help='Path to fundamentals snapshot CSV')
+    parser.add_argument('--observations-path', default='research_data/source_of_truth_100/fundamental_observations.csv', help='Path to fundamental observations CSV')
+    parser.add_argument('--price-history-path', default='research_data/source_of_truth_100/price_history.csv', help='Path to price history CSV')
+    parser.add_argument('--benchmark-history-path', default='research_data/source_of_truth_100/benchmark_history.csv', help='Path to benchmark history CSV')
+    parser.add_argument('--output-dir', default='research_data/source_of_truth_100/backtest', help='Output directory for backtest results')
+    parser.add_argument('--top-n', type=int, default=10, help='Number of top stocks to include in portfolio (Damodaran-style selection)')
+    parser.add_argument('--top-n-values', nargs='*', type=int, default=list(DEFAULT_TOP_N_VALUES), help='Top-N values for matrix run')
+    parser.add_argument('--horizons', nargs='*', type=int, default=list(DEFAULT_HORIZONS), help='Return horizons in months')
+    parser.add_argument('--rebalance-frequency', default='Q', help='Rebalance frequency (e.g., Q for quarterly alignment with fundamentals)')
+    parser.add_argument('--start-date', default=None, help='Backtest start date (YYYY-MM-DD)')
+    parser.add_argument('--end-date', default=None, help='Backtest end date (YYYY-MM-DD)')
+    parser.add_argument('--wacc-mode', default='fixed', choices=['fixed', 'snapshot'], help='WACC calculation mode (fixed 8 percent per Damodaran Thai equity risk premium norms or snapshot-based)')
+    parser.add_argument('--case-name', default=DEFAULT_CASE_NAME, choices=[BASELINE_CASE_NAME, RISK_CONTROL_CASE_NAME], help='Case name for single run')
+    parser.add_argument('--stop-loss-pct', type=float, default=None, help='Stop loss percentage (e.g., 0.1 for 10 percent)')
+    parser.add_argument('--stop-loss-values', nargs='*', type=float, default=list(DEFAULT_STOP_LOSS_VALUES), help='Stop loss values for matrix run')
+    parser.add_argument('--max-losing-buy-rounds', type=int, default=2, help='Maximum number of losing buy rounds before permanent ban')
+    parser.add_argument('--matrix', action='store_true', help='Run a matrix of backtest cases based on the Damodaran quarterly rebalance plan')
     return parser.parse_args()
 
 
@@ -452,14 +882,29 @@ def main() -> None:
         benchmark_history_path=args.benchmark_history_path,
         wacc_mode=args.wacc_mode,
     )
-    result = backtester.run(
-        output_dir=args.output_dir,
-        horizons=args.horizons,
-        top_n=args.top_n,
-        rebalance_frequency=args.rebalance_frequency,
-        start_date=args.start_date,
-        end_date=args.end_date,
-    )
+    if args.matrix:
+        result = backtester.run_case_matrix(
+            output_root=args.output_dir,
+            horizons=args.horizons,
+            top_n_values=args.top_n_values,
+            rebalance_frequency=args.rebalance_frequency,
+            start_date=args.start_date,
+            end_date=args.end_date,
+            risk_control_stop_losses=args.stop_loss_values,
+            max_losing_buy_rounds=args.max_losing_buy_rounds,
+        )
+    else:
+        result = backtester.run(
+            output_dir=args.output_dir,
+            horizons=args.horizons,
+            top_n=args.top_n,
+            rebalance_frequency=args.rebalance_frequency,
+            start_date=args.start_date,
+            end_date=args.end_date,
+            case_name=args.case_name,
+            stop_loss_pct=args.stop_loss_pct,
+            max_losing_buy_rounds=args.max_losing_buy_rounds,
+        )
     print(json.dumps(result, indent=2))
 
 

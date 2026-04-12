@@ -42,7 +42,7 @@ python set_stock_fetcher.py
 - `set_stock_data_quality.csv` - coverage/missingness ของ datasource
 - `reverse_dcf_input_exclusions.csv` - หุ้นที่ผ่าน/ไม่ผ่าน input filter ของ Reverse DCF
 - `set_validation_references.csv` - ลิงก์ SET สำหรับ manual validation
-- ข้อมูล ~50 หุ้นใหญ่ใน SET
+- ข้อมูล ~100 หุ้นใหญ่ใน SET
 - Summary statistics
 
 ### Step 2: วิเคราะห์ Reverse DCF
@@ -52,27 +52,27 @@ python reverse_dcf_model.py
 
 ### Step 2.5: สร้าง research data bundle สำหรับ backtest
 ```bash
-python -m rdcf.data_pipeline --output-dir research_data/latest --period 10y --sync-root-snapshot
+python -m rdcf.data_pipeline --output-dir research_data/source_of_truth_100 --period 10y --sync-root-snapshot
 ```
 
 ### Step 2.6: รัน backtest
 ```bash
-python -m src.pipeline.backtest --output-dir research_data/latest/backtest --top-n 10 --horizons 3 6 12 --rebalance-frequency Q --start-date 2020-01-01 --wacc-mode fixed
+python -m src.pipeline.backtest --output-dir research_data/source_of_truth_100/backtest --top-n 10 --horizons 3 6 12 --rebalance-frequency Q --start-date 2020-01-01 --wacc-mode fixed
 ```
 
 ### Step 2.7: สร้าง sector/sensitivity appendix
 ```bash
-python -m src.pipeline.backtest_analysis --output-dir research_data/latest/backtest --wacc-values 0.06 0.08 0.10 --top-n 10 --horizons 3 6 12 --rebalance-frequency Q --start-date 2020-01-01
+python -m src.pipeline.backtest_analysis --output-dir research_data/source_of_truth_100/backtest --wacc-values 0.06 0.08 0.10 --top-n 10 --horizons 3 6 12 --rebalance-frequency Q --start-date 2020-01-01
 ```
 
 ### Step 2.8: สร้าง thesis figures
 ```bash
-python -m src.pipeline.backtest_visuals --output-dir research_data/latest/backtest/figures
+python -m src.pipeline.backtest_visuals --output-dir research_data/source_of_truth_100/backtest/figures
 ```
 
 ### Step 2.9: รวม thesis bundle
 ```bash
-python -m src.pipeline.thesis_bundle --output-dir research_data/latest/thesis_bundle
+python -m src.pipeline.thesis_bundle --output-dir research_data/source_of_truth_100/thesis_bundle
 ```
 
 ### Quick demo: สร้าง demo dataset + backtest + figures แบบไม่ใช้ network
@@ -116,7 +116,7 @@ BBL.BK,162.50,3.2%,5.1%,+12.5%,UNDervalued - Buy,...
 CPF.BK,32.75,8.5%,4.2%,-15.3%,OVValued - Reduce,...
 ```
 
-### research_data/latest/
+### research_data/source_of_truth_100/
 bundle สำหรับงาน backtest/research:
 - `fundamentals_snapshot.csv`
 - `fundamental_observations.csv` - historical statement observations จาก quarterly/annual statements พร้อม `Statement_Date` และ `Availability_Date`
@@ -129,7 +129,7 @@ bundle สำหรับงาน backtest/research:
 - `set_validation_references.csv`
 - `manifest.json`
 
-### research_data/latest/backtest/
+### research_data/source_of_truth_100/backtest/
 ผล backtest:
 - `signals.csv`
 - `portfolio_returns.csv`
@@ -243,7 +243,7 @@ tax_rate = 0.20  # อัตราภาษีเงินได้นิติ�
 - **Primary datasource strategy**: ใช้ Yahoo/yfinance เป็นแหล่งข้อมูลหลัก และใช้หน้าเว็บ SET สำหรับ optional validation
 - **Cost**: 100% Free
 - **Update Frequency**: Real-time (รันใหม่ได้ตลอด)
-- **Research bundle command**: `python -m rdcf.data_pipeline --output-dir research_data/latest --period 10y`
+- **Research bundle command**: `python -m rdcf.data_pipeline --output-dir research_data/source_of_truth_100 --period 10y`
 - **Historical observation rule**: ใช้ statement dates จาก Yahoo statements และตั้ง `Availability_Date` ตาม reporting lag ที่กำหนด
 
 ## ⚠️ ข้อจำกัด

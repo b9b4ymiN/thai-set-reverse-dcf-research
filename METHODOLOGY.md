@@ -317,19 +317,104 @@ Expected_Value = (0.3 × 120) + (0.5 × 150) + (0.2 × 180) = 147
 
 ---
 
+## Damodaran Framework Alignment
+
+This section maps the implementation in `reverse_dcf_model.py` to Prof. Aswath Damodaran's
+published reverse DCF methodology, using a three-tier alignment framework.
+
+**Primary reference:** Damodaran, A. Valuation lectures and datasets, NYU Stern School of
+Business. https://pages.stern.nyu.edu/~adamodar/New_Home_Page/lectures.html
+
+**Thai SET dataset reference:** See [`docs/damodaran-stern-datasets-thai-set.md`](docs/damodaran-stern-datasets-thai-set.md)
+for country risk premiums, emerging-market betas, and WACC benchmarks used to parameterise
+the model for Thai stocks.
+
+### Formula-to-Damodaran mapping
+
+| Component | Implementation | Damodaran Basis | Tier | Notes |
+|---|---|---|---|---|
+| Binary search solver | `low = -0.50`, `high = 1.00` | Damodaran reverse-DCF approach: solve for the growth rate that equates DCF value to market price | Tier 2 | Bounds are implementation-specific (Tier 3); the solver technique itself follows Damodaran's framing |
+| High-growth phase (years 1-5) | `FCF_t = base_FCF * (1 + g)^t` | Standard DCF projection at constant growth | Tier 1 | Explicit in Damodaran's DCF lectures |
+| Growth decay (years 6-10) | `g_decay = g - ((g - g_terminal) * (y-5) / 5)` | Linear interpolation from high-growth to stable-growth over a transition period | Tier 2 | Damodaran uses a declining-growth transition; linear interpolation is one common parameterisation |
+| Terminal growth cap | `min(0.025, max(WACC - 0.01, 0.005))` | Damodaran recommends terminal growth <= risk-free rate and <= long-run GDP growth (~2-3%) | Tier 2 | The multi-clamp guard is Tier 3 (implementation safety) |
+| Terminal value | `TV = FCF_10 * (1 + g_t) / (WACC - g_t)` | Gordon Growth Model perpetuity value | Tier 1 | Explicit in Damodaran's terminal-value treatment |
+| Enterprise-to-equity bridge | `Equity = EV - Net_Debt` | Standard EV-to-equity adjustment | Tier 1 | Explicit in Damodaran |
+| Signal score (backtest) | `Actual_Revenue_Growth - Implied_Growth_Rate` | Damodaran frames the investment question as: "Is the market's implied expectation above or below what the company actually delivers?" | Tier 2 | Sign convention: positive signal means realised growth exceeds market expectation |
+
+### Tier definitions
+
+- **Tier 1 — Explicit in Damodaran:** Formula is directly stated in lecture or textbook material.
+- **Tier 2 — Derived from Damodaran principles:** Formula follows logically from his framework but
+  is not given as a single explicit equation.
+- **Tier 3 — Implementation-specific:** Engineering choice for Thai SET context, numerical safety,
+  or code structure.
+
+### Growth differential framing
+
+In Damodaran's framework, the core question for a reverse DCF investor is:
+
+> "What growth rate is the market pricing in, and does that implied growth look reasonable
+> relative to what the company has actually delivered?"
+
+The **signal score** used in the backtest captures this directly:
+
+```
+Signal_Score = Actual_Revenue_Growth - Implied_Growth_Rate
+```
+
+- **Positive score** — the company's realised growth exceeds what the market price implies;
+  the market may be undervaluing future cash flows.
+- **Negative score** — the market price implies growth above what the company has demonstrated;
+  the stock may be overpriced relative to fundamentals.
+
+This is consistent with Damodaran's "market expectations vs. fundamentals" lens (see
+*The Little Book of Valuation*, Ch. 4, and his "Pricing vs. Valuation" lecture series).
+
+### WACC in the backtest
+
+For historical backtesting the pipeline uses **fixed WACC** (`--wacc-mode fixed`) to avoid
+leaking current-period cost-of-capital assumptions into past rebalance dates — a form of
+look-ahead bias Damodaran himself warns against when using today's ERP or beta for historical
+valuation.
+
+For current-snapshot valuation, the recommended approach uses Damodaran's Thai country risk
+premium, bottom-up industry betas, and firm-specific capital structure. See
+[`docs/damodaran-stern-datasets-thai-set.md`](docs/damodaran-stern-datasets-thai-set.md)
+for the full dataset extraction and application rules.
+
+### Quarterly rebalance schedule
+
+The backtest rebalances quarterly (`rebalance_frequency = 'Q'`). This is not an arbitrary
+calendar choice — it aligns with the quarterly earnings reporting cycle of Thai listed
+companies. At each rebalance date:
+
+1. Fundamental observations are selected where `Availability_Date <= Rebalance_Date`,
+   ensuring only publicly available data is used.
+2. Market prices are taken as of the rebalance date (or the last trading day before it).
+3. New signal scores are computed from the updated fundamentals, so the portfolio naturally
+   rotates when fundamentals change — not on a fixed calendar trigger.
+
+See also the [Backtesting Guide](docs/BACKTESTING_GUIDE.md) for the no-lookahead audit
+procedure that verifies this property.
+
+---
+
 ## 📚 References
 
 1. **Books:**
-   - "The Little Book of Valuation" - Aswath Damodaran
-   - "Security Analysis" - Benjamin Graham
+   - Damodaran, A. *The Little Book of Valuation* (Wiley, 2011)
+   - Damodaran, A. *Investment Valuation* 3rd ed. (Wiley, 2012)
+   - Graham, B. & Dodd, D. *Security Analysis* (McGraw-Hill)
 
-2. **Academic Papers:**
-   - Damodaran, A. (2012). "Investment Valuation"
-   - Koller, T. (2015). "Valuation"
+2. **Lectures and datasets (NYU Stern):**
+   - Damodaran, A. Valuation lecture series — https://pages.stern.nyu.edu/~adamodar/New_Home_Page/lectures.html
+   - Country risk premiums (`ctrypremApr26.xlsx`)
+   - Emerging-market betas (`betaemerg.xls`) and WACC benchmarks (`waccemerg.xls`)
+   - Historical implied ERP (`histimpl.xls`) and realised premia (`histretSP.xls`)
 
 3. **Online:**
-   - Damodaran Online (NYU Stern)
-   - Investopedia DCF articles
+   - Damodaran Online (NYU Stern): https://pages.stern.nyu.edu/~adamodar
+   - See [`docs/damodaran-stern-datasets-thai-set.md`](docs/damodaran-stern-datasets-thai-set.md) for full dataset extraction details
 
 ---
 

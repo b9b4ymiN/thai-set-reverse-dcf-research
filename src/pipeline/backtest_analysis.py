@@ -13,10 +13,10 @@ from src.pipeline.backtest import DEFAULT_HORIZONS, ReverseDCFBacktester
 
 @dataclass
 class BacktestAnalysis:
-    snapshot_path: str = 'research_data/latest/fundamentals_snapshot.csv'
-    portfolio_returns_path: str = 'research_data/latest/backtest/portfolio_returns.csv'
-    summary_path: str = 'research_data/latest/backtest/summary.csv'
-    holdings_dir: str = 'research_data/latest/backtest'
+    snapshot_path: str = 'research_data/source_of_truth_100/fundamentals_snapshot.csv'
+    portfolio_returns_path: str = 'research_data/source_of_truth_100/backtest/portfolio_returns.csv'
+    summary_path: str = 'research_data/source_of_truth_100/backtest/summary.csv'
+    holdings_dir: str = 'research_data/source_of_truth_100/backtest'
 
     def __post_init__(self) -> None:
         self.snapshot = pd.read_csv(self.snapshot_path)
@@ -120,13 +120,13 @@ def _markdown_table(df: pd.DataFrame) -> List[str]:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description='Generate sector and sensitivity analysis from backtest outputs.')
-    parser.add_argument('--snapshot-path', default='research_data/latest/fundamentals_snapshot.csv')
-    parser.add_argument('--portfolio-returns-path', default='research_data/latest/backtest/portfolio_returns.csv')
-    parser.add_argument('--summary-path', default='research_data/latest/backtest/summary.csv')
-    parser.add_argument('--observations-path', default='research_data/latest/fundamental_observations.csv')
-    parser.add_argument('--price-history-path', default='research_data/latest/price_history.csv')
-    parser.add_argument('--benchmark-history-path', default='research_data/latest/benchmark_history.csv')
-    parser.add_argument('--output-dir', default='research_data/latest/backtest')
+    parser.add_argument('--snapshot-path', default='research_data/source_of_truth_100/fundamentals_snapshot.csv')
+    parser.add_argument('--portfolio-returns-path', default='research_data/source_of_truth_100/backtest/portfolio_returns.csv')
+    parser.add_argument('--summary-path', default='research_data/source_of_truth_100/backtest/summary.csv')
+    parser.add_argument('--observations-path', default='research_data/source_of_truth_100/fundamental_observations.csv')
+    parser.add_argument('--price-history-path', default='research_data/source_of_truth_100/price_history.csv')
+    parser.add_argument('--benchmark-history-path', default='research_data/source_of_truth_100/benchmark_history.csv')
+    parser.add_argument('--output-dir', default='research_data/source_of_truth_100/backtest')
     parser.add_argument('--top-n', type=int, default=10)
     parser.add_argument('--horizons', nargs='*', type=int, default=list(DEFAULT_HORIZONS))
     parser.add_argument('--wacc-values', nargs='*', type=float, default=[0.06, 0.08, 0.10])

@@ -14,16 +14,16 @@ import pandas as pd
 
 @dataclass
 class BacktestVisualizer:
-    summary_path: str = 'research_data/latest/backtest/summary.csv'
-    sector_summary_path: str = 'research_data/latest/backtest/sector_summary.csv'
-    sensitivity_path: str = 'research_data/latest/backtest/wacc_sensitivity.csv'
+    summary_path: str = 'research_data/source_of_truth_100/backtest/summary.csv'
+    sector_summary_path: str = 'research_data/source_of_truth_100/backtest/sector_summary.csv'
+    sensitivity_path: str = 'research_data/source_of_truth_100/backtest/wacc_sensitivity.csv'
 
     def __post_init__(self) -> None:
         self.summary = pd.read_csv(self.summary_path)
         self.sector_summary = pd.read_csv(self.sector_summary_path)
         self.sensitivity = pd.read_csv(self.sensitivity_path)
 
-    def generate(self, output_dir: str = 'research_data/latest/backtest/figures') -> Dict[str, str]:
+    def generate(self, output_dir: str = 'research_data/source_of_truth_100/backtest/figures') -> Dict[str, str]:
         output = Path(output_dir)
         output.mkdir(parents=True, exist_ok=True)
 
@@ -110,10 +110,10 @@ class BacktestVisualizer:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description='Generate thesis-ready backtest figures.')
-    parser.add_argument('--summary-path', default='research_data/latest/backtest/summary.csv')
-    parser.add_argument('--sector-summary-path', default='research_data/latest/backtest/sector_summary.csv')
-    parser.add_argument('--sensitivity-path', default='research_data/latest/backtest/wacc_sensitivity.csv')
-    parser.add_argument('--output-dir', default='research_data/latest/backtest/figures')
+    parser.add_argument('--summary-path', default='research_data/source_of_truth_100/backtest/summary.csv')
+    parser.add_argument('--sector-summary-path', default='research_data/source_of_truth_100/backtest/sector_summary.csv')
+    parser.add_argument('--sensitivity-path', default='research_data/source_of_truth_100/backtest/wacc_sensitivity.csv')
+    parser.add_argument('--output-dir', default='research_data/source_of_truth_100/backtest/figures')
     return parser.parse_args()
 
 

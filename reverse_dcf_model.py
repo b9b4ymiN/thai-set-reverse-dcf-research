@@ -2,6 +2,24 @@
 """
 Reverse DCF Model for Thai SET Stocks
 Calculates implied growth rates based on current stock prices
+
+Damodaran Framework Alignment
+==============================
+This module implements the reverse DCF methodology following Aswath Damodaran's
+valuation framework:
+
+- 2-stage DCF with linear growth decay (Damodaran, *Investment Valuation*, Ch.12)
+- Terminal value via the Gordon Growth Model (Damodaran, *Investment Valuation*, Ch.12)
+- Growth differential as implied-vs-actual growth gap (Damodaran, *Investment Valuation*, Ch.25)
+
+Key Damodaran references:
+  - Damodaran, A. (2012). *Investment Valuation*, 3rd ed., Wiley. Chapters 12-14, 25.
+  - Damodaran, A. (2006). *Damodaran on Valuation*, 2nd ed., Wiley. Chapter 5.
+  - NYU Stern lecture notes: pages.stern.nyu.edu/~adamodar/
+  - Blog & quarterly data updates: aswathdamodaran.blogspot.com
+  - Thai SET adaptation guide: docs/damodaran-stern-datasets-thai-set.md
+
+Formula-to-Damodaran mapping: .omc/drafts/formula-damodaran-mapping.md
 """
 
 import pandas as pd
@@ -18,27 +36,60 @@ def calculate_intrinsic_value_static(base_fcf: float,
                                      shares_outstanding: float,
                                      net_debt: float = 0,
                                      projection_years: int = 10) -> float:
-    """Calculate intrinsic value per share using a DCF model."""
+    """Calculate intrinsic value per share using a 2-stage DCF model.
+
+    Damodaran 2-stage DCF structure (*Investment Valuation*, Ch.12; *Damodaran on
+    Valuation*, Ch.5):
+
+    - Stage 1 (years 1-5): FCF grows at the constant high-growth rate.
+    - Stage 2 (years 6-10): Growth linearly decays from the high-growth rate to
+      the terminal growth rate, with each year's FCF chained from the prior year.
+    - Terminal value uses the Gordon Growth Model:
+      TV = FCF_N * (1 + g_terminal) / (WACC - g_terminal).
+
+    The terminal growth guard ensures g_terminal < WACC (Damodaran's requirement
+    that the perpetual growth rate cannot exceed the discount rate).
+
+    Args:
+        base_fcf: Free cash flow in the base year.
+        growth_rate: High-growth rate for stage 1 (decimal, e.g. 0.10 for 10%).
+        wacc: Weighted average cost of capital (decimal).
+        terminal_growth: Long-run stable growth rate (decimal, e.g. 0.025).
+        shares_outstanding: Total shares outstanding.
+        net_debt: Total debt minus cash (default 0).
+        projection_years: Total projection horizon (default 10).
+
+    Returns:
+        Intrinsic value per share.
+    """
 
     fcf_forecast = []
     discount_factors = []
+    prev_fcf = base_fcf
 
     for year in range(1, projection_years + 1):
         if year <= 5:
-            fcf = base_fcf * (1 + growth_rate) ** year
+            # Stage 1: constant high-growth (Damodaran, Investment Valuation Ch.12)
+            fcf = prev_fcf * (1 + growth_rate)
         else:
+            # Stage 2: linear growth decay toward terminal rate
+            # (Damodaran, Investment Valuation Ch.12 — 2-stage DCF with transition)
             remaining_years = year - 5
             declining_growth = growth_rate - ((growth_rate - terminal_growth) * (remaining_years / 5))
-            fcf = base_fcf * (1 + growth_rate) ** 5 * (1 + declining_growth) ** remaining_years
+            fcf = prev_fcf * (1 + declining_growth)
 
         fcf_forecast.append(fcf)
         discount_factors.append(1 / (1 + wacc) ** year)
+        prev_fcf = fcf
 
     pv_fcf = sum(fcf * df for fcf, df in zip(fcf_forecast, discount_factors))
 
+    # Terminal growth guard: g_terminal must be < WACC
+    # (Damodaran, Investment Valuation Ch.12 — perpetual growth constraint)
     if wacc <= terminal_growth:
         terminal_growth = wacc - 0.005
 
+    # Terminal value via Gordon Growth Model (Damodaran, Investment Valuation Ch.12)
     terminal_fcf = fcf_forecast[-1] * (1 + terminal_growth)
     terminal_value = terminal_fcf / (wacc - terminal_growth)
     pv_terminal_value = terminal_value * discount_factors[-1]
@@ -55,15 +106,33 @@ def solve_reverse_dcf(base_fcf: float,
                       initial_growth_guess: float = 0.05,
                       tolerance: float = 0.001,
                       max_iterations: int = 1000) -> Tuple[float, dict]:
-    """Solve for the implied growth rate given market price and DCF assumptions."""
+    """Solve for the implied growth rate given market price and DCF assumptions.
+
+    This is the core of the reverse DCF approach: rather than projecting growth
+    and deriving value, we observe the market price and back-solve the growth
+    rate that would justify it. This follows Damodaran's "what is the market
+    pricing in?" framing (*Investment Valuation*, Ch.25; NYU Stern DCF lectures).
+
+    Uses binary search over growth rates [-50%, +100%] — the wide bounds are an
+    implementation choice, not a Damodaran prescription, but cover the plausible
+    range for both distressed and hyper-growth scenarios.
+
+    The safe terminal growth is capped at 2.5% (consistent with Damodaran's
+    guidance that terminal growth should not exceed long-term risk-free rate or
+    nominal GDP growth) with a floor ensuring g_terminal < WACC.
+    """
     if base_fcf <= 0 or current_price <= 0 or shares_outstanding <= 0:
         return 0.0, {'error': 'Invalid inputs'}
 
+    # Binary search bounds: [-50%, +100%] — implementation choice covering
+    # distressed to hyper-growth scenarios (no specific Damodaran prescription)
     low = -0.50
     high = 1.00
 
     for iteration in range(max_iterations):
         mid = (low + high) / 2
+        # Terminal growth cap at 2.5%, floor at 0.5%, and at least 1% below WACC
+        # Consistent with Damodaran's guidance: g_terminal <= risk-free rate (Investment Valuation Ch.12)
         safe_terminal_growth = min(0.025, max(wacc - 0.01, 0.005))
         intrinsic_value = calculate_intrinsic_value_static(
             base_fcf=base_fcf,
@@ -209,6 +278,8 @@ class ReverseDCFModel:
                     'Implied_Growth_Rate': implied_growth * 100,  # Convert to percentage
                     'Intrinsic_Value': details.get('intrinsic_value', 0),
                     'Premium_Discount': details.get('premium_discount', 0) * 100,  # Percentage
+                    # Growth differential: implied - actual (Damodaran reverse DCF framing, Ch.25)
+                    # Negative = market expects less than history = potential undervaluation
                     'Growth_Differential': (implied_growth - row['Revenue_Growth']) * 100,
                     'ROE': row['ROE'],
                     'Debt_to_Equity': row['Debt_to_Equity'],
@@ -221,7 +292,12 @@ class ReverseDCFModel:
         return results_df
 
     def _get_recommendation(self, implied_growth: float, actual_growth: float, details: dict) -> str:
-        """Generate investment recommendation based on Reverse DCF"""
+        """Generate investment recommendation based on Reverse DCF.
+
+        The growth differential (implied - actual) follows Damodaran's reverse
+        DCF interpretation: when the market implies lower growth than fundamentals
+        show, the stock may be undervalued (*Investment Valuation*, Ch.25).
+        """
 
         # Growth differential: Implied Growth - Actual Growth
         # Negative means market expects less than historical -> potential opportunity

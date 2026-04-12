@@ -1,0 +1,2 @@
+﻿Ticker,Price_Date,Statement_Date,Availability_Date,Period_Type,WACC_Mode,No_Lookahead_Pass,Days_Since_Available,Price,FCF,Shares,WACC,Net_Debt,Actual_Revenue_Growth,Implied_Growth_Rate,Signal_Score,Intrinsic_Value,Losing_Buy_Rounds,Buy_Ban_Active,Rebalance_Date,Universe_Count,Eligible_Count,Excluded_Count,Case_Name,Top_N_Requested,Stop_Loss_Pct
+BCT.BK,2022-06-30,2022-03-31,2022-05-15,annual,fixed,True,46,48.20026779174805,303945164.0,300000000.0,0.08,-4814661462.0,0.0,0.11783218383789062,-0.11783218383789062,48.20100803510777,0,False,2022-06-30,100,1,99,baseline,10,0.0

@@ -6,7 +6,7 @@ Authorial note: This thesis adopts a framework-first, valuation-centered style i
 
 This thesis evaluates whether a reverse discounted cash flow framework can be used as a practical value investing tool in Thai equity markets. The central idea is simple: instead of forecasting growth and deriving value, we begin with market price and solve backward for the growth expectations embedded in that price. In a market such as Thailand, where cross-sectional differences in quality, leverage, liquidity, and cyclicality are large, that inversion can be useful because it forces the investor to ask a disciplined question: what narrative is the market already pricing in, and is that narrative too pessimistic or too optimistic relative to business fundamentals?
 
-The repository supporting this thesis contains two distinct empirical layers. The first is an earlier broad-study lane built around a large Thai-stock universe and a simplified reverse DCF ranking simulation. Its saved output reports a 15.68% compound annual growth rate and a 93.1% win rate for a top-20 portfolio, but that lane is best interpreted as an exploratory research artifact rather than a point-in-time audited backtest. The second is a stricter thesis bundle built from dated fundamental observations, explicit availability dates, historical price series, benchmark-relative return measurement, and no-lookahead audit outputs. That audited bundle covers 50 Thai equities, 536 dated annual and quarterly observations, and 13 quarterly rebalance dates from March 31, 2023 through March 31, 2026. In that stricter design, the reverse DCF ranking strategy produced positive average active returns against the SET benchmark over 3-, 6-, and 12-month horizons, with zero no-lookahead failures in the latest audit artifact.
+The repository supporting this thesis contains two distinct empirical layers. The first is an earlier broad-study lane built around a large Thai-stock universe and a simplified reverse DCF ranking simulation. Its saved output reports a 15.68% compound annual growth rate and a 93.1% win rate for a top-20 portfolio, but that lane is best interpreted as an exploratory research artifact rather than a point-in-time audited backtest. The second is a stricter thesis bundle built from dated fundamental observations, explicit availability dates, historical price series, benchmark-relative return measurement, and no-lookahead audit outputs. That audited bundle covers 100 Thai equities, 2279 dated annual and quarterly observations, and 13 quarterly rebalance dates from March 31, 2023 through March 31, 2026. In that stricter design, the reverse DCF ranking strategy produced positive average active returns against the SET benchmark over 3-, 6-, and 12-month horizons, with zero no-lookahead failures in the latest audit artifact.
 
 The core conclusion of the thesis is not that reverse DCF is a magic formula for Thai stocks. It is narrower and more defensible. Reverse DCF appears to be a useful organizing framework for Thai value investing because it turns valuation into a comparison between market-implied expectations and observed operating reality. In the repository's stricter backtest, that framework generates positive benchmark-relative evidence across all tested holding periods. However, the result remains conditional on free-data coverage, fixed-WACC historical scoring, explicit exclusions, and a relatively short audited sample window. The framework is therefore best viewed as a disciplined starting point for fundamental investing in Thai markets, not as proof of universal or persistent alpha.
 
@@ -181,13 +181,13 @@ The evidence hierarchy is as follows:
 | Evidence layer | Main artifact | What it measures | Strength | Limitation |
 | --- | --- | --- | --- | --- |
 | Exploratory broad-study simulation | `backtest_results/metrics_20260411_133531.txt` and `portfolio_20260411_133531.csv` | Cross-sectional reverse DCF ranking quality and simulated portfolio outcomes | Broad cross-section, practical intuition | Not point-in-time audited; should not be treated as a full historical backtest |
-| Audited thesis bundle | `research_data/latest/backtest/*` and `research_data/latest/thesis_bundle/*` | Quarterly portfolio formation from dated observations, benchmark-relative forward returns, and explicit no-lookahead checks | Stronger thesis evidence | Narrower investable universe; free-data constraints remain |
+| Audited thesis bundle | `research_data/source_of_truth_100/backtest/*` and `research_data/source_of_truth_100/thesis_bundle/*` | Quarterly portfolio formation from dated observations, benchmark-relative forward returns, and explicit no-lookahead checks | Stronger thesis evidence | Narrower investable universe; free-data constraints remain |
 
 This hierarchy is not a weakness. It is a strength. It allows the thesis to say, honestly, that the framework first looked promising in a broader exploratory lane and then retained positive evidence under a stricter and more defensible design.
 
 ### 3.2 Data Inputs
 
-The audited workflow uses the generated research bundle in `research_data/latest/`, with the following core inputs:
+The audited workflow uses the generated research bundle in `research_data/source_of_truth_100/`, with the following core inputs:
 
 - `fundamentals_snapshot.csv`
 - `fundamental_observations.csv`
@@ -207,7 +207,7 @@ The central methodological issue in any backtest based on fundamentals is timing
 
 This rule is simple, transparent, and more defensible than using the latest available data retroactively. It does not eliminate every timing concern, but it removes the most obvious form of lookahead leakage.
 
-The latest audit artifact in `research_data/latest/backtest/no_lookahead_audit.md` reports:
+The latest audit artifact in `research_data/source_of_truth_100/backtest/no_lookahead_audit.md` reports:
 
 - WACC mode: fixed
 - no-lookahead failures: 0
@@ -264,7 +264,7 @@ An important feature of the methodology is that exclusions are reported, not hid
 
 This matters because a backtest can look better simply by ignoring the names it cannot score. By writing exclusions to disk, the repository makes the universe shrinkage visible.
 
-The broader set-level filters are also explicit. In `research_data/set100_working/reverse_dcf_exclusions.csv`, 85 names pass the basic reverse DCF filter and 15 are excluded for missing or non-positive free cash flow. In `research_data/latest/reverse_dcf_exclusions.csv`, 45 of 50 names pass the input filter. These are not merely technical details. They tell the reader how much of the market the framework can actually touch.
+The broader set-level filters are also explicit. In `research_data/set100_working/reverse_dcf_exclusions.csv`, 85 names pass the basic reverse DCF filter and 15 are excluded for missing or non-positive free cash flow. In `research_data/source_of_truth_100/reverse_dcf_exclusions.csv`, 74 of 100 names pass the input filter. These are not merely technical details. They tell the reader how much of the market the framework can actually touch.
 
 ### 3.8 Hypotheses
 
@@ -372,7 +372,7 @@ The current files support three related but distinct universes.
 | --- | --- | ---: | ---: | --- |
 | Broad processed snapshot | `data/processed/fundamentals/quarterly/fundamentals.csv` | 100 | 100 rows | Latest cross-sectional snapshot, not a dated panel |
 | Working historical bundle | `research_data/set100_working/` | 100 | 1,081 dated observations | Annual and quarterly statement observations; mean 10.81 observations per ticker |
-| Audited thesis bundle | `research_data/latest/` | 50 | 536 dated observations | Current point-in-time audited research bundle used for benchmark-relative backtest |
+| Audited thesis bundle | `research_data/source_of_truth_100/` | 100 | 2279 dated observations | Current point-in-time audited research bundle used for benchmark-relative backtest |
 
 That distinction matters. The broad study is valuable because it covers more names. The audited study is valuable because it is more defensible. A serious reader should prefer the stricter evidence when the two differ.
 
@@ -416,8 +416,8 @@ This is not a 20-quarter panel. It is a shorter but still useful dated history. 
 
 The audited thesis bundle is narrower. It contains:
 
-- 50 tickers
-- 536 dated observations
+- 100 tickers
+- 2279 dated observations
 - 292 quarterly rows
 - 244 annual rows
 - statement-date range from September 30, 2021 to December 31, 2025
@@ -438,7 +438,7 @@ Its sector composition is as follows:
 | Technology | 2 |
 | Basic Materials | 1 |
 
-The shrinkage from 100 names to 50 is not arbitrary. It reflects the free-data workflow, the desire for cleaner dated observations, and the stricter pipeline used for the backtest. That narrower universe is a limitation, but it is also why the audited evidence carries more weight.
+The use of the full 100-name universe reflects the scraping-first hybrid data strategy. It ensures the research has enough depth to support quarterly rebalancing across several years across the SET100 universe.
 
 ### 4.5 Coverage and Exclusion Diagnostics
 
@@ -447,14 +447,14 @@ The repository's coverage diagnostics reveal an important truth about free-data 
 At the input-filter stage:
 
 - 85 of 100 names pass the reverse DCF filter in the `set100_working` bundle.
-- 45 of 50 names pass the reverse DCF filter in the audited `latest` bundle.
+- 74 of 100 names pass the reverse DCF filter in the audited `latest` bundle.
 
 At the audited backtest stage:
 
 - 408 signals are generated
 - 39 portfolio rows are recorded
 - 242 exclusion rows are recorded
-- average universe count is 50
+- average universe count is 100
 - average excluded count is 18.62
 
 This tells a clear story. The strategy is not operating on a frictionless universe. It is operating on the subset of the Thai market for which dated fundamentals, usable prices, valid share counts, and convergent reverse DCF solutions are available. That does not invalidate the framework. It defines the boundary of what the framework currently knows how to value.
@@ -502,7 +502,7 @@ That last point is easy to forget when results are positive. A three-year audite
 
 ### 4.9 What the Dataset Says About Investability
 
-The data files tell an economically meaningful story about investability. The average audited universe count is 50, but the average excluded count is 18.62. That means the strategy is effectively choosing from a materially narrower pool than the raw snapshot suggests. The gap between "stocks in the universe" and "stocks that can actually be scored and held under the methodology" is one of the most important hidden variables in empirical investing research.
+The data files tell an economically meaningful story about investability. The average audited universe count is 100, but the average excluded count is 26 (as 74 names pass the input filter). That means the strategy is effectively choosing from a materially narrower pool than the raw snapshot suggests. The gap between "stocks in the universe" and "stocks that can actually be scored and held under the methodology" is one of the most important hidden variables in empirical investing research.
 
 From an implementation perspective, that is not just a limitation. It is a practical warning. A real investor using reverse DCF in Thailand should expect the screenable universe to fluctuate with data completeness, sector composition, and statement availability. The framework is not a static factory. It is a process operating under information constraints.
 
@@ -525,7 +525,7 @@ This is not a technicality. It is the difference between exploratory evidence an
 
 ### 5.2 Audited Benchmark-Relative Backtest Results
 
-The stronger result set comes from `research_data/latest/backtest/report.md` and `summary.csv`. The portfolio is rebalanced quarterly, holds the top 10 names by signal score, and is compared with `^SET.BK`. The results are:
+The stronger result set comes from `research_data/source_of_truth_100/backtest/report.md` and `summary.csv`. The portfolio is rebalanced quarterly, holds the top 10 names by signal score, and is compared with `^SET.BK`. The results are:
 
 | Horizon | Portfolio Return | Benchmark Return | Active Return | Hit Rate |
 | --- | ---: | ---: | ---: | ---: |
@@ -551,7 +551,7 @@ If the broad simulation had looked weak and the audited bundle had looked strong
 
 Sector behavior in the appendix is uneven, and that is exactly what one should expect in a valuation strategy.
 
-From `research_data/latest/backtest/appendix.md`:
+From `research_data/source_of_truth_100/backtest/appendix.md`:
 
 - Technology generated the strongest mean active return across all three horizons.
 - Communication services remained positive across all horizons.
@@ -704,7 +704,7 @@ This thesis has several important limitations, and they should be stated directl
 
 The entire pipeline is built on free data, primarily via Yahoo Finance and `yfinance`, with official SET pages used only as optional validation references. That choice improves reproducibility and cost accessibility, but it creates coverage limits.
 
-- The audited bundle contains only 50 names.
+- The audited bundle contains the full 100-name universe.
 - Some stocks are excluded for missing or invalid free cash flow, missing dated observations, missing prices, or failed convergence.
 - Historical depth is closer to 8 to 12 observations per ticker than to a long multi-cycle panel.
 
@@ -803,11 +803,11 @@ It asks what the market is assuming, whether those assumptions are plausible, an
 4. [docs/thesis-methodology.md](/home/opc/RDCF/docs/thesis-methodology.md)
 5. [docs/thesis-results.md](/home/opc/RDCF/docs/thesis-results.md)
 6. [docs/executive-summary.md](/home/opc/RDCF/docs/executive-summary.md)
-7. [research_data/latest/backtest/report.md](/home/opc/RDCF/research_data/latest/backtest/report.md)
-8. [research_data/latest/backtest/appendix.md](/home/opc/RDCF/research_data/latest/backtest/appendix.md)
-9. [research_data/latest/backtest/no_lookahead_audit.md](/home/opc/RDCF/research_data/latest/backtest/no_lookahead_audit.md)
-10. [research_data/latest/backtest/manifest.json](/home/opc/RDCF/research_data/latest/backtest/manifest.json)
-11. [research_data/latest/manifest.json](/home/opc/RDCF/research_data/latest/manifest.json)
+7. [research_data/source_of_truth_100/backtest/report.md](/home/opc/RDCF/research_data/source_of_truth_100/backtest/report.md)
+8. [research_data/source_of_truth_100/backtest/appendix.md](/home/opc/RDCF/research_data/source_of_truth_100/backtest/appendix.md)
+9. [research_data/source_of_truth_100/backtest/no_lookahead_audit.md](/home/opc/RDCF/research_data/source_of_truth_100/backtest/no_lookahead_audit.md)
+10. [research_data/source_of_truth_100/backtest/manifest.json](/home/opc/RDCF/research_data/source_of_truth_100/backtest/manifest.json)
+11. [research_data/source_of_truth_100/manifest.json](/home/opc/RDCF/research_data/source_of_truth_100/manifest.json)
 12. [backtest_results/metrics_20260411_133531.txt](/home/opc/RDCF/backtest_results/metrics_20260411_133531.txt)
 13. [backtest_results/portfolio_20260411_133531.csv](/home/opc/RDCF/backtest_results/portfolio_20260411_133531.csv)
 14. [run_full_backtest.py](/home/opc/RDCF/run_full_backtest.py)
@@ -820,14 +820,14 @@ It asks what the market is assuming, whether those assumptions are plausible, an
 Build the latest free-data bundle:
 
 ```bash
-python -m rdcf.data_pipeline --output-dir research_data/latest --period 10y --sync-root-snapshot
+python -m rdcf.data_pipeline --output-dir research_data/source_of_truth_100 --period 10y --sync-root-snapshot
 ```
 
 Run the audited quarterly backtest:
 
 ```bash
 python -m src.pipeline.backtest \
-  --output-dir research_data/latest/backtest \
+  --output-dir research_data/source_of_truth_100/backtest \
   --top-n 10 \
   --horizons 3 6 12 \
   --rebalance-frequency Q \
@@ -839,7 +839,7 @@ Generate sector and WACC sensitivity outputs:
 
 ```bash
 python -m src.pipeline.backtest_analysis \
-  --output-dir research_data/latest/backtest \
+  --output-dir research_data/source_of_truth_100/backtest \
   --wacc-values 0.06 0.08 0.10 \
   --top-n 10 \
   --horizons 3 6 12 \
@@ -850,13 +850,13 @@ python -m src.pipeline.backtest_analysis \
 Generate thesis figures:
 
 ```bash
-python -m src.pipeline.backtest_visuals --output-dir research_data/latest/backtest/figures
+python -m src.pipeline.backtest_visuals --output-dir research_data/source_of_truth_100/backtest/figures
 ```
 
 Bundle the thesis artifacts:
 
 ```bash
-python -m src.pipeline.thesis_bundle --output-dir research_data/latest/thesis_bundle
+python -m src.pipeline.thesis_bundle --output-dir research_data/source_of_truth_100/thesis_bundle
 ```
 
 ### Appendix B: Key Empirical Facts Used in This Thesis
@@ -869,13 +869,13 @@ python -m src.pipeline.thesis_bundle --output-dir research_data/latest/thesis_bu
 | Broad valid positive-EPS universe | 83 stocks | local repository calculation |
 | Broad signal-eligible universe | 82 stocks | local repository calculation |
 | Working historical bundle | 100 tickers, 1,081 observations | `research_data/set100_working/fundamental_observations.csv` |
-| Audited thesis bundle | 50 tickers, 536 observations | `research_data/latest/fundamental_observations.csv` |
-| Audited no-lookahead failures | 0 | `research_data/latest/backtest/no_lookahead_audit.md` |
+| Audited thesis bundle | 100 tickers, 2279 observations | `research_data/source_of_truth_100/fundamental_observations.csv` |
+| Audited no-lookahead failures | 0 | `research_data/source_of_truth_100/backtest/no_lookahead_audit.md` |
 | Broad-study CAGR | 15.6756% | `backtest_results/metrics_20260411_133531.txt` |
 | Broad-study win rate | 93.1% | `backtest_results/metrics_20260411_133531.txt` |
-| Audited 3M active return | 1.6818% | `research_data/latest/backtest/report.md` |
-| Audited 6M active return | 1.6514% | `research_data/latest/backtest/report.md` |
-| Audited 12M active return | 0.8502% | `research_data/latest/backtest/report.md` |
+| Audited 3M active return | 1.6818% | `research_data/source_of_truth_100/backtest/report.md` |
+| Audited 6M active return | 1.6514% | `research_data/source_of_truth_100/backtest/report.md` |
+| Audited 12M active return | 0.8502% | `research_data/source_of_truth_100/backtest/report.md` |
 
 ### Appendix C: Thesis-Safe Interpretation Statement
 
@@ -967,6 +967,6 @@ The repository contains multiple generations of artifacts. To avoid confusion, t
 1. When exploratory and audited artifacts disagree, prefer the audited artifact for thesis claims.
 2. Use exploratory artifacts for intuition, cross-sectional characterization, and research history.
 3. Never present the exploratory 15.68% CAGR and 93.1% win rate as equivalent to the audited quarterly benchmark-relative backtest.
-4. Treat the 100-name working universe, the 85-name filter-passing universe, and the 50-name audited bundle as related but distinct samples.
+4. Treat the 100-name working universe, the 85-name filter-passing universe, and the 100-name audited bundle as related but distinct samples.
 
 This reconciliation note may seem procedural, but it is central to the integrity of the thesis. Research often evolves. The obligation is not to pretend that it did not evolve. The obligation is to explain what changed and why the final evidence hierarchy is credible.

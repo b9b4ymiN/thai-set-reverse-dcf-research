@@ -13,11 +13,11 @@ Can a **fundamental-only reverse DCF ranking strategy** select Thai stocks that 
 
 See also:
 - `docs/datasource-decision.md`
-- `research_data/latest/manifest.json`
+- `research_data/source_of_truth_100/manifest.json`
 
 ## Dataset used in this repo
 
-The current thesis workflow uses the generated research bundle under `research_data/latest/`.
+The current thesis workflow uses the generated research bundle under `research_data/source_of_truth_100/`.
 
 Core inputs:
 - `fundamentals_snapshot.csv`
@@ -63,7 +63,7 @@ Higher score means the company’s observed growth is stronger relative to what 
 
 Current implementation:
 
-- **Rebalance frequency:** quarterly
+- **Rebalance frequency:** quarterly (rebalance occurs when fundamentals change, aligned with the quarterly earnings cycle; see [`METHODOLOGY.md`](../METHODOLOGY.md) for the full Damodaran framework alignment)
 - **Portfolio construction:** equal-weight top 10 names by signal score
 - **Benchmark:** `^SET.BK`
 - **Holding periods tested:** 3, 6, 12 months
@@ -79,8 +79,8 @@ Current controls implemented in code and artifacts:
 - only prices on or before the rebalance date are used
 - backtest manifest records `wacc_mode`
 - audit artifacts are written:
-  - `research_data/latest/backtest/audit_sample.csv`
-  - `research_data/latest/backtest/no_lookahead_audit.md`
+  - `research_data/source_of_truth_100/backtest/audit_sample.csv`
+  - `research_data/source_of_truth_100/backtest/no_lookahead_audit.md`
 
 The latest run recorded:
 - `no_lookahead_failures = 0`
@@ -89,8 +89,8 @@ The latest run recorded:
 
 The backtest writes explicit exclusion artifacts instead of silently dropping names:
 
-- `research_data/latest/backtest/exclusions.csv`
-- `research_data/latest/backtest/summary.csv`
+- `research_data/source_of_truth_100/backtest/exclusions.csv`
+- `research_data/source_of_truth_100/backtest/summary.csv`
 
 Main exclusion reasons in the current run:
 - `invalid_fcf`
@@ -122,14 +122,14 @@ This makes the research more auditable and thesis-friendly.
 Build data:
 
 ```bash
-python -m rdcf.data_pipeline --output-dir research_data/latest --period 10y --sync-root-snapshot
+python -m rdcf.data_pipeline --output-dir research_data/source_of_truth_100 --period 10y --sync-root-snapshot
 ```
 
 Run backtest:
 
 ```bash
 python -m src.pipeline.backtest \
-  --output-dir research_data/latest/backtest \
+  --output-dir research_data/source_of_truth_100/backtest \
   --top-n 10 \
   --horizons 3 6 12 \
   --rebalance-frequency Q \
@@ -139,7 +139,7 @@ python -m src.pipeline.backtest \
 
 ## Validation checklist
 
-- review `research_data/latest/backtest/manifest.json`
-- review `research_data/latest/backtest/no_lookahead_audit.md`
-- review `research_data/latest/backtest/exclusions.csv`
+- review `research_data/source_of_truth_100/backtest/manifest.json`
+- review `research_data/source_of_truth_100/backtest/no_lookahead_audit.md`
+- review `research_data/source_of_truth_100/backtest/exclusions.csv`
 - compare `summary.csv` with `report.md`
