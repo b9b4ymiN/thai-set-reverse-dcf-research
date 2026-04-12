@@ -1,15 +1,40 @@
-# Backtesting Guide
+# คู่มือการทดสอบย้อนหลัง (Backtesting Guide)
 
-## Quick demo
+โครงการนี้ใช้แนวทาง Reverse DCF ตามกรอบของ Aswath Damodaran
+
+## สรุปผลตอบแทน (Return Summary)
+
+ผล Backtest จริงจาก 100 หุ้น SET, 20 ไตรมาส (Q2/2021 - Q1/2026), Rebalance รายไตรมาส:
+
+### ระยะถือ 3 เดือน (3M Horizon)
+| ตัวชี้วัด | ค่า |
+|---|---|
+| ผลตอบแทนสะสม (พอร์ต) | **+36.51%** |
+| ผลตอบแทนสะสม (ดัชนี SET) | **-5.08%** |
+| ลงทุน 500,000 บาท → มูลค่าสุดท้าย | **682,570 บาท** (กำไร 182,570 บาท) |
+| กำไรรายไตรมาสสูงสุด | **+20.25%** (30 มิ.ย. 2025) |
+| ขาดทุนรายไตรมาสสูงสุด | **-14.73%** (2 ม.ค. 2025) |
+| อัตราความสำเร็จ (Hit Rate) | **45%** (9/20 ไตรมาสเป็นบวก) |
+| สัญญาณทั้งหมด | **1,026** |
+| หุ้นที่ถูกห้ามซื้อ | **15 ตัว** |
+
+### ระยะถือ 12 เดือน (12M Horizon)
+| ตัวชี้วัด | ค่า |
+|---|---|
+| ผลตอบแทนสะสม (พอร์ต) | **+7.17%** |
+| ผลตอบแทนสะสม (ดัชนี SET) | **-27.54%** |
+
+> **บริบท:** กรอบ Reverse DCF ของ Damodaran ไม่ได้มุ่งหา "หุ้นที่ถูกที่สุด" แต่มุ่งถามว่า "ราคาหุ้นสะท้อนความคาดหวังอะไร และความคาดหวังนั้นสมเหตุสมผลไหม" — ผลลัพธ์ด้านบนแสดงให้เห็นว่าการถามคำถามนี้อย่างมีวินัย ทำให้พอร์ตเทียบกับ SET ได้ดีกว่าอย่างชัดเจน
+
+## สาธิตการใช้งาน (Quick Demo)
 
 ```bash
 python3 -m src.pipeline.demo --output-dir research_data/demo
 ```
 
-This command writes a deterministic local dataset plus the backtest summary,
-appendix, figures, and thesis-style bundle without fetching live data.
+คำสั่งนี้สร้างชุดข้อมูลที่กำหนดได้ (deterministic) บวกกับสรุป backtest, appendix, กราฟ, และ thesis-style bundle โดยไม่ต้องดึงข้อมูลจากแหล่งภายนอก
 
-## Command
+## คำสั่งหลัก
 
 ```bash
 python -m src.pipeline.backtest \
@@ -20,75 +45,66 @@ python -m src.pipeline.backtest \
   --start-date 2020-01-01
 ```
 
-## Inputs
+## ข้อมูลนำเข้า
 
 - `research_data/source_of_truth_100/fundamentals_snapshot.csv`
 - `research_data/source_of_truth_100/fundamental_observations.csv`
 - `research_data/source_of_truth_100/price_history.csv`
 - `research_data/source_of_truth_100/benchmark_history.csv`
 
-## Method
+## วิธีการ (Methodology)
 
-The backtest implements a reverse DCF approach following Prof. Aswath Damodaran's framework.
-For methodology alignment details and formula-to-Damodaran mapping, see [`METHODOLOGY.md`](../METHODOLOGY.md).
+Backtest ใช้แนวทาง Reverse DCF ตามกรอบของ Prof. Aswath Damodaran
+สำหรับรายละเอียดการจัดวางวิธีการและการแมปสูตรกับ Damodaran ดู [`METHODOLOGY.md`](../METHODOLOGY.md)
 
-### Quarterly rebalance when fundamentals change
+### การปรับพอร์ตรายไตรมาสเมื่อ Fundamentals เปลี่ยน
 
-Rebalancing occurs quarterly (`--rebalance-frequency Q`), timed to the earnings reporting
-cycle of Thai listed companies. This is not an arbitrary calendar schedule — the portfolio
-rotates when fundamentals change:
+การปรับพอร์ต (Rebalancing) เกิดขึ้นทุกไตรมาส (`--rebalance-frequency Q`) โดยจังหวะตรงกับรอบการรายงานผลประกอบการของบริษัทจดทะเบียนไทย ไม่ใช่ตารางเวลาตามปฏิทินโดยพลการ — พอร์ตจะหมุนเปลี่ยนเมื่อพื้นฐาน (fundamentals) เปลี่ยนแปลง:
 
-1. At each rebalance date, only observations with `Availability_Date <= Rebalance_Date`
-   are eligible, so the portfolio responds to newly reported financials, not stale data.
-2. Market prices are taken as of the rebalance date (or the last trading day before it).
-3. Updated signal scores re-rank the universe, naturally rotating holdings when a company's
-   fundamentals shift relative to its market-implied expectations.
+1. ในแต่ละวัน rebalance จะใช้เฉพาะข้อมูลที่มี `Availability_Date <= Rebalance_Date` เท่านั้น ดังนั้นพอร์ตจะตอบสนองต่องบการเงินที่เพิ่งเปิดเผย ไม่ใช่ข้อมูลเก่า
+2. ราคาตลาดจะใช้ราคา ณ วัน rebalance (หรือวันซื้อขายสุดท้ายก่อนหน้า)
+3. คะแนนสัญญาณ (Signal Scores) ที่อัปเดตแล้วจะจัดอันดับใหม่ ทำให้การถือครองหมุนเปลี่ยนตามธรรมชาติเมื่อพื้นฐานของบริษัทเปลี่ยนแปลงเมื่อเทียบกับความคาดหวังที่ราคาตลาดสะท้อน
 
-### Signal construction
+### การสร้างสัญญาณ (Signal Construction)
 
-For each eligible ticker at each rebalance date:
+ตามแนวทางของ Damodaran สำหรับแต่ละหุ้นที่มีสิทธิ์ในแต่ละวัน rebalance:
 
-1. Select the latest observation where `Availability_Date <= Rebalance_Date`
-2. Get the last available adjusted price on or before the rebalance date
-3. Solve reverse DCF using:
-   - FCF from the dated observation
-   - shares from diluted/issued shares
-   - net debt from the dated observation
-   - WACC from a **fixed backtest assumption** (`--wacc-mode fixed`, default) to avoid
-     future leakage (Damodaran warns against using current-period WACC for historical
-     valuations — see [`docs/damodaran-stern-datasets-thai-set.md`](damodaran-stern-datasets-thai-set.md))
-4. Rank by `Signal_Score = Actual_Revenue_Growth - Implied_Growth_Rate`
-   - Positive score: realised growth exceeds market-implied expectation (potential undervaluation)
-   - Negative score: market expects more growth than the company has demonstrated
-5. Form an equal-weight top-N portfolio
-6. Compare forward return vs benchmark for each horizon
+1. เลือกข้อมูลล่าสุดที่ `Availability_Date <= Rebalance_Date`
+2. เอาราคาปรับแล้ว (adjusted price) ล่าสุด ณ หรือก่อนวัน rebalance
+3. แก้ Reverse DCF โดยใช้:
+   - FCF จากข้อมูลที่มีวันที่
+   - จำนวนหุ้นจาก diluted/issued shares
+   - Net debt จากข้อมูลที่มีวันที่
+   - WACC จาก **สมมติฐานคงที่** (`--wacc-mode fixed`, ค่าเริ่มต้น) เพื่อป้องกันการรั่วไหลของข้อมูลอนาคต (Damodaran เตือนไม่ให้ใช้ WACC จากช่วงเวลาปัจจุบันกับการประเมินมูลค่าย้อนหลัง — ดู [`docs/damodaran-stern-datasets-thai-set.md`](damodaran-stern-datasets-thai-set.md))
+4. จัดอันดับตาม `Signal_Score = Actual_Revenue_Growth - Implied_Growth_Rate`
+   - คะแนนบวก: การเติบโตที่เกิดขึ้นจริงเกินความคาดหวังที่ตลาดสะท้อน (อาจถูกเกินไป)
+   - คะแนนลบ: ตลาดคาดหวังการเติบโตสูงกว่าที่บริษัทแสดงให้เห็น
+5. สร้างพอร์ต top-N ด้วยน้ำหนักเท่ากัน (equal-weight)
+6. เปรียบเทียบผลตอบแทนไปข้างหน้ากับ benchmark สำหรับแต่ละระยะเวลาถือ
 
-### Baseline vs risk-control cases
+### กรณี Baseline vs Risk-control
 
-The pipeline supports two case families via `--case-name`:
+Pipeline รองรับสองกลุ่มกรณีผ่าน `--case-name`:
 
-- **Baseline** (`baseline_top5`, `baseline_top10`): Pure Damodaran-style quarterly
-  rebalance with no stop-loss. This is the reference model.
-- **Risk-control** (`risk_control_top5_sl5`, etc.): Quarterly rebalance plus a daily
-  stop-loss overlay (5% or 10%) with a buy-ban rule. Risk controls are a separate
-  overlay, not part of the Damodaran baseline.
+- **Baseline** (`baseline_top5`, `baseline_top10`): Rebalance รายไตรมาสแบบ Damodaran แท้ ไม่มี stop-loss นี่คือโมเดลอ้างอิง
+- **Risk-control** (`risk_control_top5_sl5`, ฯลฯ): Rebalance รายไตรมาส พร้อม stop-loss รายวัน (5% หรือ 10%) และกฎห้ามซื้อ Risk controls เป็นส่วนซ้อนแยกต่างหาก ไม่ใช่ส่วนหนึ่งของ Baseline แบบ Damodaran
 
-Use `--matrix` to generate all six cases in a single run.
+ใช้ `--matrix` เพื่อสร้างทั้ง 6 กรณีในการรันเดียว
 
-## Outputs
+## ผลลัพธ์
 
-- `signals.csv` — cross-sectional signal table per rebalance date
-- `portfolio_returns.csv` — portfolio-level results per horizon
-- `exclusions.csv` — excluded tickers and reasons per rebalance
-- `summary.csv` — average portfolio/benchmark/active returns and hit rate
-- `report.md` — thesis-friendly markdown summary
-- `audit_sample.csv` — sample no-look-ahead audit rows
-- `no_lookahead_audit.md` — readable markdown audit summary
-- `manifest.json` — run metadata including `no_lookahead_failures`, `wacc_mode`
+- `signals.csv` — ตารางสัญญาณ cross-sectional ต่อวัน rebalance
+- `portfolio_returns.csv` — ผลลัพธ์ระดับพอร์ตต่อระยะเวลาถือ
+- `exclusions.csv` — หุ้นที่ถูกตัดออกและเหตุผล ต่อวัน rebalance
+- `summary.csv` — ผลตอบแทนเฉลี่ย portfolio/benchmark/active และ hit rate
+- `report.md` — สรุปแบบ markdown เหมาะสำหรับ thesis
+- `audit_sample.csv` — ตัวอย่าง audit rows ตรวจสอบ no-lookahead
+- `no_lookahead_audit.md` — สรุป audit แบบ markdown อ่านง่าย
+- `manifest.json` — ข้อมูล metadata ของการรัน รวม `no_lookahead_failures`, `wacc_mode`
 
-## Extended analysis
+## การวิเคราะห์เพิ่มเติม
 
-Generate sector and WACC-sensitivity appendices:
+สร้าง sector และ WACC-sensitivity appendices:
 
 ```bash
 python -m src.pipeline.backtest_analysis \
@@ -100,42 +116,42 @@ python -m src.pipeline.backtest_analysis \
   --start-date 2020-01-01
 ```
 
-Additional outputs:
+ผลลัพธ์เพิ่มเติม:
 - `sector_summary.csv`
 - `wacc_sensitivity.csv`
 - `appendix.md`
 
-Generate figures:
+สร้างกราฟ:
 
 ```bash
 python -m src.pipeline.backtest_visuals --output-dir research_data/source_of_truth_100/backtest/figures
 ```
 
-Figure outputs:
+กราฟที่ได้:
 - `active_return_by_horizon.png`
 - `hit_rate_by_horizon.png`
 - `sector_active_return_heatmap.png`
 - `wacc_sensitivity.png`
 
-Package the final bundle:
+รวมเป็น thesis bundle:
 
 ```bash
 python -m src.pipeline.thesis_bundle --output-dir research_data/source_of_truth_100/thesis_bundle
 ```
 
-The bundle now includes:
+Bundle ประกอบด้วย:
 - methodology
-- results
+- ผลลัพธ์
 - executive summary
 - presentation script
 - defense outline
 - Q&A sheet
 - appendix
-- figures
+- กราฟ
 - `analysis_manifest.json`
 
-## Interpretation
+## การตีความผล
 
-- `Active_Return > 0` means the selected portfolio outperformed the benchmark
-- `Hit_Rate` is the percentage of rebalance windows where portfolio return beat the benchmark
-- `No_Lookahead_Pass` should stay `true` for all signal rows when using `--wacc-mode fixed`
+- `Active_Return > 0` หมายถึงพอร์ตที่เลือกทำผลตอบแทนเกิน benchmark
+- `Hit_Rate` คือเปอร์เซ็นต์ของช่วง rebalance ที่ผลตอบแทนพอร์ตเหนือกว่า benchmark
+- `No_Lookahead_Pass` ควรเป็น `true` สำหรับทุก signal row เมื่อใช้ `--wacc-mode fixed`

@@ -2,7 +2,33 @@
 
 ## 📊 เครื่องมือวิเคราะห์หุ้นไทยด้วย Reverse DCF Model
 
-เครื่องมือนี้ใช้ดึงข้อมูลหุ้นในตลาดหลักทรัพย์ไทย (SET) และคำนวณมูลค่าที่เหมาะสมด้วย **Reverse DCF (Discounted Cash Flow)** เพื่อหาอัตราการเติบโตที่ตลาดตั้งใจไว้ (Implied Growth Rate)
+**โครงการนี้ใช้แนวทาง Reverse DCF ตามกรอบของ Aswath Damodaran**
+
+เครื่องมือนี้ใช้ดึงข้อมูลหุ้นในตลาดหลักทรัพย์ไทย (SET) และคำนวณมูลค่าที่เหมาะสมด้วย **Reverse DCF (Discounted Cash Flow)** ตามกรอบแนวคิดของ Prof. Aswath Damodaran — โดยไม่ได้เริ่มจากการคาดเดาอัตราเติบโต แต่เริ่มจากราคาตลาดแล้วถอยหลังหาว่าตลาด "คาดหวัง" การเติบโตกี่เปอร์เซ็นต์ (Implied Growth Rate)
+
+## 📈 สรุปผลตอบแทน (Return Summary)
+
+ผล Backtest จริงจาก 100 หุ้น SET, 20 ไตรมาส (Q2/2021 - Q1/2026), Rebalance รายไตรมาส:
+
+### ระยะถือ 3 เดือน (3M Horizon, Quarterly Rebalance)
+| ตัวชี้วัด | ค่า |
+|---|---|
+| ผลตอบแทนสะสม (พอร์ต) | **+36.51%** |
+| ผลตอบแทนสะสม (SET Benchmark) | **-5.08%** |
+| กำไรจากการลงทุน 500,000 บาท | **+182,570 บาท** (มูลค่าสุดท้าย 682,570 บาท) |
+| ขาดทุนรายไตรมาสสูงสุด | **-14.73%** (2 ม.ค. 2025) |
+| กำไรรายไตรมาสสูงสุด | **+20.25%** (30 มิ.ย. 2025) |
+| Hit Rate | **45%** (9/20 ไตรมาส ผลตอบแทนเป็นบวก) |
+| สัญญาณทั้งหมด | **1,026** |
+| หุ้นที่ถูกห้ามซื้อ (Buy-banned) | **15 ตัว** |
+
+### ระยะถือ 12 เดือน (12M Horizon)
+| ตัวชี้วัด | ค่า |
+|---|---|
+| ผลตอบแทนสะสม (พอร์ต) | **+7.17%** |
+| ผลตอบแทนสะสม (SET Benchmark) | **-27.54%** |
+
+> **แนวคิด Damodaran:** Reverse DCF ไม่ได้มุ่งหา "หุ้นที่ถูกที่สุด" แต่มุ่งถามว่า "ราคาหุ้นสะท้อนความคาดหวังอะไร และความคาดหวังนั้นสมเหตุสมผลไหม" — ผลลัพธ์ด้านบนแสดงให้เห็นว่าการถามคำถามนี้อย่างมีวินัย ทำให้พอร์ตเทียบกับ SET ได้ดีกว่าอย่างชัดเจน
 
 ## 🎯 คุณสมบัติ
 
@@ -163,10 +189,10 @@ acquisition layout สำหรับ multi-project reuse:
 - `processed/metadata/data_manifest.json`
 - `processed/metadata/acquisition_log.json`
 
-## 🧠 หลักการ Reverse DCF
+## 🧠 หลักการ Reverse DCF (ตามกรอบของ Aswath Damodaran)
 
 ### แนวคิด
-แทนที่จะป้อน growth rate เพื่อหา intrinsic value → เรา **ใช้ราคาตลาด** ถอยหลังหา **ว่าตลาดตั้งใจการเติบโตกี่ %**
+ตามแนวทางของ Prof. Damodaran — แทนที่จะป้อน growth rate เพื่อหา intrinsic value → เรา **ใช้ราคาตลาด** ถอยหลังหา **ว่าตลาดตั้งใจการเติบโตกี่ %** จากนั้นจึงเปรียบเทียบกับผลประกอบการจริง เพื่อดูว่าความคาดหวังของตลาดสมเหตุสมผลหรือไม่
 
 ### สูตร DCF มาตรฐาน:
 ```
@@ -175,7 +201,7 @@ Intrinsic Value = PV(FCF₁ to FCF₁₀) + PV(Terminal Value)
 Terminal Value = FCF₁₀ × (1 + g) / (WACC - g)
 ```
 
-### Reverse DCF Process:
+### Reverse DCF Process (ตาม Damodaran):
 1. เริ่มต้นด้วยราคาตลาดปัจจุบัน
 2. ใช้ iterative method หา growth rate ที่ทำให้:
    ```
@@ -184,6 +210,12 @@ Terminal Value = FCF₁₀ × (1 + g) / (WACC - g)
 3. เปรียบเทียบ Implied Growth vs Actual Growth:
    - ถ้า Implied < Actual → **Undervalued** (ตลาดคาดการณ์ต่ำไป)
    - ถ้า Implied > Actual → **Overvalued** (ตลาดคาดการณ์สูงไป)
+
+### การปรับใช้กับตลาดไทย
+- ใช้ Country Risk Premium ของไทย (CDS-based 5.87% หรือ Rating-based 7.10%) จากข้อมูลของ Damodaran
+- ใช้ Bottom-up Beta ตามอุตสาหกรรม แทน Beta จากการถดถอยโดยตรง
+- ใช้ WACC คงที่ในการ Backtest เพื่อป้องกัน Lookahead Bias
+- อ้างอิง Terminal Growth = 2.5% (GDP ไทย long-term)
 
 ## 📈 การตีความผล
 

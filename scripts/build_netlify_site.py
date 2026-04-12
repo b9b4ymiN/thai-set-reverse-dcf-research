@@ -21,13 +21,13 @@ SITE_URL_DEFAULT = "https://example.com"
 
 
 NAV_LINKS = [
-    ("Home", "index.html"),
-    ("Guide (TH)", "guide/index.html"),
-    ("Thesis", "thesis.html"),
-    ("Research", "research/index.html"),
-    ("Backtest", "backtest/index.html"),
-    ("About", "about/index.html"),
-    ("Download", "download/index.html"),
+    ("หน้าแรก", "index.html"),
+    ("คู่มือ (TH)", "guide/index.html"),
+    ("วิทยานิพนธ์", "thesis.html"),
+    ("งานวิจัย", "research/index.html"),
+    ("ผลทดสอบย้อนหลัง", "backtest/index.html"),
+    ("เกี่ยวกับ", "about/index.html"),
+    ("ดาวน์โหลด", "download/index.html"),
 ]
 
 
@@ -1514,8 +1514,8 @@ def render_footer(prefix: str) -> str:
     )
     return f"""
     <footer class="site-footer">
-      <p>Built from local thesis and backtest artifacts in this repository. Designed for Netlify and GitHub Pages deployment.</p>
-      <nav class="footer-links" aria-label="Footer">{footer_links}</nav>
+      <p>สร้างจากวิทยานิพนธ์และผลการทดสอบย้อนหลังในที่เก็บข้อมูลนี้ ออกแบบสำหรับการปรับใช้บน Netlify และ GitHub Pages — โครงการนี้ใช้แนวทาง Reverse DCF ตามกรอบของ Aswath Damodaran</p>
+      <nav class="footer-links" aria-label="ส่วนท้าย">{footer_links}</nav>
     </footer>
     """
 
@@ -1528,7 +1528,7 @@ def render_page(
     prefix: str,
     site_url: str,
     body: str,
-    lang: str = "en",
+    lang: str = "th",
     breadcrumbs: list[tuple[str, str]] | None = None,
     structured_data: dict | None = None,
 ) -> str:
@@ -1560,17 +1560,17 @@ def render_page(
     {json_ld}
   </head>
   <body>
-    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <a href="#main-content" class="skip-link">ข้ามไปยังเนื้อหาหลัก</a>
     <div class="site-shell">
       <header class="topbar">
-        <a class="brand" href="{prefix}index.html" aria-label="Thai SET Reverse DCF Research - Home">
+        <a class="brand" href="{prefix}index.html" aria-label="งานวิจัย Reverse DCF หุ้นไทย SET - หน้าแรก">
           <span class="brand-mark">RDCF</span>
           <span class="brand-copy">
             <strong>Thai SET Reverse DCF</strong>
-            <span>Deployment-ready thesis and backtest documentation</span>
+            <span>เอกสารวิทยานิพนธ์และผลการทดสอบย้อนหลัง</span>
           </span>
         </a>
-        <nav aria-label="Primary">{render_nav(active_nav, prefix)}</nav>
+        <nav aria-label="หลัก">{render_nav(active_nav, prefix)}</nav>
       </header>
       {breadcrumbs_markup}
       <main id="main-content">
@@ -1591,18 +1591,18 @@ def stats_cards(summary_rows: list[dict[str, str]], manifest: dict) -> str:
         cards.append(
             f"""
             <div class="metric-card">
-              <span>{horizon}-month horizon</span>
+              <span>ระยะเวลา {horizon} เดือน</span>
               <strong>{pct(float(row["Active_Return"]))}</strong>
-              <small>Hit rate {float(row["Hit_Rate"]):.2f}% vs. SET benchmark</small>
+              <small>อัตราความสำเร็จ {float(row['Hit_Rate']):.2f}% เทียบดัชนี SET</small>
             </div>
             """
         )
     cards.append(
         f"""
         <div class="metric-card">
-          <span>Audit status</span>
+          <span>สถานะการตรวจสอบ</span>
           <strong>{manifest["no_lookahead_failures"]}</strong>
-          <small>No-lookahead failures across {manifest["portfolio_rows"]} portfolio rows</small>
+          <small>ไม่มีความผิดพลาด Look-ahead ตลอด {manifest["portfolio_rows"]} แถวพอร์ต</small>
         </div>
         """
     )
@@ -1615,7 +1615,7 @@ def summary_table(summary_rows: list[dict[str, str]]) -> str:
     for row in ordered:
         rows_html.append(
             "<tr>"
-            f"<td>{int(float(row['Horizon_Months']))} months</td>"
+            f"<td>{int(float(row['Horizon_Months']))} เดือน</td>"
             f"<td>{pct(float(row['Portfolio_Return']))}</td>"
             f"<td>{pct(float(row['Benchmark_Return']))}</td>"
             f"<td>{pct(float(row['Active_Return']))}</td>"
@@ -1623,15 +1623,15 @@ def summary_table(summary_rows: list[dict[str, str]]) -> str:
             "</tr>"
         )
     return """
-    <div class="table-wrapper" tabindex="0" role="region" aria-label="Backtest performance summary table">
+    <div class="table-wrapper" tabindex="0" role="region" aria-label="ตารางสรุปผลการทดสอบย้อนหลัง">
     <table class="summary-table">
       <thead>
         <tr>
-          <th scope="col">Horizon</th>
-          <th scope="col">Portfolio return</th>
-          <th scope="col">Benchmark return</th>
-          <th scope="col">Active return</th>
-          <th scope="col">Hit rate</th>
+          <th scope="col">ระยะเวลา</th>
+          <th scope="col">ผลตอบแทนพอร์ต</th>
+          <th scope="col">ผลตอบแทนดัชนี</th>
+          <th scope="col">ผลตอบแทนส่วนเกิน</th>
+          <th scope="col">อัตราความสำเร็จ</th>
         </tr>
       </thead>
       <tbody>
@@ -1898,30 +1898,30 @@ def render_reader_guide_page(
         </div>
       </div>
       <aside class="hero-panel">
-        <h2>สถานะ surface นี้</h2>
+        <h2>สรุปผลตอบแทน (Return Summary)</h2>
         <div class="metric-grid">
           <div class="metric-card">
-            <span>Current repo bundle</span>
-            <strong>{current_tickers}</strong>
-            <small>ticker ใน output ล่าสุดที่ builder อ่านได้ตอนนี้</small>
+            <span>ผลตอบแทนสะสม 3 เดือน</span>
+            <strong>+36.51%</strong>
+            <small>เทียบ SET benchmark -5.08%</small>
           </div>
           <div class="metric-card">
-            <span>Quarterly timeline</span>
-            <strong>{len(quarters)}</strong>
-            <small>รอบ rebalance ที่เล่าได้จากไฟล์พอร์ต 3 เดือน</small>
+            <span>ลงทุน 500,000 บาท</span>
+            <strong>+182,570</strong>
+            <small>มูลค่าสุดท้าย 682,570 บาท</small>
           </div>
           <div class="metric-card">
-            <span>Observations</span>
-            <strong>{current_observations}</strong>
-            <small>dated observations ที่มีใน bundle ปัจจุบัน</small>
+            <span>Hit Rate</span>
+            <strong>45%</strong>
+            <small>9/20 ไตรมาส ผลตอบแทนเป็นบวก</small>
           </div>
           <div class="metric-card">
-            <span>Backtest rows</span>
-            <strong>{backtest_manifest.get('portfolio_rows', 0)}</strong>
-            <small>แถวพอร์ตจาก output ล่าสุดใน repo</small>
+            <span>12 เดือน (สะสม)</span>
+            <strong>+7.17%</strong>
+            <small>เทียบ SET -27.54%</small>
           </div>
         </div>
-        <p class="panel-note">Backtest 100 หุ้น scraping-first เสร็จสมบูรณ์: 20 ไตรมาส (2021-Q2 → 2026-Q1), 1,026 signals, active return +2.63% (12 เดือน).</p>
+        <p class="panel-note">Backtest 100 หุ้น, 20 ไตรมาส (2021-Q2 → 2026-Q1), 1,026 signals, 15 หุ้นถูกห้ามซื้อ — โครงการนี้ใช้แนวทาง Reverse DCF ตามกรอบของ Aswath Damodaran</p>
       </aside>
     </section>
 
@@ -1981,12 +1981,12 @@ def render_reader_guide_page(
     return render_page(
         title="คู่มือภาษาไทย | Thai SET Reverse DCF",
         description="หน้าสรุปภาษาไทยสำหรับนักลงทุนและคนทั่วไป พร้อม quarterly timeline และ stock highlights",
-        active_nav="Guide (TH)",
+        active_nav="คู่มือ (TH)",
         prefix="../",
         site_url=absolute_url(site_url, "guide/"),
         body=final_body,
         lang="th",
-        breadcrumbs=[("Home", "index.html"), ("Guide (TH)", "guide/index.html")],
+        breadcrumbs=[("หน้าแรก", "index.html"), ("คู่มือ (TH)", "guide/index.html")],
         structured_data=structured_data,
     )
 
@@ -2001,125 +2001,137 @@ def render_home_page(
     body = f"""
     <section class="hero" aria-labelledby="hero-heading">
       <div class="hero-copy">
-        <span class="eyebrow">Thai equities research</span>
-        <h1 id="hero-heading">Reverse DCF evidence for the SET, built for thesis review and production deployment.</h1>
+        <span class="eyebrow">Reverse DCF ตามกรอบของ Aswath Damodaran</span>
+        <h1 id="hero-heading">วิเคราะห์หุ้นไทยด้วย Reverse DCF — ถามราคาหุ้นว่าตลาดคาดหวังอะไร แล้วเทียบกับ fundamentals จริง</h1>
         <p>
-          This site packages the repository’s thesis, audited backtest results, and research methodology
-          into a fast static site suitable for Netlify or GitHub Pages. The core result is a benchmark-relative
-          reverse DCF strategy that stayed positive on average across 3, 6, and 12 month holding periods.
+          โครงการนี้ใช้แนวทาง Reverse DCF ตามกรอบของ Prof. Aswath Damodaran เพื่อวิเคราะห์หุ้นในตลาด SET
+          Backtest 100 หุ้น, 20 ไตรมาส (Q2/2021 → Q1/2026) พอร์ตทำผลตอบแทนสะสม +36.51% เทียบ SET -5.08% (ระยะ 3 เดือน)
         </p>
         <div class="hero-actions">
-          <a class="button primary" href="guide/index.html">Read the Thai guide</a>
-          <a class="button secondary" href="backtest/index.html">Inspect the backtest</a>
+          <a class="button primary" href="guide/index.html">อ่านคู่มือภาษาไทย</a>
+          <a class="button secondary" href="backtest/index.html">ดูผล Backtest</a>
         </div>
         <div class="pill-row">
-          <span class="pill">Reader-first Thai guide</span>
-          <span class="pill">13 quarterly rebalances</span>
-          <span class="pill">Damodaran framing</span>
-          <span class="pill">Current repo bundle</span>
+          <span class="pill">100 หุ้น SET</span>
+          <span class="pill">20 ไตรมาส</span>
+          <span class="pill">กรอบ Damodaran</span>
+          <span class="pill">1,026 สัญญาณ</span>
         </div>
       </div>
       <aside class="hero-panel">
-        <h2>Evidence at a glance</h2>
+        <h2>สรุปผลตอบแทน</h2>
         <div class="metric-grid">
-          {stats_cards(summary_rows, manifest)}
+          <div class="metric-card">
+            <span>ผลตอบแทนสะสม 3 เดือน</span>
+            <strong>+36.51%</strong>
+            <small>เทียบ SET benchmark -5.08%</small>
+          </div>
+          <div class="metric-card">
+            <span>ลงทุน 500,000 บาท</span>
+            <strong>+182,570</strong>
+            <small>มูลค่าสุดท้าย 682,570 บาท</small>
+          </div>
+          <div class="metric-card">
+            <span>12 เดือน</span>
+            <strong>+7.17%</strong>
+            <small>เทียบ SET -27.54%</small>
+          </div>
         </div>
         <p class="panel-note">
-          The site now has a reader-first Thai surface for investors and general readers, while the thesis and
-          audited outputs remain available as supporting layers behind it.
+          โครงการนี้ใช้แนวทาง Reverse DCF ตามกรอบของ Aswath Damodaran — ไม่ได้มุ่งหาหุ้นที่ถูกที่สุด แต่ถามว่าราคาสะท้อนความคาดหวังอะไร และความคาดหวังนั้นสมเหตุสมผลไหม
         </p>
       </aside>
     </section>
 
     <section class="card-grid">
       <article class="card span-4">
-        <p class="kicker">Method</p>
-        <h2>Expectation-first valuation</h2>
+        <p class="kicker">วิธีการ</p>
+        <h2>Valuation แบบถามความคาดหวัง</h2>
         <p>
-          The workflow starts from market price and solves backward for implied growth, then compares that
-          expectation with observed revenue growth, free cash flow, and capital structure data.
+          เริ่มจากราคาตลาดแล้วถอยหลังหา implied growth rate จากนั้นเปรียบเทียบความคาดหวังกับ
+          revenue growth, free cash flow และข้อมูลโครงสร้างทุนจริง
         </p>
       </article>
       <article class="card span-4">
-        <p class="kicker">Research design</p>
-        <h2>No-lookahead controls</h2>
+        <p class="kicker">การออกแบบวิจัย</p>
+        <h2>ควบคุม No-lookahead</h2>
         <p>
-          Historical scoring uses dated observations with explicit availability dates, prices on or before the
-          rebalance date, and a fixed historical WACC mode to keep the backtest thesis-safe.
+          การให้คะแนนย้อนหลังใช้ข้อมูลที่มีวันที่ชัดเจน (availability dates) ราคา ณ หรือก่อนวัน rebalance
+          และ WACC คงที่เพื่อให้ backtest ปลอดภัยสำหรับ thesis
         </p>
       </article>
       <article class="card span-4">
-        <p class="kicker">Deployment</p>
-        <h2>Static, fast, and portable</h2>
+        <p class="kicker">การ deploy</p>
+        <h2>Static, เร็ว, พกพาได้</h2>
         <p>
-          The site uses plain HTML and CSS, local assets only, and a reproducible builder so it can deploy on
-          Netlify, GitHub Pages, or any static host without a JS toolchain.
+          ใช้ HTML และ CSS ธรรมดา, local assets เท่านั้น, builder ที่ทำซ้ำได้
+          deploy ได้บน Netlify, GitHub Pages หรือ static host ใดๆ โดยไม่ต้องใช้ JS toolchain
         </p>
       </article>
       <article class="card span-6">
-        <p class="kicker">Key performance summary</p>
-        <h2>Average active return remained positive in every tested horizon.</h2>
+        <p class="kicker">สรุปผลตอบแทน</p>
+        <h2>ผลตอบแทนสะสมเป็นบวกทุกระยะเวลาถือที่ทดสอบ</h2>
         <p>
-          The current audited bundle reports positive benchmark-relative returns across all three holding periods,
-          with the best average active return at 3 months and the highest hit rate at 6 months.
+          Backtest 100 หุ้น 20 ไตรมาส: พอร์ตทำผลตอบแทนเหนือ SET benchmark ในทุกระยะเวลาถือ
+          โดย 3 เดือนให้ผลตอบแทน active สูงสุด และ 12 เดือนทำ +7.17% vs SET -27.54%
         </p>
         {summary_table(summary_rows)}
       </article>
       <article class="card span-6">
-        <p class="kicker">Reader-first layer</p>
-        <h2>Start with the Thai guide if you want the short answer first.</h2>
+        <p class="kicker">สำหรับนักลงทุน</p>
+        <h2>เริ่มจากคู่มือภาษาไทยก่อน — คำตอบสั้นๆ อยู่ที่นั่น</h2>
         <p>
-          The new Guide (TH) page is organized around the core proof question, quarterly portfolio timeline,
-          and stock highlights so non-academic readers can understand the argument before diving into raw artifacts.
+          หน้าคู่มือ (TH) จัดเรียงเนื้อหาตามคำถามหลัก, quarterly portfolio timeline
+          และ stock highlights เพื่อให้คนทั่วไปเข้าใจ argument ก่อนเจาะลึกข้อมูลดิบ
         </p>
       </article>
       <article class="card span-6">
-        <p class="kicker">What this site contains</p>
-        <h2>Thesis, research notes, and downloadable artifacts.</h2>
+        <p class="kicker">เนื้อหาในเว็บไซต์นี้</p>
+        <h2>Thesis, วิธีวิจัย, และไฟล์ดาวน์โหลด</h2>
         <ul class="list-clean">
-          <li><a href="guide/index.html">Thai guide</a> that answers the core proof question with a quarterly narrative.</li>
-          <li><a href="thesis.html">Complete thesis HTML</a> with a generated table of contents and semantic headings.</li>
-          <li><a href="research/index.html">Research methodology page</a> covering data policy, observation dating, and validation logic.</li>
-          <li><a href="backtest/index.html">Backtest dashboard</a> with metrics, figures, and audit highlights.</li>
-          <li><a href="download/index.html">Download section</a> linking to thesis markdown, CSV summaries, figures, and notes.</li>
+          <li><a href="guide/index.html">คู่มือภาษาไทย</a> ตอบคำถามหลักพร้อม narrative รายไตรมาส</li>
+          <li><a href="thesis.html">Thesis ฉบับเต็ม</a> พร้อมสารบัญอัตโนมัติและ semantic headings</li>
+          <li><a href="research/index.html">หน้าวิธีวิจัย</a> ครอบคลุม data policy, observation dating, validation logic</li>
+          <li><a href="backtest/index.html">หน้า Backtest</a> พร้อม metrics, กราฟ, audit highlights</li>
+          <li><a href="download/index.html">หน้าดาวน์โหลด</a> เชื่อมโยงไปยัง thesis markdown, CSV, กราฟ</li>
         </ul>
       </article>
       <article class="card span-8">
-        <p class="kicker">Thesis preview</p>
-        <h2>The main argument in one page</h2>
+        <p class="kicker">ตัวอย่าง Thesis</p>
+        <h2>Argument หลักในหนึ่งหน้า</h2>
         <div class="content-area">{thesis_excerpt_html}</div>
       </article>
       <article class="card span-4">
-        <p class="kicker">Scope</p>
-        <h2>How to read the evidence responsibly</h2>
+        <p class="kicker">ขอบเขต</p>
+        <h2>อ่านหลักฐานอย่างรับผิดชอบ</h2>
         <ul class="list-clean">
-          <li>The exploratory 15.68% CAGR study is retained as context, not as the primary audited proof.</li>
-          <li>The reader-first guide intentionally avoids locking in a final public proof set until the 100-stock rebuild is ready.</li>
-          <li>Exclusion files, audit artifacts, and WACC sensitivity are part of the argument, not optional appendices.</li>
+          <li>ผล 15.68% CAGR จาก exploratory study เก็บไว้เป็นบริบท ไม่ใช่หลักฐานหลักที่ audited</li>
+          <li>Exclusion files, audit artifacts, WACC sensitivity เป็นส่วนหนึ่งของ argument ไม่ใช่ appendix ที่ละได้</li>
+          <li>เว็บไซต์นี้มอง Reverse DCF เป็นกรอบการตัดสินใจที่มีวินัย ไม่ใช่สูตรสร้าง alpha สากล</li>
         </ul>
-        <p class="callout">The site frames reverse DCF as a disciplined decision framework, not a universal alpha claim.</p>
+        <p class="callout">Reverse DCF เป็นกรอบการตัดสินใจที่มีวินัย ไม่ใช่การอ้างว่าสร้างผลตอบแทนสูงเสมอ</p>
       </article>
     </section>
     """
     structured_data = {
         "@context": "https://schema.org",
         "@type": "WebSite",
-        "name": "Thai SET Reverse DCF Research",
+        "name": "งานวิจัย Reverse DCF หุ้นไทย SET",
         "url": site_url,
         "description": (
-            "Static documentation site for a Thai SET reverse DCF thesis, methodology, and audited backtest results."
+            "เว็บไซต์เอกสารสำหรับ thesis Reverse DCF ตลาดหุ้นไทย ตามกรอบของ Aswath Damodaran พร้อมผล backtest ที่ผ่านการ audited"
         ),
     }
     return render_page(
-        title="Thai SET Reverse DCF Research | Thesis and Backtest",
+        title="วิจัย Reverse DCF หุ้นไทย SET | วิทยานิพนธ์และผลทดสอบย้อนหลัง",
         description=(
-            "Deployment-ready site for Thai SET reverse DCF thesis research, no-lookahead backtests, and supporting methodology."
+            "เว็บไซต์สำหรับวิทยานิพนธ์ Reverse DCF หุ้นไทย พร้อมผลการทดสอบย้อนหลังที่ได้รับการตรวจสอบ และระเบียบวิธีวิจัย ตามกรอบของ Aswath Damodaran"
         ),
-        active_nav="Home",
+        active_nav="หน้าแรก",
         prefix="",
         site_url=site_url,
         body=body,
-        breadcrumbs=[("Home", "index.html")],
+        breadcrumbs=[("หน้าแรก", "index.html")],
         structured_data=structured_data,
     )
 
@@ -2135,19 +2147,48 @@ def render_thesis_page(
     )
     body = f"""
     <section class="page-intro" aria-labelledby="thesis-title">
-      <span class="eyebrow">Full thesis</span>
-      <h1 id="thesis-title">Reverse DCF as a Value Investing Framework for Thai SET Markets</h1>
+      <span class="eyebrow">วิทยานิพนธ์ฉบับเต็ม</span>
+      <h1 id="thesis-title">Reverse DCF เป็นกรอบการลงทุนแบบเน้นมูลค่าสำหรับตลาดหุ้นไทย SET</h1>
       <p>
-        HTML conversion of the repository thesis with semantic headings, tables, code blocks, and internal anchor navigation.
-        This page is designed for direct reading, academic review, and search indexing.
+        แปลงเป็น HTML จากวิทยานิพนธ์ใน repository พร้อมหัวข้อความหมาย ตาราง บล็อกโค้ด และการนำทาง anchor ภายใน
+        หน้านี้ออกแบบสำหรับการอ่านโดยตรง การตรวจสอบทางวิชาการ และการจัดทำดัชนีค้นหา
       </p>
+    </section>
+    <section class="card-grid" style="margin-bottom:22px">
+      <article class="card span-12">
+        <p class="kicker">สรุปผลตอบแทน</p>
+        <h2>ผลการทดสอบย้อนหลัง 100 หุ้น | 20 ไตรมาส (2021-Q2 ถึง 2026-Q1)</h2>
+        <p>โครงการนี้ใช้แนวทาง <strong>Reverse DCF ตามกรอบของ Aswath Damodaran</strong> ทดสอบกับหุ้นไทย 100 ตัว ปรับพอร์ตรายไตรมาส น้ำหนักเท่ากันใน 10 อันดับแรก</p>
+        <div class="table-wrapper" tabindex="0" role="region" aria-label="ตารางสรุปผลตอบแทน">
+        <table class="summary-table">
+          <thead>
+            <tr>
+              <th scope="col">ระยะเวลา</th>
+              <th scope="col">ผลตอบแทนพอร์ต</th>
+              <th scope="col">ผลตอบแทนดัชนี</th>
+              <th scope="col">ผลตอบแทนส่วนเกิน</th>
+              <th scope="col">อัตราความสำเร็จ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>สะสม (20 ไตรมาส)</td><td>+36.51%</td><td>-5.08%</td><td>+41.59%</td><td>45%</td></tr>
+            <tr><td>12 เดือน</td><td>+7.17%</td><td>-27.54%</td><td>+34.71%</td><td>-</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <ul class="list-clean">
+          <li>ลงทุน 500,000 บาท → กำไร 182,570 บาท (มูลค่าสุดท้าย 682,570 บาท)</li>
+          <li>กำไรรายไตรมาสสูงสุด: +20.25% (30 มิ.ย. 2025) | ขาดทุนรายไตรมาสสูงสุด: -14.73% (2 ม.ค. 2025)</li>
+          <li>สัญญาณทั้งหมด: 1,026 | หุ้นที่ถูกห้ามซื้อ: 15 ตัว</li>
+        </ul>
+      </article>
     </section>
     <section class="content-layout">
       <article class="content-wrap content-area">
         {thesis_html}
       </article>
-      <aside class="toc-card" aria-label="Thesis table of contents">
-        <h2>On this page</h2>
+      <aside class="toc-card" aria-label="สารบัญวิทยานิพนธ์">
+        <h2>ในหน้านี้</h2>
         <ul class="toc-list">{toc_html}</ul>
       </aside>
     </section>
@@ -2155,24 +2196,24 @@ def render_thesis_page(
     structured_data = {
         "@context": "https://schema.org",
         "@type": "ScholarlyArticle",
-        "headline": "Reverse DCF as a Value Investing Framework for Thai SET Markets",
+        "headline": "Reverse DCF เป็นกรอบการลงทุนแบบเน้นมูลค่าสำหรับตลาดหุ้นไทย SET",
         "description": (
-            "Thesis evaluating reverse discounted cash flow as a practical value investing framework for Thai SET equities."
+            "วิทยานิพนธ์ประเมิน Reverse DCF เป็นกรอบการลงทุนแบบเน้นมูลค่าสำหรับหุ้นไทย SET ตามแนวทางของ Aswath Damodaran"
         ),
         "url": absolute_url(site_url, "thesis.html"),
         "inLanguage": "en",
         "about": ["Reverse DCF", "Thai SET", "Value investing", "Backtesting"],
     }
     return render_page(
-        title="Thesis | Thai SET Reverse DCF",
+        title="วิทยานิพนธ์ | Thai SET Reverse DCF",
         description=(
-            "Complete thesis on reverse DCF as a value investing framework for Thai SET markets."
+            "วิทยานิพนธ์เกี่ยวกับ Reverse DCF เป็นกรอบการลงทุนแบบเน้นมูลค่าสำหรับตลาดหุ้นไทย SET ตามกรอบของ Aswath Damodaran"
         ),
-        active_nav="Thesis",
+        active_nav="วิทยานิพนธ์",
         prefix="",
         site_url=absolute_url(site_url, "thesis.html"),
         body=body,
-        breadcrumbs=[("Home", "index.html"), ("Thesis", "thesis.html")],
+        breadcrumbs=[("หน้าแรก", "index.html"), ("วิทยานิพนธ์", "thesis.html")],
         structured_data=structured_data,
     )
 
@@ -2185,11 +2226,12 @@ def render_research_page(
 ) -> str:
     body = f"""
     <section class="page-intro" aria-labelledby="research-title">
-      <span class="eyebrow">Research architecture</span>
-      <h1 id="research-title">Methodology, datasource policy, and validation controls</h1>
+      <span class="eyebrow">สถาปัตยกรรมการวิจัย</span>
+      <h1 id="research-title">ระเบียบวิธีวิจัย นโยบายแหล่งข้อมูล และการควบคุมการตรวจสอบ</h1>
       <p>
-        The research layer explains how the repository moves from free Thai equity data to dated observations,
-        benchmark-relative backtests, and thesis-ready evidence artifacts.
+        ชั้นงานวิจัยอธิบายว่า repository เคลื่อนจากข้อมูลหุ้นไทยฟรีไปสู่การสังเกตการณ์ที่มีวันที่
+        การทดสอบย้อนหลังเทียบดัชนีอ้างอิง และอาร์ติแฟกต์หลักฐานสำหรับวิทยานิพนธ์
+        โครงการนี้ใช้แนวทาง Reverse DCF ตามกรอบของ Aswath Damodaran
       </p>
     </section>
     <section class="card-grid">
@@ -2197,13 +2239,13 @@ def render_research_page(
         {methodology_html}
       </article>
       <article class="card span-4">
-        <p class="kicker">Why this design</p>
-        <h2>Research choices that keep the thesis defensible</h2>
+        <p class="kicker">ทำไมต้องออกแบบแบบนี้</p>
+        <h2>ทางเลือกวิจัยที่ทำให้วิทยานิพนธ์น่าเชื่อถือ</h2>
         <ul class="list-clean">
-          <li>Free-data only constraint keeps the workflow reproducible.</li>
-          <li>Availability-date logic prevents simple timing leakage.</li>
-          <li>Explicit exclusions make the investable universe auditable.</li>
-          <li>Historical scoring uses fixed WACC to avoid leaking live assumptions into the past.</li>
+          <li>ข้อจำกัดข้อมูลฟรีเท่านั้นทำให้กระบวนการทำซ้ำได้</li>
+          <li>ตรรกะวันที่พร้อมใช้งานป้องกันการรั่วไหลของเวลาอย่างง่าย</li>
+          <li>การยกเว้นที่ชัดเจนทำให้จักรวาลที่ลงทุนได้สามารถตรวจสอบได้</li>
+          <li>การให้คะแนนย้อนหลังใช้ WACC คงที่เพื่อไม่ให้สมมติฐานปัจจุบันรั่วไหลเข้าสู่อดีต</li>
         </ul>
       </article>
       <article class="card span-6 content-area">
@@ -2215,15 +2257,15 @@ def render_research_page(
     </section>
     """
     return render_page(
-        title="Research Methodology | Thai SET Reverse DCF",
+        title="ระเบียบวิธีวิจัย | Thai SET Reverse DCF",
         description=(
-            "Methodology, datasource decision, and no-lookahead audit notes for the Thai SET reverse DCF workflow."
+            "ระเบียบวิธีวิจัย การตัดสินใจเลือกแหล่งข้อมูล และบันทึกการตรวจสอบ no-lookahead สำหรับกระบวนการ Reverse DCF หุ้นไทย SET"
         ),
-        active_nav="Research",
+        active_nav="งานวิจัย",
         prefix="../",
         site_url=absolute_url(site_url, "research/"),
         body=body,
-        breadcrumbs=[("Home", "index.html"), ("Research", "research/index.html")],
+        breadcrumbs=[("หน้าแรก", "index.html"), ("งานวิจัย", "research/index.html")],
     )
 
 
@@ -2352,86 +2394,87 @@ def render_backtest_page(
     </section>
     """
     return render_page(
-        title="Backtest Results | Thai SET Reverse DCF",
+        title="ผลการทดสอบย้อนหลัง | Thai SET Reverse DCF",
         description=(
-            "Backtest dashboard for the Thai SET reverse DCF thesis, including summary metrics, figures, and sensitivity analysis."
+            "แดชบอร์ดการทดสอบย้อนหลังสำหรับวิทยานิพนธ์ Reverse DCF หุ้นไทย SET รวมถึงตัวชี้วัดสรุป รูปภาพ และการวิเคราะห์ความอ่อนไหว"
         ),
-        active_nav="Backtest",
+        active_nav="ผลทดสอบย้อนหลัง",
         prefix="../",
         site_url=absolute_url(site_url, "backtest/"),
         body=body,
-        breadcrumbs=[("Home", "index.html"), ("Backtest", "backtest/index.html")],
+        breadcrumbs=[("หน้าแรก", "index.html"), ("ผลทดสอบย้อนหลัง", "backtest/index.html")],
     )
 
 
 def render_about_page(site_url: str) -> str:
     body = """
     <section class="page-intro" aria-labelledby="about-title">
-      <span class="eyebrow">Project overview</span>
-      <h1 id="about-title">What this repository is trying to prove, and what it refuses to claim</h1>
+      <span class="eyebrow">ภาพรวมโครงการ</span>
+      <h1 id="about-title">โครงการนี้พยายามพิสูจน์อะไร — และปฏิเสธที่จะอ้างอะไร</h1>
       <p>
-        The project evaluates whether reverse discounted cash flow can function as a practical value-investing
-        framework in Thai equities when the data budget is constrained to free sources.
+        โครงการนี้ใช้แนวทาง Reverse DCF ตามกรอบของ Aswath Damodaran เพื่อประเมินว่า
+        reverse discounted cash flow สามารถใช้เป็นกรอบการลงทุนแบบ value ในตลาดหุ้นไทย
+        เมื่อข้อจำกัดด้านข้อมูลคือใช้แหล่งข้อมูลฟรีเท่านั้น
       </p>
     </section>
     <section class="card-grid">
       <article class="card span-4">
-        <p class="kicker">Objective</p>
-        <h2>Frame price as an expectation</h2>
+        <p class="kicker">วัตถุประสงค์</p>
+        <h2>อ่านราคาเป็นความคาดหวัง</h2>
         <p>
-          Rather than pretending to know the future with precise forecasts, the workflow uses price to infer the
-          growth story already embedded in Thai stocks and then tests whether those implied expectations are too high or too low.
+          แทนที่จะอ้างว่ารู้อนาคต workflow ใช้ราคาเพื่อถอยหลังหา
+          เรื่องเล่าการเติบโตที่ฝังในหุ้นไทย แล้วทดสอบว่าความคาดหวังนั้นสูงเกินหรือต่ำเกินไป
         </p>
       </article>
       <article class="card span-4">
-        <p class="kicker">Evidence layers</p>
-        <h2>Exploratory and audited lanes are separated</h2>
+        <p class="kicker">ชั้นข้อมูล</p>
+        <h2>แยก exploratory กับ audited อย่างชัดเจน</h2>
         <p>
-          The broad 15.68% CAGR result remains in the repository as exploratory context, while the audited thesis
-          bundle serves as the public proof layer because it includes availability dates, benchmark-relative returns,
-          and no-lookahead controls.
+          ผล 15.68% CAGR จากการศึกษาแบบกว้างยังคงอยู่เป็นบริบท exploratory
+          ในขณะที่ audited thesis bundle เป็นชั้นหลักฐานสาธารณะเพราะมี availability dates,
+          benchmark-relative returns, และ no-lookahead controls
         </p>
       </article>
       <article class="card span-4">
-        <p class="kicker">Constraints</p>
-        <h2>Free data, transparent exclusions, modest claims</h2>
+        <p class="kicker">ข้อจำกัด</p>
+        <h2>ข้อมูลฟรี, exclusions โปร่งใส, claims สมเหตุสมผล</h2>
         <p>
-          Yahoo Finance is used as the primary source because it supports the strongest free historical coverage.
-          The site presents the limits alongside the upside so the result is readable without overselling the model.
+          ใช้ Yahoo Finance เป็นแหล่งข้อมูลหลักเพราะให้ free historical coverage ที่ดีที่สุด
+          เว็บไซต์นำเสนอข้อจำกัดควบคู่กับผลลัพธ์เพื่อไม่ oversell model
         </p>
       </article>
       <article class="card span-6">
-        <p class="kicker">Audience</p>
-        <h2>Built first for investors and general readers, then for reviewers</h2>
+        <p class="kicker">กลุ่มผู้อ่าน</p>
+        <h2>สร้างให้นักลงทุนและคนทั่วไปก่อน จากนั้นจึงเป็น reviewer</h2>
         <ul class="list-clean">
-          <li>General readers can start with the Thai guide and understand the proof question before reading technical details.</li>
-          <li>Investors can inspect benchmark-relative evidence, sector behavior, and sensitivity outputs.</li>
-          <li>Reviewers can still read the full thesis and jump to methods, results, and limitations quickly.</li>
-          <li>Developers can deploy the static site without a build pipeline and trace each page back to source artifacts in the repo.</li>
+          <li>คนทั่วไปเริ่มจากคู่มือภาษาไทย เข้าใจคำถามหลักก่อนอ่านรายละเอียดเทคนิค</li>
+          <li>นักลงทุนตรวจสอบหลักฐานเปรียบเทียบ benchmark, sector behavior, sensitivity outputs</li>
+          <li>Reviewer อ่าน thesis ฉบับเต็มและข้ามไป methods, results, limitations ได้ทันที</li>
+          <li>Developer deploy เว็บไซต์ static ได้โดยไม่ต้องใช้ build pipeline</li>
         </ul>
       </article>
       <article class="card span-6">
-        <p class="kicker">Repository map</p>
-        <h2>How the site maps to repo artifacts</h2>
+        <p class="kicker">แผนผัง repository</p>
+        <h2>เว็บไซต์ map ไปยัง repo artifacts อย่างไร</h2>
         <ul class="list-clean">
-          <li><code>docs/thesis_reverse_dcf_thai_set.md</code> → thesis page</li>
-          <li><code>docs/thesis-methodology.md</code> + <code>docs/datasource-decision.md</code> → research page</li>
-          <li><code>research_data/latest/backtest/</code> → backtest page and downloads</li>
-          <li><code>research_data/latest/thesis_bundle/</code> → downloadable bundle references</li>
+          <li><code>docs/thesis_reverse_dcf_thai_set.md</code> → หน้า thesis</li>
+          <li><code>docs/thesis-methodology.md</code> + <code>docs/datasource-decision.md</code> → หน้าวิจัย</li>
+          <li><code>research_data/latest/backtest/</code> → หน้า backtest และ downloads</li>
+          <li><code>research_data/latest/thesis_bundle/</code> → bundle references</li>
         </ul>
       </article>
     </section>
     """
     return render_page(
-        title="About | Thai SET Reverse DCF",
+        title="เกี่ยวกับ | Thai SET Reverse DCF",
         description=(
-            "Project overview for the Thai SET reverse DCF thesis and audited backtest documentation site."
+            "ภาพรวมโครงการ thesis Reverse DCF ตลาดหุ้นไทย ตามกรอบของ Aswath Damodaran"
         ),
-        active_nav="About",
+        active_nav="เกี่ยวกับ",
         prefix="../",
         site_url=absolute_url(site_url, "about/"),
         body=body,
-        breadcrumbs=[("Home", "index.html"), ("About", "about/index.html")],
+        breadcrumbs=[("หน้าแรก", "index.html"), ("เกี่ยวกับ", "about/index.html")],
     )
 
 
@@ -2484,15 +2527,15 @@ def render_download_page(site_url: str) -> str:
     </section>
     """
     return render_page(
-        title="Download | Thai SET Reverse DCF",
+        title="ดาวน์โหลด | Thai SET Reverse DCF",
         description=(
-            "Download the thesis markdown, summary CSVs, and chart assets for the Thai SET reverse DCF project."
+            "ดาวน์โหลดวิทยานิพนธ์ markdown, CSV สรุป และรูปภาพสำหรับโปรเจกต์ Reverse DCF หุ้นไทย SET"
         ),
-        active_nav="Download",
+        active_nav="ดาวน์โหลด",
         prefix="../",
         site_url=absolute_url(site_url, "download/"),
         body=body,
-        breadcrumbs=[("Home", "index.html"), ("Download", "download/index.html")],
+        breadcrumbs=[("หน้าแรก", "index.html"), ("ดาวน์โหลด", "download/index.html")],
     )
 
 

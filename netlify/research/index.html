@@ -1,14 +1,14 @@
 <!doctype html>
-<html lang="en">
+<html lang="th">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Research Methodology | Thai SET Reverse DCF</title>
-    <meta name="description" content="Methodology, datasource decision, and no-lookahead audit notes for the Thai SET reverse DCF workflow." />
+    <title>ระเบียบวิธีวิจัย | Thai SET Reverse DCF</title>
+    <meta name="description" content="ระเบียบวิธีวิจัย การตัดสินใจเลือกแหล่งข้อมูล และบันทึกการตรวจสอบ no-lookahead สำหรับกระบวนการ Reverse DCF หุ้นไทย SET" />
     <meta name="theme-color" content="#173144" />
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Research Methodology | Thai SET Reverse DCF" />
-    <meta property="og:description" content="Methodology, datasource decision, and no-lookahead audit notes for the Thai SET reverse DCF workflow." />
+    <meta property="og:title" content="ระเบียบวิธีวิจัย | Thai SET Reverse DCF" />
+    <meta property="og:description" content="ระเบียบวิธีวิจัย การตัดสินใจเลือกแหล่งข้อมูล และบันทึกการตรวจสอบ no-lookahead สำหรับกระบวนการ Reverse DCF หุ้นไทย SET" />
     <meta property="og:url" content="https://b9b4ymin.github.io/thai-set-reverse-dcf-research/research/" />
     <meta property="og:site_name" content="Thai SET Reverse DCF Research" />
     <meta name="twitter:card" content="summary_large_image" />
@@ -16,33 +16,34 @@
     
   </head>
   <body>
-    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <a href="#main-content" class="skip-link">ข้ามไปยังเนื้อหาหลัก</a>
     <div class="site-shell">
       <header class="topbar">
-        <a class="brand" href="../index.html" aria-label="Thai SET Reverse DCF Research - Home">
+        <a class="brand" href="../index.html" aria-label="งานวิจัย Reverse DCF หุ้นไทย SET - หน้าแรก">
           <span class="brand-mark">RDCF</span>
           <span class="brand-copy">
             <strong>Thai SET Reverse DCF</strong>
-            <span>Deployment-ready thesis and backtest documentation</span>
+            <span>เอกสารวิทยานิพนธ์และผลการทดสอบย้อนหลัง</span>
           </span>
         </a>
-        <nav aria-label="Primary"><a href="../index.html">Home</a><a href="../guide/index.html">Guide (TH)</a><a href="../thesis.html">Thesis</a><a href="../research/index.html" class="active" aria-current="page">Research</a><a href="../backtest/index.html">Backtest</a><a href="../about/index.html">About</a><a href="../download/index.html">Download</a></nav>
+        <nav aria-label="หลัก"><a href="../index.html">หน้าแรก</a><a href="../guide/index.html">คู่มือ (TH)</a><a href="../thesis.html">วิทยานิพนธ์</a><a href="../research/index.html" class="active" aria-current="page">งานวิจัย</a><a href="../backtest/index.html">ผลทดสอบย้อนหลัง</a><a href="../about/index.html">เกี่ยวกับ</a><a href="../download/index.html">ดาวน์โหลด</a></nav>
       </header>
       
     <nav class="breadcrumbs" aria-label="Breadcrumb">
       <ol class="breadcrumbs-list">
-        <li class="breadcrumbs-item"><a href="../index.html" class="breadcrumbs-link">Home</a></li><li class="breadcrumbs-item"><span class="breadcrumbs-link" aria-current="page">Research</span></li>
+        <li class="breadcrumbs-item"><a href="../index.html" class="breadcrumbs-link">หน้าแรก</a></li><li class="breadcrumbs-item"><span class="breadcrumbs-link" aria-current="page">งานวิจัย</span></li>
       </ol>
     </nav>
     
       <main id="main-content">
         
     <section class="page-intro" aria-labelledby="research-title">
-      <span class="eyebrow">Research architecture</span>
-      <h1 id="research-title">Methodology, datasource policy, and validation controls</h1>
+      <span class="eyebrow">สถาปัตยกรรมการวิจัย</span>
+      <h1 id="research-title">ระเบียบวิธีวิจัย นโยบายแหล่งข้อมูล และการควบคุมการตรวจสอบ</h1>
       <p>
-        The research layer explains how the repository moves from free Thai equity data to dated observations,
-        benchmark-relative backtests, and thesis-ready evidence artifacts.
+        ชั้นงานวิจัยอธิบายว่า repository เคลื่อนจากข้อมูลหุ้นไทยฟรีไปสู่การสังเกตการณ์ที่มีวันที่
+        การทดสอบย้อนหลังเทียบดัชนีอ้างอิง และอาร์ติแฟกต์หลักฐานสำหรับวิทยานิพนธ์
+        โครงการนี้ใช้แนวทาง Reverse DCF ตามกรอบของ Aswath Damodaran
       </p>
     </section>
     <section class="card-grid">
@@ -111,13 +112,13 @@
 <ul><li>review <code>research_data/source_of_truth_100/backtest/manifest.json</code></li><li>review <code>research_data/source_of_truth_100/backtest/no_lookahead_audit.md</code></li><li>review <code>research_data/source_of_truth_100/backtest/exclusions.csv</code></li><li>compare <code>summary.csv</code> with <code>report.md</code></li></ul>
       </article>
       <article class="card span-4">
-        <p class="kicker">Why this design</p>
-        <h2>Research choices that keep the thesis defensible</h2>
+        <p class="kicker">ทำไมต้องออกแบบแบบนี้</p>
+        <h2>ทางเลือกวิจัยที่ทำให้วิทยานิพนธ์น่าเชื่อถือ</h2>
         <ul class="list-clean">
-          <li>Free-data only constraint keeps the workflow reproducible.</li>
-          <li>Availability-date logic prevents simple timing leakage.</li>
-          <li>Explicit exclusions make the investable universe auditable.</li>
-          <li>Historical scoring uses fixed WACC to avoid leaking live assumptions into the past.</li>
+          <li>ข้อจำกัดข้อมูลฟรีเท่านั้นทำให้กระบวนการทำซ้ำได้</li>
+          <li>ตรรกะวันที่พร้อมใช้งานป้องกันการรั่วไหลของเวลาอย่างง่าย</li>
+          <li>การยกเว้นที่ชัดเจนทำให้จักรวาลที่ลงทุนได้สามารถตรวจสอบได้</li>
+          <li>การให้คะแนนย้อนหลังใช้ WACC คงที่เพื่อไม่ให้สมมติฐานปัจจุบันรั่วไหลเข้าสู่อดีต</li>
         </ul>
       </article>
       <article class="card span-6 content-area">
@@ -148,8 +149,8 @@
       </main>
       
     <footer class="site-footer">
-      <p>Built from local thesis and backtest artifacts in this repository. Designed for Netlify and GitHub Pages deployment.</p>
-      <nav class="footer-links" aria-label="Footer"><a href="../guide/index.html">Guide (TH)</a><a href="../thesis.html">Thesis</a><a href="../research/index.html">Research</a><a href="../backtest/index.html">Backtest</a><a href="../about/index.html">About</a><a href="../download/index.html">Download</a></nav>
+      <p>สร้างจากวิทยานิพนธ์และผลการทดสอบย้อนหลังในที่เก็บข้อมูลนี้ ออกแบบสำหรับการปรับใช้บน Netlify และ GitHub Pages — โครงการนี้ใช้แนวทาง Reverse DCF ตามกรอบของ Aswath Damodaran</p>
+      <nav class="footer-links" aria-label="ส่วนท้าย"><a href="../guide/index.html">คู่มือ (TH)</a><a href="../thesis.html">วิทยานิพนธ์</a><a href="../research/index.html">งานวิจัย</a><a href="../backtest/index.html">ผลทดสอบย้อนหลัง</a><a href="../about/index.html">เกี่ยวกับ</a><a href="../download/index.html">ดาวน์โหลด</a></nav>
     </footer>
     
     </div>

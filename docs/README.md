@@ -1,62 +1,47 @@
-# Documentation
+# เอกสารประกอบ
 
-Comprehensive documentation for the Thai Stock Fundamental Data project.
+เอกสารประกอบสำหรับโปรเจกต์วิจัยหุ้นไทยด้วย Reverse DCF
 
-## Documents
+**โครงการนี้ใช้แนวทาง Reverse DCF ตามกรอบของ Aswath Damodaran** — ทดสอบกับหุ้นไทย 100 ตัว ตลอด 20 ไตรมาส (2021-Q2 ถึง 2026-Q1)
+
+## ผลการทดสอบย้อนหลังสำคัญ (ระยะเวลา 3 เดือน, ปรับพอร์ตรายไตรมาส)
+
+| ตัวชี้วัด | ค่า |
+|---|---|
+| ผลตอบแทนสะสม (พอร์ต) | +36.51% |
+| ผลตอบแทนสะสม (ดัชนี SET) | -5.08% |
+| ลงทุน 500,000 บาท → มูลค่าสุดท้าย | 682,570 บาท (กำไร 182,570 บาท) |
+| กำไรรายไตรมาสสูงสุด | +20.25% (30 มิ.ย. 2025) |
+| ขาดทุนรายไตรมาสสูงสุด | -14.73% (2 ม.ค. 2025) |
+| อัตราความสำเร็จ (Hit Rate) | 45% (9/20 ไตรมาสเป็นบวก) |
+| สัญญาณทั้งหมด | 1,026 |
+| หุ้นที่ถูกห้ามซื้อ | 15 ตัว |
+| ผลตอบแทนสะสม 12 เดือน (พอร์ต) | +7.17% |
+| ผลตอบแทนสะสม 12 เดือน (ดัชนี) | -27.54% |
+
+## เอกสาร
 
 ### `DATA_ACQUISITION.md`
-How to acquire data from various sources.
-
-- Setting up data sources
-- Running acquisition scripts
-- Handling rate limits
-- Troubleshooting acquisition issues
+วิธีการรวบรวมข้อมูลจากแหล่งต่าง ๆ
 
 ### `DATA_SCHEMA.md`
-Data format specifications.
-
-- Field definitions
-- Data types
-- Validation rules
-- Examples
+ข้อกำหนดรูปแบบข้อมูล
 
 ### `BACKTESTING_GUIDE.md`
-Using the data for backtesting.
-
-- Loading data efficiently
-- Joining fundamentals and prices
-- Common backtesting patterns
-- Performance optimization
-- Current implementation: reverse DCF ranking with benchmark-relative horizons
+คู่มือการใช้ข้อมูลสำหรับการทดสอบย้อนหลัง
 
 ### `SOURCE_COMPARISON.md`
-Comparison of available data sources.
-
-- Coverage comparison
-- Accuracy assessment
-- Update frequency
-- Cost analysis (all free methods)
-- Current repository choice: Yahoo primary, SET optional validation
+เปรียบเทียบแหล่งข้อมูลที่มี
 
 ### `thesis-methodology.md`
-Methodology chapter draft for the reverse DCF thesis workflow.
+บทระเบียบวิธีวิจัยสำหรับกระบวนการทำวิทยานิพนธ์ Reverse DCF
 
 ### `thesis-results.md`
-Results chapter draft using the generated backtest artifacts.
+บทผลการวิจัยจากอาร์ติแฟกต์การทดสอบย้อนหลัง
 
-## Contributing
+## การมีส่วนร่วม
 
-When adding new features or data sources:
-
-1. Update relevant documentation
-2. Add examples to existing docs
-3. Create new docs if needed
-4. Update table of contents
-5. Review for clarity and completeness
-
-## Documentation Format
-
-- Markdown for readability
-- Code examples in Python
-- Diagrams in Mermaid (where applicable)
-- Version: Major.Minor.Patch
+เมื่อเพิ่มฟีเจอร์หรือแหล่งข้อมูลใหม่:
+1. อัปเดตเอกสารที่เกี่ยวข้อง
+2. เพิ่มตัวอย่างในเอกสารที่มีอยู่
+3. สร้างเอกสารใหม่หากจำเป็น
