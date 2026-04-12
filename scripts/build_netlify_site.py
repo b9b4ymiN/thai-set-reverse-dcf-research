@@ -9,6 +9,8 @@ import html
 import json
 import re
 import shutil
+from collections import Counter
+from datetime import date
 from pathlib import Path
 from typing import Iterable
 
@@ -20,6 +22,7 @@ SITE_URL_DEFAULT = "https://example.com"
 
 NAV_LINKS = [
     ("Home", "index.html"),
+    ("Guide (TH)", "guide/index.html"),
     ("Thesis", "thesis.html"),
     ("Research", "research/index.html"),
     ("Backtest", "backtest/index.html"),
@@ -29,6 +32,7 @@ NAV_LINKS = [
 
 
 STYLE_CSS = """
+/* === Layout & Grid === */
 :root {
   --bg: #f4efe5;
   --bg-strong: #efe5d4;
@@ -36,7 +40,7 @@ STYLE_CSS = """
   --paper-strong: rgba(253, 248, 240, 0.97);
   --ink: #1f2427;
   --ink-soft: #445057;
-  --muted: #6c7478;
+  --muted: #596165; /* Darkened for WCAG AA contrast (4.5:1) */
   --line: rgba(40, 50, 58, 0.12);
   --accent: #b4562f;
   --accent-deep: #6a2f1b;
@@ -52,6 +56,8 @@ STYLE_CSS = """
   --sidebar-width: 288px;
   --body-font: "Avenir Next", "Segoe UI", "Helvetica Neue", sans-serif;
   --display-font: "Iowan Old Style", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+  --focus-ring: 0 0 0 3px rgba(180, 86, 47, 0.6);
+  --focus-offset: 3px;
 }
 
 * {
@@ -71,6 +77,7 @@ body {
     linear-gradient(180deg, #f9f4ea 0%, #f4efe5 46%, #efe6d8 100%);
   font-family: var(--body-font);
   line-height: 1.68;
+  font-size: 16px;
 }
 
 body::before {
@@ -85,14 +92,47 @@ body::before {
   mask-image: linear-gradient(180deg, rgba(0, 0, 0, 0.32), rgba(0, 0, 0, 0.08));
 }
 
+/* === Navigation & Topbar === */
+/* Skip navigation link for keyboard users */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 0;
+  background: var(--navy);
+  color: white;
+  padding: 1rem 1.5rem;
+  text-decoration: none;
+  border-radius: 0 0 var(--radius-md) 0;
+  z-index: 9999;
+  font-weight: 600;
+  transition: top 0.2s ease;
+}
+
+.skip-link:focus {
+  top: 0;
+  outline: var(--focus-ring);
+  outline-offset: 0;
+}
+
 a {
   color: var(--accent-deep);
   text-decoration-thickness: 1px;
   text-underline-offset: 0.15em;
+  transition: color 0.2s ease, opacity 0.2s ease;
 }
 
 a:hover {
   color: var(--accent);
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+  border-radius: 4px;
 }
 
 img {
@@ -130,24 +170,39 @@ pre code {
 .site-shell {
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 28px 20px 60px;
+  padding: 16px 14px 42px; /* Mobile-first padding */
+}
+
+@media (min-width: 720px) {
+  .site-shell {
+    padding: 28px 20px 60px;
+  }
 }
 
 .topbar {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
+  flex-direction: column; /* Mobile-first: stacked */
+  gap: 1.25rem;
   margin-bottom: 22px;
-  padding: 18px 22px;
+  padding: 16px;
   background: rgba(255, 251, 245, 0.74);
   border: 1px solid rgba(40, 50, 58, 0.08);
-  border-radius: 999px;
+  border-radius: 26px;
   box-shadow: 0 12px 30px rgba(54, 40, 28, 0.08);
   backdrop-filter: blur(12px);
-  position: sticky;
-  top: 12px;
   z-index: 20;
+}
+
+@media (min-width: 720px) {
+  .topbar {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 22px;
+    border-radius: 999px;
+    position: sticky;
+    top: 12px;
+  }
 }
 
 .brand {
@@ -156,6 +211,7 @@ pre code {
   gap: 0.85rem;
   text-decoration: none;
   color: inherit;
+  min-height: 48px;
 }
 
 .brand-mark {
@@ -200,16 +256,26 @@ pre code {
 .topbar nav {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-end;
-  gap: 0.5rem;
+  gap: 0.25rem;
+}
+
+@media (min-width: 720px) {
+  .topbar nav {
+    justify-content: flex-end;
+    gap: 0.5rem;
+  }
 }
 
 .topbar nav a {
-  padding: 0.55rem 0.9rem;
+  padding: 0.65rem 0.9rem;
   border-radius: 999px;
   text-decoration: none;
   font-size: 0.95rem;
   color: var(--ink-soft);
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  transition: background 0.2s ease, color 0.2s ease;
 }
 
 .topbar nav a.active,
@@ -218,11 +284,69 @@ pre code {
   color: var(--navy);
 }
 
+/* Breadcrumbs navigation */
+.breadcrumbs {
+  padding: 0.5rem 0;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.breadcrumbs-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.breadcrumbs-item {
+  display: flex;
+  align-items: center;
+}
+
+.breadcrumbs-item:not(:last-child)::after {
+  content: "›";
+  color: var(--muted);
+  margin-left: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.breadcrumbs-link {
+  color: var(--ink-soft);
+  text-decoration: none;
+  padding: 0.4rem 0.5rem;
+  border-radius: 6px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.breadcrumbs-link:hover {
+  background: rgba(23, 49, 68, 0.06);
+  color: var(--navy);
+  text-decoration: underline;
+}
+
+.breadcrumbs-item:last-child .breadcrumbs-link {
+  color: var(--ink);
+  font-weight: 600;
+  pointer-events: none;
+}
+
+/* === Hero & Landing === */
 .hero {
   display: grid;
-  grid-template-columns: minmax(0, 1.45fr) minmax(290px, 0.95fr);
+  grid-template-columns: 1fr;
   gap: 22px;
   margin-bottom: 22px;
+}
+
+@media (min-width: 1060px) {
+  .hero {
+    grid-template-columns: minmax(0, 1.45fr) minmax(290px, 0.95fr);
+  }
 }
 
 .hero-copy,
@@ -237,10 +361,16 @@ pre code {
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow);
   backdrop-filter: blur(10px);
+  padding: 22px 20px;
+}
+
+@media (min-width: 720px) {
+  .hero-copy, .hero-panel, .card, .content-wrap, .page-intro, .site-footer {
+    padding: 30px 32px;
+  }
 }
 
 .hero-copy {
-  padding: 30px 32px;
   position: relative;
   overflow: hidden;
 }
@@ -272,9 +402,15 @@ pre code {
 .hero-copy h1,
 .page-intro h1 {
   margin: 0.7rem 0 0.9rem;
-  font-size: clamp(2.3rem, 4vw, 4rem);
+  font-size: clamp(2rem, 8vw, 2.7rem);
   line-height: 1.02;
   letter-spacing: -0.03em;
+}
+
+@media (min-width: 720px) {
+  .hero-copy h1, .page-intro h1 {
+    font-size: clamp(2.3rem, 4vw, 4rem);
+  }
 }
 
 .hero-copy p,
@@ -297,11 +433,13 @@ pre code {
   align-items: center;
   justify-content: center;
   gap: 0.45rem;
-  padding: 0.78rem 1.08rem;
+  padding: 0.8rem 1.25rem;
   border-radius: 999px;
   border: 1px solid transparent;
   text-decoration: none;
   font-weight: 600;
+  min-height: 48px;
+  touch-action: manipulation;
 }
 
 .button.primary {
@@ -316,7 +454,6 @@ pre code {
 }
 
 .hero-panel {
-  padding: 24px;
   display: grid;
   gap: 12px;
   align-content: start;
@@ -329,10 +466,17 @@ pre code {
   letter-spacing: 0.02em;
 }
 
+/* === Cards & Metrics === */
 .metric-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: 1fr;
   gap: 14px;
+}
+
+@media (min-width: 480px) {
+  .metric-grid {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
 }
 
 .metric-card {
@@ -374,29 +518,19 @@ pre code {
 
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(12, 1fr);
+  grid-template-columns: 1fr;
   gap: 18px;
   margin-bottom: 22px;
 }
 
-.card {
-  padding: 24px;
-}
-
-.card.span-4 {
-  grid-column: span 4;
-}
-
-.card.span-6 {
-  grid-column: span 6;
-}
-
-.card.span-8 {
-  grid-column: span 8;
-}
-
-.card.span-12 {
-  grid-column: span 12;
+@media (min-width: 860px) {
+  .card-grid {
+    grid-template-columns: repeat(12, 1fr);
+  }
+  .card.span-4 { grid-column: span 4; }
+  .card.span-6 { grid-column: span 6; }
+  .card.span-8 { grid-column: span 8; }
+  .card.span-12 { grid-column: span 12; }
 }
 
 .card h2,
@@ -429,10 +563,22 @@ pre code {
   margin-top: 0.45rem;
 }
 
+/* Responsive Table Wrapper */
+.table-wrapper {
+  overflow-x: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid rgba(40, 50, 58, 0.08);
+  margin-top: 1rem;
+}
+
+.table-wrapper:focus-visible {
+  outline: var(--focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
 .summary-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 1rem;
   font-size: 0.95rem;
 }
 
@@ -452,8 +598,14 @@ pre code {
 
 .figure-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: 1fr;
   gap: 16px;
+}
+
+@media (min-width: 860px) {
+  .figure-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 .figure-card {
@@ -474,21 +626,40 @@ pre code {
   font-size: 0.93rem;
 }
 
+/* === Timeline & Quarterly === */
 .content-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(220px, 280px);
+  grid-template-columns: 1fr;
   gap: 20px;
   align-items: start;
 }
 
-.content-wrap {
-  padding: 28px 30px;
+@media (min-width: 1060px) {
+  .content-layout {
+    grid-template-columns: minmax(0, 1fr) minmax(220px, 280px);
+  }
 }
 
+.content-wrap {
+  padding: 22px 20px;
+}
+
+@media (min-width: 720px) {
+  .content-wrap {
+    padding: 28px 30px;
+  }
+}
+
+/* === Guide & Sidebar === */
 .toc-card {
   padding: 20px;
-  position: sticky;
-  top: 100px;
+}
+
+@media (min-width: 1060px) {
+  .toc-card {
+    position: sticky;
+    top: 100px;
+  }
 }
 
 .toc-card h2 {
@@ -509,7 +680,7 @@ pre code {
 
 .toc-list a {
   display: block;
-  padding: 0.32rem 0.45rem;
+  padding: 0.45rem 0.6rem;
   border-radius: 0.6rem;
   text-decoration: none;
   color: var(--ink-soft);
@@ -521,12 +692,11 @@ pre code {
 }
 
 .toc-list .level-3 a {
-  padding-left: 1rem;
+  padding-left: 1.25rem;
   font-size: 0.93rem;
 }
 
 .page-intro {
-  padding: 26px 30px;
   margin-bottom: 20px;
 }
 
@@ -538,7 +708,7 @@ pre code {
 }
 
 .content-area h1 {
-  font-size: 2.35rem;
+  font-size: clamp(1.8rem, 7vw, 2.35rem);
   line-height: 1.08;
 }
 
@@ -580,9 +750,6 @@ pre code {
 .content-area table {
   width: 100%;
   border-collapse: collapse;
-  overflow: hidden;
-  border-radius: var(--radius-md);
-  border: 1px solid rgba(40, 50, 58, 0.08);
 }
 
 .content-area th,
@@ -599,11 +766,17 @@ pre code {
 
 .site-footer {
   margin-top: 24px;
-  padding: 22px 24px;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 1rem;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+@media (min-width: 720px) {
+  .site-footer {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
 }
 
 .site-footer p {
@@ -613,8 +786,15 @@ pre code {
 
 .footer-links {
   display: flex;
-  gap: 0.8rem;
+  gap: 0.5rem;
   flex-wrap: wrap;
+}
+
+.footer-links a {
+  padding: 0.5rem 0.75rem;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
 }
 
 .pill-row {
@@ -640,78 +820,205 @@ pre code {
   color: var(--success);
 }
 
+.story-grid,
+.highlight-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+@media (min-width: 900px) {
+  .story-grid {
+    grid-template-columns: 1.2fr 0.8fr;
+  }
+
+  .highlight-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.qa-card,
+.dependency-card,
+.timeline-shell {
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
+  box-shadow: var(--shadow);
+}
+
+.qa-list {
+  margin: 0;
+  padding-left: 1.2rem;
+}
+
+.timeline-stack {
+  display: grid;
+  gap: 1rem;
+}
+
+.timeline-quarter {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.55);
+  overflow: hidden;
+}
+
+.timeline-quarter summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 1rem 1.1rem;
+  background: rgba(23, 49, 68, 0.04);
+}
+
+.timeline-quarter summary::-webkit-details-marker {
+  display: none;
+}
+
+.timeline-quarter[open] summary {
+  border-bottom: 1px solid var(--line);
+}
+
+.timeline-summary-top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.75rem;
+  align-items: baseline;
+}
+
+.timeline-summary-top strong {
+  font-size: 1.05rem;
+  color: var(--navy);
+}
+
+.timeline-summary-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.65rem;
+}
+
+.timeline-body {
+  padding: 1rem 1.1rem 1.1rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.mini-metrics {
+  display: grid;
+  gap: 0.85rem;
+}
+
+@media (min-width: 760px) {
+  .mini-metrics {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.mini-card {
+  padding: 0.85rem 0.95rem;
+  border-radius: var(--radius-sm);
+  background: rgba(23, 49, 68, 0.05);
+  border: 1px solid rgba(23, 49, 68, 0.08);
+}
+
+.mini-card strong {
+  display: block;
+  font-size: 1rem;
+  color: var(--navy);
+  margin-top: 0.2rem;
+}
+
+.ticker-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.ticker-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.38rem 0.72rem;
+  border-radius: 999px;
+  background: rgba(180, 86, 47, 0.1);
+  color: var(--accent-deep);
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.timeline-list {
+  margin: 0;
+  padding-left: 1.15rem;
+}
+
+.timeline-list li + li {
+  margin-top: 0.45rem;
+}
+
+.highlight-card {
+  background: rgba(255, 251, 245, 0.92);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 1rem;
+}
+
+.highlight-card.accent-profit { border-left: 4px solid var(--success); }
+.highlight-card.accent-loss { border-left: 4px solid var(--accent); }
+.highlight-card.banned { opacity: 0.6; }
+
+.highlight-card strong {
+  display: block;
+  color: var(--navy);
+  font-size: 1rem;
+  margin: 0.1rem 0 0.4rem;
+}
+
+.highlight-card p,
+.highlight-card small {
+  margin: 0;
+}
+
+.dependency-list {
+  margin: 0.7rem 0 0;
+  padding-left: 1.2rem;
+}
+
+/* === Responsive Overrides === */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}
+
 .muted {
   color: var(--muted);
 }
 
-@media (max-width: 1060px) {
-  .hero,
-  .content-layout {
-    grid-template-columns: 1fr;
+/* === Print === */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
 
-  .toc-card {
-    position: static;
-  }
-}
-
-@media (max-width: 860px) {
-  .card-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .card.span-4,
-  .card.span-6,
-  .card.span-8,
-  .card.span-12 {
-    grid-column: auto;
-  }
-
-  .figure-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 720px) {
-  .site-shell {
-    padding: 16px 14px 42px;
-  }
-
-  .topbar {
-    border-radius: 26px;
-    padding: 16px;
-    position: static;
-  }
-
-  .topbar,
-  .topbar nav {
-    align-items: flex-start;
-    flex-direction: column;
-  }
-
-  .hero-copy,
-  .hero-panel,
-  .card,
-  .content-wrap,
-  .page-intro {
-    padding: 22px 20px;
-  }
-
-  .metric-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .hero-copy h1,
-  .page-intro h1,
-  .content-area h1 {
-    font-size: clamp(2rem, 9vw, 2.7rem);
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 """.strip()
 
 
 def slugify(text: str) -> str:
-    slug = re.sub(r"[^a-z0-9]+", "-", text.lower()).strip("-")
+    normalized = text.strip().lower()
+    slug = re.sub(r"[^\w]+", "-", normalized, flags=re.UNICODE).strip("-")
     return slug or "section"
 
 
@@ -734,6 +1041,233 @@ def read_csv(path: Path) -> list[dict[str, str]]:
 
 def pct(value: float, digits: int = 2) -> str:
     return f"{value * 100:.{digits}f}%"
+
+
+THAI_MONTHS = [
+    "",
+    "ม.ค.",
+    "ก.พ.",
+    "มี.ค.",
+    "เม.ย.",
+    "พ.ค.",
+    "มิ.ย.",
+    "ก.ค.",
+    "ส.ค.",
+    "ก.ย.",
+    "ต.ค.",
+    "พ.ย.",
+    "ธ.ค.",
+]
+
+
+def parse_iso_date(value: str) -> date:
+    return date.fromisoformat(value)
+
+
+def format_date_th(value: str) -> str:
+    try:
+        parsed = parse_iso_date(value)
+    except Exception:
+        return value
+    return f"{parsed.day} {THAI_MONTHS[parsed.month]} {parsed.year}"
+
+
+def format_quarter_label(value: str) -> str:
+    try:
+        parsed = parse_iso_date(value)
+    except Exception:
+        return value
+    quarter = ((parsed.month - 1) // 3) + 1
+    return f"ไตรมาส {quarter}/{parsed.year}"
+
+
+def clean_ticker(value: str) -> str:
+    return value.removesuffix(".BK")
+
+
+def safe_float(value: str | float | int | None, default: float = 0.0) -> float:
+    try:
+        return float(value)  # type: ignore[arg-type]
+    except (TypeError, ValueError):
+        return default
+
+
+def rate_text(value: float, digits: int = 1) -> str:
+    if abs(value) <= 5:
+        return pct(value, digits)
+    return "ค่าสูงผิดปกติในข้อมูลปัจจุบัน"
+
+
+def turnover_text(value: str | float | int | None) -> str:
+    numeric = safe_float(value)
+    if numeric <= 1:
+        return pct(numeric, 0)
+    return f"{numeric:.2f}"
+
+
+def choose_interesting_row(rows: list[dict[str, str]]) -> dict[str, str]:
+    sane_rows = [
+        row
+        for row in rows
+        if abs(safe_float(row.get("Signal_Score"))) <= 5
+        and abs(safe_float(row.get("Actual_Revenue_Growth"))) <= 5
+    ]
+    return max(sane_rows or rows, key=lambda row: safe_float(row.get("Signal_Score")))
+
+
+ENTRY_TEMPLATES = [
+    "{ticker}: ใช้{period_type} ณ {stmt_date} — signal gap {signal}. {comparison}",
+    "จาก{period_type} ณ {stmt_date}, {ticker} มี signal gap {signal}.{comparison}",
+    "{ticker}: งบ{period_type} ({stmt_date}) ทำให้ signal อยู่ที่ {signal}.{comparison}",
+]
+
+
+def format_baht(value: float | str | None) -> str:
+    """Thai currency formatting: >= 1e9 -> X.X พันล้านบาท, >= 500k -> X.X ล้านบาท, else -> X บาท."""
+    numeric = safe_float(value)
+    if abs(numeric) >= 1_000_000_000:
+        return f"{numeric / 1_000_000_000:.1f} พันล้านบาท"
+    if abs(numeric) >= 500_000:
+        return f"{numeric / 1_000_000:.1f} ล้านบาท"
+    return f"{numeric:,.0f} บาท"
+
+
+def calc_margin_of_safety(intrinsic_value: float | str | None, price: float | str | None) -> float | None:
+    iv = safe_float(intrinsic_value)
+    p = safe_float(price)
+    if p <= 0:
+        return None
+    return (iv - p) / p * 100
+
+
+def build_exit_narrative(row: dict[str, str]) -> str:
+    ticker = clean_ticker(row["Ticker"])
+    reason = row.get("Exit_Reason", "rebalance")
+    stop_loss = row.get("Stop_Loss_Hit", "False") == "True"
+    trigger = safe_float(row.get("Stop_Loss_Trigger_Price"))
+    
+    thai_reason = "การปรับพอร์ตตามรอบปกติ"
+    if reason == "stop_loss" or stop_loss:
+        thai_reason = f"ราคาลดลงถึงจุดตัดขาดทุน (Stop-loss) ที่ {trigger:.2f} บาท"
+    elif reason == "horizon_end":
+        thai_reason = "ครบกำหนดระยะเวลาถือครอง"
+        
+    return f"{ticker}: ออกจากพอร์ตเนื่องจาก {thai_reason}"
+
+
+def build_reason_sentences(rows: list[dict[str, str]], entered: set[str], quarter_idx: int = 0) -> list[str]:
+    if not rows:
+        return []
+    entered_rows = [row for row in rows if row["Ticker"] in entered]
+    chosen = sorted(
+        entered_rows or rows,
+        key=lambda row: safe_float(row.get("Signal_Score")),
+        reverse=True,
+    )[:3]
+    sentences = []
+    for idx, row in enumerate(chosen):
+        ticker = clean_ticker(row["Ticker"])
+        period_type = "งบรายไตรมาส" if row.get("Period_Type") == "quarterly" else "งบรายปี"
+        statement_date = format_date_th(row.get("Statement_Date", ""))
+        signal_score = rate_text(safe_float(row.get("Signal_Score")))
+        actual_growth = safe_float(row.get("Actual_Revenue_Growth"))
+        implied_growth = safe_float(row.get("Implied_Growth_Rate"))
+        
+        comparison = ""
+        if abs(actual_growth) <= 5 and abs(implied_growth) <= 5:
+            comparison = (
+                f" รายได้ล่าสุด {pct(actual_growth, 1)} เทียบกับ growth ที่ราคาหุ้นสะท้อน {pct(implied_growth, 1)}."
+            )
+            
+        fcf = safe_float(row.get("FCF"))
+        if fcf > 0:
+            comparison += f" กระแสเงินสดอิสระ {format_baht(fcf)}."
+            
+        mos = calc_margin_of_safety(row.get("Intrinsic_Value"), row.get("Price"))
+        if mos and abs(mos) > 10:
+            comparison += f" ส่วนลดจากมูลค่าพื้นฐาน (MoS) {mos:.1f}%."
+
+        template = ENTRY_TEMPLATES[(quarter_idx + idx) % len(ENTRY_TEMPLATES)]
+        sentences.append(
+            template.format(
+                ticker=ticker,
+                period_type=period_type,
+                stmt_date=statement_date,
+                signal=signal_score,
+                comparison=comparison
+            )
+        )
+    return sentences
+
+
+def build_quarterly_story(backtest_dir: Path) -> dict[str, object]:
+    returns_path = backtest_dir / "portfolio_returns.csv"
+    returns_lookup = {
+        row["Rebalance_Date"]: row
+        for row in read_csv(returns_path)
+        if row.get("Horizon_Months") == "3"
+    } if returns_path.exists() else {}
+
+    files = sorted(backtest_dir.glob("portfolio_*_3m.csv"))
+    if not files:
+        return {"quarters": [], "highlights": {}}
+
+    quarters: list[dict[str, object]] = []
+    all_rows: list[dict[str, str]] = []
+    previous_holdings: set[str] = set()
+    holding_counter: Counter[str] = Counter()
+
+    for index, path in enumerate(files):
+        rows = read_csv(path)
+        if not rows:
+            continue
+        all_rows.extend(rows)
+        rebalance_date = rows[0]["Rebalance_Date"]
+        holdings = {row["Ticker"] for row in rows}
+        holding_counter.update(holdings)
+        entered = holdings - previous_holdings
+        exited = previous_holdings - holdings
+        period_counts = Counter(row.get("Period_Type", "unknown") for row in rows)
+        returns_row = returns_lookup.get(rebalance_date, {})
+        interesting = choose_interesting_row(rows)
+        best = max(rows, key=lambda row: safe_float(row.get("Forward_Return")))
+        worst = min(rows, key=lambda row: safe_float(row.get("Forward_Return")))
+        quarters.append(
+            {
+                "rebalance_date": rebalance_date,
+                "quarter_label": format_quarter_label(rebalance_date),
+                "holdings": sorted(clean_ticker(item) for item in holdings),
+                "entered": sorted(clean_ticker(item) for item in entered),
+                "exited": sorted(clean_ticker(item) for item in exited),
+                "period_summary": ", ".join(
+                    f"{'quarterly' if key == 'quarterly' else 'annual'} {value}"
+                    for key, value in sorted(period_counts.items())
+                ),
+                "active_return": safe_float(returns_row.get("Active_Return")),
+                "portfolio_return": safe_float(returns_row.get("Portfolio_Return")),
+                "benchmark_return": safe_float(returns_row.get("Benchmark_Return")),
+                "eligible_count": int(safe_float(returns_row.get("Eligible_Count"))),
+                "universe_count": int(safe_float(returns_row.get("Universe_Count"))),
+                "turnover": turnover_text(returns_row.get("Turnover")),
+                "interesting": interesting,
+                "best": best,
+                "worst": worst,
+                "reasons": build_reason_sentences(rows, entered, index),
+                "open": index == len(files) - 1,
+            }
+        )
+        previous_holdings = holdings
+
+    highlights: dict[str, object] = {}
+    if all_rows:
+        highlights = {
+            "interesting_latest": quarters[-1]["interesting"],
+            "best_overall": max(all_rows, key=lambda row: safe_float(row.get("Forward_Return"))),
+            "worst_overall": min(all_rows, key=lambda row: safe_float(row.get("Forward_Return"))),
+            "most_held": holding_counter.most_common(1)[0] if holding_counter else None,
+        }
+
+    return {"quarters": quarters, "highlights": highlights}
 
 
 def remap_href(href: str, link_map: dict[str, str]) -> str:
@@ -805,15 +1339,15 @@ def parse_table(
 
     header_cells = rows[0]
     body_rows = rows[2:]
-    parts = ["<table>", "<thead><tr>"]
-    parts.extend(f"<th>{inline_markdown(cell, link_map)}</th>" for cell in header_cells)
+    parts = ['<div class="table-wrapper" tabindex="0" role="region" aria-label="Scrollable data table">', "<table>", "<thead><tr>"]
+    parts.extend(f'<th scope="col">{inline_markdown(cell, link_map)}</th>' for cell in header_cells)
     parts.append("</tr></thead><tbody>")
     for row in body_rows:
         parts.append("<tr>")
         for cell in row:
             parts.append(f"<td>{inline_markdown(cell, link_map)}</td>")
         parts.append("</tr>")
-    parts.append("</tbody></table>")
+    parts.append("</tbody></table></div>")
     return "".join(parts), cursor
 
 
@@ -946,8 +1480,28 @@ def render_nav(active: str, prefix: str) -> str:
     for label, href in NAV_LINKS:
         target = f"{prefix}{href}"
         class_name = ' class="active"' if label == active else ""
-        links.append(f'<a href="{target}"{class_name}>{html.escape(label)}</a>')
+        current = ' aria-current="page"' if label == active else ""
+        links.append(f'<a href="{target}"{class_name}{current}>{html.escape(label)}</a>')
     return "".join(links)
+
+
+def render_breadcrumbs(items: list[tuple[str, str]], prefix: str) -> str:
+    if len(items) <= 1:
+        return ""
+    breadcrumbs_html = []
+    for i, (label, href) in enumerate(items):
+        is_last = i == len(items) - 1
+        aria_current = ' aria-current="page"' if is_last else ""
+        link_html = f'<span class="breadcrumbs-link"{aria_current}>{html.escape(label)}</span>' if is_last else f'<a href="{prefix}{href}" class="breadcrumbs-link">{html.escape(label)}</a>'
+        breadcrumbs_html.append(f'<li class="breadcrumbs-item">{link_html}</li>')
+    
+    return f"""
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <ol class="breadcrumbs-list">
+        {''.join(breadcrumbs_html)}
+      </ol>
+    </nav>
+    """
 
 
 def absolute_url(site_url: str, path: str) -> str:
@@ -961,7 +1515,7 @@ def render_footer(prefix: str) -> str:
     return f"""
     <footer class="site-footer">
       <p>Built from local thesis and backtest artifacts in this repository. Designed for Netlify and GitHub Pages deployment.</p>
-      <div class="footer-links">{footer_links}</div>
+      <nav class="footer-links" aria-label="Footer">{footer_links}</nav>
     </footer>
     """
 
@@ -974,6 +1528,8 @@ def render_page(
     prefix: str,
     site_url: str,
     body: str,
+    lang: str = "en",
+    breadcrumbs: list[tuple[str, str]] | None = None,
     structured_data: dict | None = None,
 ) -> str:
     json_ld = ""
@@ -983,8 +1539,11 @@ def render_page(
             + json.dumps(structured_data, ensure_ascii=False)
             + "</script>"
         )
+    
+    breadcrumbs_markup = render_breadcrumbs(breadcrumbs, prefix) if breadcrumbs else ""
+
     return f"""<!doctype html>
-<html lang="en">
+<html lang="{html.escape(lang, quote=True)}">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -1001,9 +1560,10 @@ def render_page(
     {json_ld}
   </head>
   <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     <div class="site-shell">
       <header class="topbar">
-        <a class="brand" href="{prefix}index.html">
+        <a class="brand" href="{prefix}index.html" aria-label="Thai SET Reverse DCF Research - Home">
           <span class="brand-mark">RDCF</span>
           <span class="brand-copy">
             <strong>Thai SET Reverse DCF</strong>
@@ -1012,7 +1572,10 @@ def render_page(
         </a>
         <nav aria-label="Primary">{render_nav(active_nav, prefix)}</nav>
       </header>
-      {body}
+      {breadcrumbs_markup}
+      <main id="main-content">
+        {body}
+      </main>
       {render_footer(prefix)}
     </div>
   </body>
@@ -1060,21 +1623,373 @@ def summary_table(summary_rows: list[dict[str, str]]) -> str:
             "</tr>"
         )
     return """
+    <div class="table-wrapper" tabindex="0" role="region" aria-label="Backtest performance summary table">
     <table class="summary-table">
       <thead>
         <tr>
-          <th>Horizon</th>
-          <th>Portfolio return</th>
-          <th>Benchmark return</th>
-          <th>Active return</th>
-          <th>Hit rate</th>
+          <th scope="col">Horizon</th>
+          <th scope="col">Portfolio return</th>
+          <th scope="col">Benchmark return</th>
+          <th scope="col">Active return</th>
+          <th scope="col">Hit rate</th>
         </tr>
       </thead>
       <tbody>
     """ + "".join(rows_html) + """
       </tbody>
     </table>
+    </div>
     """
+
+
+def render_ticker_pills(items: list[str]) -> str:
+    if not items:
+        return '<p class="muted">ไม่มีการเปลี่ยนแปลง</p>'
+    return '<div class="ticker-pills">' + "".join(
+        f'<span class="ticker-pill">{html.escape(item)}</span>' for item in items
+    ) + "</div>"
+
+
+def render_highlight_card(label: str, row: dict[str, str], extra: str) -> str:
+    fcf = safe_float(row.get("FCF"))
+    mos = calc_margin_of_safety(row.get("Intrinsic_Value"), row.get("Price"))
+    forward_return = safe_float(row.get("Forward_Return"))
+    buy_ban = row.get("Buy_Ban_Active", "False") == "True"
+    
+    classes = ["highlight-card"]
+    if forward_return > 0:
+        classes.append("accent-profit")
+    elif forward_return < 0:
+        classes.append("accent-loss")
+    if buy_ban:
+        classes.append("banned")
+        
+    details = []
+    if fcf > 0:
+        details.append(f"FCF: {format_baht(fcf)}")
+    if mos and abs(mos) > 0.1:
+        details.append(f"MoS: {mos:.1f}%")
+    if buy_ban:
+        details.append("⚠️ Buy Ban Active")
+        
+    details_html = f"<p class='muted'><small>{' | '.join(details)}</small></p>" if details else ""
+
+    return f"""
+    <article class='{' '.join(classes)}'>
+      <span class="eyebrow">{html.escape(label)}</span>
+      <strong>{html.escape(clean_ticker(row["Ticker"]))}</strong>
+      <p>{extra}</p>
+      {details_html}
+      <small>รอบลงทุน {html.escape(format_date_th(row["Rebalance_Date"]))}</small>
+    </article>
+    """
+
+
+GUIDE_FAQ = [
+    {
+        "q": "Reverse DCF คืออะไร?",
+        "a": "คือการคำนวณย้อนกลับจากราคาหุ้นในตลาด เพื่อหาว่านักลงทุนกำลังคาดหวังการเติบโตของกำไรหรือกระแสเงินสดเท่าไหร่ แล้วจึงนำมาเทียบกับตัวเลขจริงที่บริษัททำได้เพื่อให้เห็นว่าหุ้นแพงหรือถูกเกินไปจากความคาดหวังนั้น",
+    },
+    {
+        "q": "ทำไมต้องเน้นหุ้นใน SET100?",
+        "a": "เพราะเป็นกลุ่มหุ้นที่มีสภาพคล่องสูงและมีการเปิดเผยข้อมูลพื้นฐานสม่ำเสมอเพียงพอที่จะนำมาสร้างโมเดลย้อนกลับ (Reverse) ได้อย่างน่าเชื่อถือเมื่อเทียบกับหุ้นขนาดเล็ก",
+    },
+    {
+        "q": "พอร์ตลงทุนปรับเปลี่ยนทุกไตรมาสหมายถึงอะไร?",
+        "a": "โมเดลจะทำการตรวจสอบงบการเงินล่าสุดที่ประกาศออกมาทุก 3 เดือน หากพื้นฐานเปลี่ยนไปจนทำให้ความคาดหวังในราคาหุ้นไม่สมเหตุสมผล พอร์ตจะทำการหมุนเวียนหุ้น (Rebalance) ทันที",
+    },
+    {
+        "q": "ความเสี่ยงที่สำคัญที่สุดคืออะไร?",
+        "a": "คือความถูกต้องและรวดเร็วของข้อมูล (Data Lag) รวมถึงความผันผวนของตลาดในระยะสั้นที่อาจไม่สะท้อนพื้นฐานทันที เราจึงต้องใช้การถือครอง 3-12 เดือนเพื่อรอให้ราคาตอบสนองต่อพื้นฐาน",
+    },
+]
+
+
+def render_guide_toc(body_html: str) -> str:
+    """Extract h2 headings from body and render a sticky sidebar TOC using existing toc-card classes."""
+    headings = re.findall(r'<h2 id="([^"]+)">([^<]+)</h2>', body_html)
+    if not headings:
+        return ""
+
+    links = []
+    for h_id, h_text in headings:
+        links.append(f'<li><a href="#{h_id}">{html.escape(h_text)}</a></li>')
+
+    return f"""
+    <aside class="toc-card" aria-label="สารบัญเนื้อหา">
+      <h2>ในหน้านี้</h2>
+      <ul class="toc-list">
+        {''.join(links)}
+      </ul>
+    </aside>
+    """
+
+
+def render_reader_guide_page(
+    intro_html: str,
+    story: dict[str, object],
+    research_manifest: dict,
+    backtest_manifest: dict,
+    site_url: str,
+) -> str:
+    quarters: list[dict[str, object]] = story.get("quarters", [])  # type: ignore[assignment]
+    highlights: dict[str, object] = story.get("highlights", {})  # type: ignore[assignment]
+    current_rows = research_manifest.get("rows", {})
+    current_tickers = int(current_rows.get("fundamentals", 0))
+    current_observations = int(current_rows.get("observations", 0))
+
+    highlight_markup = ""
+    if highlights:
+        interesting_latest = highlights["interesting_latest"]  # type: ignore[index]
+        best_overall = highlights["best_overall"]  # type: ignore[index]
+        worst_overall = highlights["worst_overall"]  # type: ignore[index]
+        most_held = highlights.get("most_held")
+        highlight_markup = f"""
+        <section class="highlight-grid">
+          {render_highlight_card(
+              "หุ้นเด่นล่าสุด",
+              interesting_latest,
+              f"คะแนน signal สูงสุดในรอบล่าสุด ({rate_text(safe_float(interesting_latest['Signal_Score']))})",
+          )}
+          {render_highlight_card(
+              "กำไรมากสุดจาก output ปัจจุบัน",
+              best_overall,
+              f"ผลตอบแทน 3 เดือน {pct(safe_float(best_overall['Forward_Return']))} และ active return {pct(safe_float(best_overall['Active_Return']))}",
+          )}
+          {render_highlight_card(
+              "ขาดทุนมากสุดจาก output ปัจจุบัน",
+              worst_overall,
+              f"ผลตอบแทน 3 เดือน {pct(safe_float(worst_overall['Forward_Return']))} และ active return {pct(safe_float(worst_overall['Active_Return']))}",
+          )}
+        """
+        if most_held:
+            ticker, count = most_held
+            highlight_markup += f"""
+          <article class="highlight-card">
+            <span class="eyebrow">หุ้นที่ถูกถือบ่อยสุด</span>
+            <strong>{html.escape(clean_ticker(str(ticker)))}</strong>
+            <p>ติดพอร์ต {count} รอบใน timeline 3 เดือนที่มีอยู่ตอนนี้</p>
+            <small>ใช้เพื่ออธิบายความสม่ำเสมอของ model ก่อนมี output final ชุดใหม่</small>
+          </article>
+            """
+        highlight_markup += "</section>"
+    else:
+        highlight_markup = """
+        <section class="dependency-card">
+          <h2>ส่วนไฮไลต์หุ้นยังรอ output</h2>
+          <p>ถ้ายังไม่มีไฟล์ <code>portfolio_YYYY-MM-DD_3m.csv</code> ตัว build จะขึ้นโครงสร้าง placeholder ไว้ก่อน และรอ output backtest รอบใหม่เข้ามาเติม.</p>
+        </section>
+        """
+
+    if quarters:
+        timeline_items = []
+        for quarter in quarters:
+            interesting = quarter["interesting"]  # type: ignore[index]
+            best = quarter["best"]  # type: ignore[index]
+            worst = quarter["worst"]  # type: ignore[index]
+            reasons_html = "".join(
+                f"<li>{html.escape(item)}</li>" for item in quarter["reasons"]  # type: ignore[index]
+            ) or "<li>รอ output attribution ที่ละเอียดกว่านี้จากฝั่ง backtest engine</li>"
+            open_attr = " open" if quarter["open"] else ""
+            timeline_items.append(
+                f"""
+                <details class="timeline-quarter"{open_attr} id="quarter-{html.escape(str(quarter['rebalance_date']))}">
+                  <summary>
+                    <div class="timeline-summary-top">
+                      <strong>{html.escape(str(quarter['quarter_label']))} · รอบลงทุน {html.escape(format_date_th(str(quarter['rebalance_date'])))}</strong>
+                      <span>{html.escape(' | '.join([f'Active return {pct(float(quarter["active_return"]))}', f'เข้า {len(quarter["entered"])} ตัว', f'ออก {len(quarter["exited"])} ตัว']))}</span>
+                    </div>
+                    <div class="timeline-summary-meta">
+                      <span class="ticker-pill">ถือ {len(quarter['holdings'])} หุ้น</span>
+                      <span class="ticker-pill">Universe {quarter['universe_count']}</span>
+                      <span class="ticker-pill">Eligible {quarter['eligible_count']}</span>
+                      <span class="ticker-pill">Turnover {html.escape(str(quarter['turnover']))}</span>
+                    </div>
+                  </summary>
+                  <div class="timeline-body">
+                    <div class="mini-metrics">
+                      <div class="mini-card"><span>พอร์ตที่ถือ</span><strong>{len(quarter['holdings'])} หุ้น</strong><small>{html.escape(str(quarter['period_summary']))}</small></div>
+                      <div class="mini-card"><span>ผลตอบแทนพอร์ต</span><strong>{pct(float(quarter['portfolio_return']))}</strong><small>เทียบ benchmark {pct(float(quarter['benchmark_return']))}</small></div>
+                      <div class="mini-card"><span>คำตอบของไตรมาสนี้</span><strong>{html.escape(clean_ticker(interesting['Ticker']))}</strong><small>หุ้นที่คะแนน signal เด่นสุดในรอบนี้</small></div>
+                    </div>
+                    <div>
+                      <h3>ถืออะไรอยู่บ้าง</h3>
+                      {render_ticker_pills(quarter['holdings'])}
+                    </div>
+                    <div>
+                      <h3>เข้าใหม่ / ออก</h3>
+                      <p><strong>เข้าใหม่</strong></p>
+                      {render_ticker_pills(quarter['entered'])}
+                      <p><strong>ออกจากพอร์ต</strong></p>
+                      {render_ticker_pills(quarter['exited'])}
+                    </div>
+                    <div>
+                      <h3>fundamental เปลี่ยนแล้วพอร์ตเปลี่ยนอย่างไร</h3>
+                      <ul class="timeline-list">{reasons_html}</ul>
+                    </div>
+                    <div class="highlight-grid">
+                      {render_highlight_card("หุ้นเด่นของไตรมาส", interesting, f"signal gap {rate_text(safe_float(interesting['Signal_Score']))} จากงบ {interesting['Period_Type']}")}
+                      {render_highlight_card("กำไรมากสุดในไตรมาส", best, f"ผลตอบแทน 3 เดือน {pct(safe_float(best['Forward_Return']))}")}
+                      {render_highlight_card("ขาดทุนมากสุดในไตรมาส", worst, f"ผลตอบแทน 3 เดือน {pct(safe_float(worst['Forward_Return']))}")}
+                    </div>
+                  </div>
+                </details>
+                """
+            )
+        timeline_markup = f"""
+        <section class="timeline-shell">
+          <div class="page-intro">
+            <span class="eyebrow">Quarterly timeline</span>
+            <h2 id="quarterly-timeline">เส้นเวลา “ถือ / เข้า / ออก / ทำไมเปลี่ยน”</h2>
+            <p>ส่วนนี้อ่านตามรอบ rebalance รายไตรมาส โดยยึดไฟล์พอร์ต 3 เดือนเพื่อให้เล่าเรื่องการเปลี่ยนพอร์ตเป็นลำดับเวลาเดียวกันก่อน เมื่อ output case ใหม่พร้อมแล้ว โครงนี้จะ reuse ได้ทันที.</p>
+          </div>
+          <div class="timeline-stack">
+            {''.join(timeline_items)}
+          </div>
+        </section>
+        """
+    else:
+        timeline_markup = """
+        <section class="timeline-shell">
+          <h2 id="quarterly-timeline">Quarterly timeline template พร้อมแล้ว แต่ยังรอ output</h2>
+          <p>ตัว site builder รองรับ timeline รายไตรมาสแล้ว หากยังไม่มีไฟล์พอร์ต 3 เดือน (`portfolio_YYYY-MM-DD_3m.csv`) จะขึ้น placeholder นี้แทนเพื่อไม่ให้ docs lane block upstream work.</p>
+          <ul class="dependency-list">
+            <li>ต้องมีไฟล์พอร์ตต่อรอบ rebalance อย่างน้อยหนึ่ง horizon ที่เล่า timeline ได้</li>
+            <li>ต้องมี `portfolio_returns.csv` เพื่อเติม universe / eligible / turnover</li>
+            <li>ถ้าต้องการเหตุผลเปลี่ยนหุ้นที่คมกว่าเดิม ต้องมี output attribution จาก backtest engine</li>
+          </ul>
+        </section>
+        """
+
+    faq_items = []
+    for item in GUIDE_FAQ:
+        faq_items.append(
+            f"""
+            <details class="timeline-quarter">
+              <summary><strong>{html.escape(item['q'])}</strong></summary>
+              <div class="timeline-body"><p>{html.escape(item['a'])}</p></div>
+            </details>
+            """
+        )
+    faq_markup = f"""
+    <section class="timeline-shell">
+      <div class="page-intro">
+        <span class="eyebrow">FAQ</span>
+        <h2 id="faq">คำถามที่พบบ่อย (Investor FAQ)</h2>
+      </div>
+      <div class="timeline-stack">
+        {''.join(faq_items)}
+      </div>
+    </section>
+    """
+
+    body_content = f"""
+    <section class="hero" aria-labelledby="guide-th-title">
+      <div class="hero-copy">
+        <span class="eyebrow">คู่มือภาษาไทยแบบ reader-first</span>
+        <h1 id="guide-th-title">เริ่มจากคำถามที่ชัด แล้วค่อยไล่ดูคำตอบผ่าน timeline การลงทุนรายไตรมาส</h1>
+        <p>
+          หน้านี้เป็นประตูหลักสำหรับนักลงทุนและคนทั่วไป: บอกให้ชัดว่าโปรเจกต์กำลังพิสูจน์อะไร,
+          ควรอ่านหลักฐานอย่างไร, และพอร์ตเปลี่ยนเมื่อ fundamentals เปลี่ยนตรงไหนบ้าง.
+        </p>
+        <div class="hero-actions">
+          <a class="button primary" href="../backtest/index.html">ดูผล backtest ที่มีอยู่ตอนนี้</a>
+          <a class="button secondary" href="../download/index.html">ดาวน์โหลดไฟล์อ้างอิง</a>
+        </div>
+      </div>
+      <aside class="hero-panel">
+        <h2>สถานะ surface นี้</h2>
+        <div class="metric-grid">
+          <div class="metric-card">
+            <span>Current repo bundle</span>
+            <strong>{current_tickers}</strong>
+            <small>ticker ใน output ล่าสุดที่ builder อ่านได้ตอนนี้</small>
+          </div>
+          <div class="metric-card">
+            <span>Quarterly timeline</span>
+            <strong>{len(quarters)}</strong>
+            <small>รอบ rebalance ที่เล่าได้จากไฟล์พอร์ต 3 เดือน</small>
+          </div>
+          <div class="metric-card">
+            <span>Observations</span>
+            <strong>{current_observations}</strong>
+            <small>dated observations ที่มีใน bundle ปัจจุบัน</small>
+          </div>
+          <div class="metric-card">
+            <span>Backtest rows</span>
+            <strong>{backtest_manifest.get('portfolio_rows', 0)}</strong>
+            <small>แถวพอร์ตจาก output ล่าสุดใน repo</small>
+          </div>
+        </div>
+        <p class="panel-note">โครงหน้านี้ทำให้ docs/site เดินหน้าได้ก่อน แม้ output 100 หุ้น + rules ใหม่จะยังไม่ build เสร็จจาก lane data/backtest.</p>
+      </aside>
+    </section>
+
+    <section class="story-grid">
+      <article class="qa-card content-area">
+        <h2 id="core-question">คำถามหลักที่งานนี้ต้องตอบ</h2>
+        {intro_html}
+      </article>
+      <aside class="dependency-card">
+        <span class="eyebrow">สิ่งที่หน้าเว็บนี้ตอบให้ได้ทันที</span>
+        <ol class="qa-list">
+          <li><a href="#core-question">เรากำลังพิสูจน์อะไร และคำตอบสั้นตอนนี้คืออะไร</a></li>
+          <li><a href="#quarterly-timeline">ไตรมาสไหนพอร์ตถืออะไร เข้าอะไร ออกอะไร</a></li>
+          <li>หุ้นไหนเด่นสุด / กำไรมากสุด / ขาดทุนมากสุด</li>
+          <li><a href="#dependencies">ส่วนไหนยังต้องรอ output final จาก upstream lanes</a></li>
+          <li><a href="#faq">คำถามที่พบบ่อย (FAQ)</a></li>
+        </ol>
+      </aside>
+    </section>
+
+    {highlight_markup}
+    {timeline_markup}
+    {faq_markup}
+
+    <section class="dependency-card" id="dependencies">
+      <span class="eyebrow">Dependencies ที่ยังต้องรอจาก lanes อื่น</span>
+      <h2>สิ่งที่ต้องเข้ามาเติมก่อนหน้า public final จะสมบูรณ์</h2>
+      <ul class="dependency-list">
+        <li>output ชุด <strong>100 หุ้นแบบ multi-source</strong> ที่ใช้ scraping เป็นแกนและเติม yfinance เมื่อจำเป็น</li>
+        <li>ผล backtest final ตามแผน Damodaran 2 case: baseline และ risk-control พร้อม Top 5 / Top 10 / SL 5% / 10%</li>
+        <li>กติกา “แพ้เกิน 2 buy rounds แล้วห้ามซื้ออีก” จาก backtest engine รอบใหม่</li>
+        <li>stock-change attribution ที่ละเอียดกว่า signal summary ถ้าฝั่ง engine ส่งเหตุผลระดับ factor/metric ออกมาได้</li>
+        <li>บทสรุป thesis/public wording รอบสุดท้ายหลังเลข final นิ่งแล้ว</li>
+      </ul>
+    </section>
+    """
+
+    toc_markup = render_guide_toc(body_content)
+
+    final_body = f"""
+    <div class="content-layout">
+      <div class="content-wrap">
+        {body_content}
+      </div>
+      {toc_markup}
+    </div>
+    """
+
+    structured_data = {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "headline": "คู่มือภาษาไทยแบบ reader-first สำหรับ Reverse DCF ตลาดหุ้นไทย",
+        "description": "หน้าสรุปภาษาไทยที่อธิบายสิ่งที่โปรเจกต์ต้องการพิสูจน์ พร้อม quarterly timeline การลงทุนและไฮไลต์หุ้นเด่น",
+        "url": absolute_url(site_url, "guide/"),
+        "inLanguage": "th",
+    }
+    return render_page(
+        title="คู่มือภาษาไทย | Thai SET Reverse DCF",
+        description="หน้าสรุปภาษาไทยสำหรับนักลงทุนและคนทั่วไป พร้อม quarterly timeline และ stock highlights",
+        active_nav="Guide (TH)",
+        prefix="../",
+        site_url=absolute_url(site_url, "guide/"),
+        body=final_body,
+        lang="th",
+        breadcrumbs=[("Home", "index.html"), ("Guide (TH)", "guide/index.html")],
+        structured_data=structured_data,
+    )
+
 
 
 def render_home_page(
@@ -1084,24 +1999,24 @@ def render_home_page(
     site_url: str,
 ) -> str:
     body = f"""
-    <section class="hero">
+    <section class="hero" aria-labelledby="hero-heading">
       <div class="hero-copy">
         <span class="eyebrow">Thai equities research</span>
-        <h1>Reverse DCF evidence for the SET, built for thesis review and production deployment.</h1>
+        <h1 id="hero-heading">Reverse DCF evidence for the SET, built for thesis review and production deployment.</h1>
         <p>
           This site packages the repository’s thesis, audited backtest results, and research methodology
           into a fast static site suitable for Netlify or GitHub Pages. The core result is a benchmark-relative
           reverse DCF strategy that stayed positive on average across 3, 6, and 12 month holding periods.
         </p>
         <div class="hero-actions">
-          <a class="button primary" href="thesis.html">Read the thesis</a>
+          <a class="button primary" href="guide/index.html">Read the Thai guide</a>
           <a class="button secondary" href="backtest/index.html">Inspect the backtest</a>
         </div>
         <div class="pill-row">
-          <span class="pill">50-stock audited universe</span>
+          <span class="pill">Reader-first Thai guide</span>
           <span class="pill">13 quarterly rebalances</span>
           <span class="pill">Damodaran framing</span>
-          <span class="pill">Free-data workflow</span>
+          <span class="pill">Current repo bundle</span>
         </div>
       </div>
       <aside class="hero-panel">
@@ -1110,8 +2025,8 @@ def render_home_page(
           {stats_cards(summary_rows, manifest)}
         </div>
         <p class="panel-note">
-          The stricter audited lane is kept separate from the earlier exploratory simulation so the public site
-          can present the strongest evidence without overstating what the data proves.
+          The site now has a reader-first Thai surface for investors and general readers, while the thesis and
+          audited outputs remain available as supporting layers behind it.
         </p>
       </aside>
     </section>
@@ -1151,9 +2066,18 @@ def render_home_page(
         {summary_table(summary_rows)}
       </article>
       <article class="card span-6">
+        <p class="kicker">Reader-first layer</p>
+        <h2>Start with the Thai guide if you want the short answer first.</h2>
+        <p>
+          The new Guide (TH) page is organized around the core proof question, quarterly portfolio timeline,
+          and stock highlights so non-academic readers can understand the argument before diving into raw artifacts.
+        </p>
+      </article>
+      <article class="card span-6">
         <p class="kicker">What this site contains</p>
         <h2>Thesis, research notes, and downloadable artifacts.</h2>
         <ul class="list-clean">
+          <li><a href="guide/index.html">Thai guide</a> that answers the core proof question with a quarterly narrative.</li>
           <li><a href="thesis.html">Complete thesis HTML</a> with a generated table of contents and semantic headings.</li>
           <li><a href="research/index.html">Research methodology page</a> covering data policy, observation dating, and validation logic.</li>
           <li><a href="backtest/index.html">Backtest dashboard</a> with metrics, figures, and audit highlights.</li>
@@ -1170,7 +2094,7 @@ def render_home_page(
         <h2>How to read the evidence responsibly</h2>
         <ul class="list-clean">
           <li>The exploratory 15.68% CAGR study is retained as context, not as the primary audited proof.</li>
-          <li>The audited lane uses a narrower free-data universe and should be treated as the thesis-grade evidence base.</li>
+          <li>The reader-first guide intentionally avoids locking in a final public proof set until the 100-stock rebuild is ready.</li>
           <li>Exclusion files, audit artifacts, and WACC sensitivity are part of the argument, not optional appendices.</li>
         </ul>
         <p class="callout">The site frames reverse DCF as a disciplined decision framework, not a universal alpha claim.</p>
@@ -1195,6 +2119,7 @@ def render_home_page(
         prefix="",
         site_url=site_url,
         body=body,
+        breadcrumbs=[("Home", "index.html")],
         structured_data=structured_data,
     )
 
@@ -1209,9 +2134,9 @@ def render_thesis_page(
         for item in thesis_toc
     )
     body = f"""
-    <section class="page-intro">
+    <section class="page-intro" aria-labelledby="thesis-title">
       <span class="eyebrow">Full thesis</span>
-      <h1>Reverse DCF as a Value Investing Framework for Thai SET Markets</h1>
+      <h1 id="thesis-title">Reverse DCF as a Value Investing Framework for Thai SET Markets</h1>
       <p>
         HTML conversion of the repository thesis with semantic headings, tables, code blocks, and internal anchor navigation.
         This page is designed for direct reading, academic review, and search indexing.
@@ -1247,6 +2172,7 @@ def render_thesis_page(
         prefix="",
         site_url=absolute_url(site_url, "thesis.html"),
         body=body,
+        breadcrumbs=[("Home", "index.html"), ("Thesis", "thesis.html")],
         structured_data=structured_data,
     )
 
@@ -1258,9 +2184,9 @@ def render_research_page(
     site_url: str,
 ) -> str:
     body = f"""
-    <section class="page-intro">
+    <section class="page-intro" aria-labelledby="research-title">
       <span class="eyebrow">Research architecture</span>
-      <h1>Methodology, datasource policy, and validation controls</h1>
+      <h1 id="research-title">Methodology, datasource policy, and validation controls</h1>
       <p>
         The research layer explains how the repository moves from free Thai equity data to dated observations,
         benchmark-relative backtests, and thesis-ready evidence artifacts.
@@ -1297,6 +2223,7 @@ def render_research_page(
         prefix="../",
         site_url=absolute_url(site_url, "research/"),
         body=body,
+        breadcrumbs=[("Home", "index.html"), ("Research", "research/index.html")],
     )
 
 
@@ -1337,9 +2264,9 @@ def render_backtest_page(
         )
 
     body = f"""
-    <section class="page-intro">
+    <section class="page-intro" aria-labelledby="backtest-title">
       <span class="eyebrow">Audited performance</span>
-      <h1>Benchmark-relative backtest results and visual evidence</h1>
+      <h1 id="backtest-title">Benchmark-relative backtest results and visual evidence</h1>
       <p>
         This page packages the thesis-safe outputs: the summary table, no-lookahead status, sector dispersion,
         and WACC sensitivity figures copied into the static site for direct deployment.
@@ -1400,19 +2327,21 @@ def render_backtest_page(
       <article class="card span-6">
         <p class="kicker">WACC sensitivity</p>
         <h2>Best-performing horizon per tested fixed WACC value</h2>
+        <div class="table-wrapper" tabindex="0" role="region" aria-label="WACC sensitivity summary table">
         <table class="summary-table">
           <thead>
             <tr>
-              <th>Fixed WACC</th>
-              <th>Best horizon</th>
-              <th>Best active return</th>
-              <th>Hit rate</th>
+              <th scope="col">Fixed WACC</th>
+              <th scope="col">Best horizon</th>
+              <th scope="col">Best active return</th>
+              <th scope="col">Hit rate</th>
             </tr>
           </thead>
           <tbody>
             {"".join(sensitivity_rows)}
           </tbody>
         </table>
+        </div>
       </article>
       <article class="card span-6 content-area">
         {report_html}
@@ -1431,14 +2360,15 @@ def render_backtest_page(
         prefix="../",
         site_url=absolute_url(site_url, "backtest/"),
         body=body,
+        breadcrumbs=[("Home", "index.html"), ("Backtest", "backtest/index.html")],
     )
 
 
 def render_about_page(site_url: str) -> str:
     body = """
-    <section class="page-intro">
+    <section class="page-intro" aria-labelledby="about-title">
       <span class="eyebrow">Project overview</span>
-      <h1>What this repository is trying to prove, and what it refuses to claim</h1>
+      <h1 id="about-title">What this repository is trying to prove, and what it refuses to claim</h1>
       <p>
         The project evaluates whether reverse discounted cash flow can function as a practical value-investing
         framework in Thai equities when the data budget is constrained to free sources.
@@ -1472,10 +2402,11 @@ def render_about_page(site_url: str) -> str:
       </article>
       <article class="card span-6">
         <p class="kicker">Audience</p>
-        <h2>Built for thesis reviewers, investors, and technical readers</h2>
+        <h2>Built first for investors and general readers, then for reviewers</h2>
         <ul class="list-clean">
-          <li>Reviewers can read the full thesis and jump to methods, results, and limitations quickly.</li>
+          <li>General readers can start with the Thai guide and understand the proof question before reading technical details.</li>
           <li>Investors can inspect benchmark-relative evidence, sector behavior, and sensitivity outputs.</li>
+          <li>Reviewers can still read the full thesis and jump to methods, results, and limitations quickly.</li>
           <li>Developers can deploy the static site without a build pipeline and trace each page back to source artifacts in the repo.</li>
         </ul>
       </article>
@@ -1500,14 +2431,15 @@ def render_about_page(site_url: str) -> str:
         prefix="../",
         site_url=absolute_url(site_url, "about/"),
         body=body,
+        breadcrumbs=[("Home", "index.html"), ("About", "about/index.html")],
     )
 
 
 def render_download_page(site_url: str) -> str:
     body = """
-    <section class="page-intro">
+    <section class="page-intro" aria-labelledby="download-title">
       <span class="eyebrow">Downloads</span>
-      <h1>Source files, figures, and summaries copied into the static bundle</h1>
+      <h1 id="download-title">Source files, figures, and summaries copied into the static bundle</h1>
       <p>
         The site ships with local copies of the thesis markdown, executive summary, backtest summaries, and chart assets
         so readers can inspect the primary artifacts without leaving the deployed site.
@@ -1518,6 +2450,7 @@ def render_download_page(site_url: str) -> str:
         <p class="kicker">Documents</p>
         <h2>Core markdown sources</h2>
         <ul class="list-clean">
+          <li><a href="../assets/docs/reader-first-thai.md">Thai reader-first guide source</a></li>
           <li><a href="../assets/docs/thesis_reverse_dcf_thai_set.md">Full thesis markdown</a></li>
           <li><a href="../assets/docs/executive-summary.md">Executive summary</a></li>
           <li><a href="../assets/docs/thesis-methodology.md">Methodology note</a></li>
@@ -1559,6 +2492,7 @@ def render_download_page(site_url: str) -> str:
         prefix="../",
         site_url=absolute_url(site_url, "download/"),
         body=body,
+        breadcrumbs=[("Home", "index.html"), ("Download", "download/index.html")],
     )
 
 
@@ -1574,14 +2508,9 @@ def copy_files(mapping: dict[Path, Path]) -> None:
 
 
 def build_sitemap(site_url: str) -> str:
-    urls = [
-        "",
-        "thesis.html",
-        "research/",
-        "backtest/",
-        "about/",
-        "download/",
-    ]
+    urls = [""]
+    for _, href in NAV_LINKS[1:]:
+        urls.append(href.removesuffix("index.html"))
     entries = []
     for item in urls:
         loc = absolute_url(site_url, item)
@@ -1606,6 +2535,7 @@ This directory contains a static documentation site for the Thai SET reverse DCF
 ## What is included
 
 - `index.html` landing page
+- `guide/index.html` Thai reader-first guide
 - `thesis.html` generated thesis page
 - `research/index.html` methodology and datasource notes
 - `backtest/index.html` results dashboard with local figures
@@ -1654,6 +2584,7 @@ def build_asset_sources() -> dict[Path, Path]:
         ROOT / "research_data/latest/backtest/figures/hit_rate_by_horizon.png": NETLIFY / "assets/figures/hit_rate_by_horizon.png",
         ROOT / "research_data/latest/backtest/figures/sector_active_return_heatmap.png": NETLIFY / "assets/figures/sector_active_return_heatmap.png",
         ROOT / "research_data/latest/backtest/figures/wacc_sensitivity.png": NETLIFY / "assets/figures/wacc_sensitivity.png",
+        ROOT / "docs/reader-first-thai.md": NETLIFY / "assets/docs/reader-first-thai.md",
         ROOT / "docs/thesis_reverse_dcf_thai_set.md": NETLIFY / "assets/docs/thesis_reverse_dcf_thai_set.md",
         ROOT / "docs/executive-summary.md": NETLIFY / "assets/docs/executive-summary.md",
         ROOT / "docs/thesis-methodology.md": NETLIFY / "assets/docs/thesis-methodology.md",
@@ -1696,6 +2627,7 @@ def main() -> None:
 
     site_url = args.site_url.rstrip("/")
 
+    reader_guide_md = read_text(ROOT / "docs/reader-first-thai.md")
     thesis_md = read_text(ROOT / "docs/thesis_reverse_dcf_thai_set.md")
     methodology_md = read_text(ROOT / "docs/thesis-methodology.md")
     datasource_md = read_text(ROOT / "docs/datasource-decision.md")
@@ -1706,6 +2638,7 @@ def main() -> None:
     root_link_map = build_link_map("")
     nested_link_map = build_link_map("../")
 
+    reader_guide_html, _ = markdown_to_html(reader_guide_md, toc_levels=(2, 3), link_map=nested_link_map)
     thesis_html, thesis_toc = markdown_to_html(thesis_md, link_map=root_link_map)
     methodology_html, _ = markdown_to_html(methodology_md, toc_levels=(2,), link_map=nested_link_map)
     datasource_html, _ = markdown_to_html(datasource_md, toc_levels=(2,), link_map=nested_link_map)
@@ -1720,12 +2653,18 @@ def main() -> None:
     sector_rows = read_csv(ROOT / "research_data/latest/backtest/sector_summary.csv")
     wacc_rows = read_csv(ROOT / "research_data/latest/backtest/wacc_sensitivity.csv")
     manifest = read_json(ROOT / "research_data/latest/backtest/manifest.json")
+    research_manifest = read_json(ROOT / "research_data/latest/manifest.json")
+    quarterly_story = build_quarterly_story(ROOT / "research_data/latest/backtest")
 
     if NETLIFY.exists():
         shutil.rmtree(NETLIFY)
 
     write_text(NETLIFY / "css/style.css", STYLE_CSS)
     write_text(NETLIFY / "index.html", render_home_page(summary_rows, manifest, thesis_excerpt_html, site_url))
+    write_text(
+        NETLIFY / "guide/index.html",
+        render_reader_guide_page(reader_guide_html, quarterly_story, research_manifest, manifest, site_url),
+    )
     write_text(NETLIFY / "thesis.html", render_thesis_page(thesis_html, thesis_toc, site_url))
     write_text(
         NETLIFY / "research/index.html",

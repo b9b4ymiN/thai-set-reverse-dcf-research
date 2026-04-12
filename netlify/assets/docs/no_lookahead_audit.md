@@ -1,5 +1,6 @@
 # No-Lookahead Audit
 
+- Case: baseline
 - WACC mode: fixed
 - No-lookahead failures: 0
 

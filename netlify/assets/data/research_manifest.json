@@ -77,5 +77,6 @@
   },
   "missing_fundamental_tickers": [],
   "missing_price_tickers": [],
-  "root_snapshot_synced": true
+  "root_snapshot_synced": true,
+  "LEGACY_ARCHIVE": true
 }

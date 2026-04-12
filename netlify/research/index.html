@@ -9,28 +9,37 @@
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Research Methodology | Thai SET Reverse DCF" />
     <meta property="og:description" content="Methodology, datasource decision, and no-lookahead audit notes for the Thai SET reverse DCF workflow." />
-    <meta property="og:url" content="https://b9b4ymin.github.io/thai-set-reverse-dcf-research/research/" />
+    <meta property="og:url" content="https://rdcf.netlify.app/research/" />
     <meta property="og:site_name" content="Thai SET Reverse DCF Research" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="stylesheet" href="../css/style.css" />
     
   </head>
   <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     <div class="site-shell">
       <header class="topbar">
-        <a class="brand" href="../index.html">
+        <a class="brand" href="../index.html" aria-label="Thai SET Reverse DCF Research - Home">
           <span class="brand-mark">RDCF</span>
           <span class="brand-copy">
             <strong>Thai SET Reverse DCF</strong>
             <span>Deployment-ready thesis and backtest documentation</span>
           </span>
         </a>
-        <nav aria-label="Primary"><a href="../index.html">Home</a><a href="../thesis.html">Thesis</a><a href="../research/index.html" class="active">Research</a><a href="../backtest/index.html">Backtest</a><a href="../about/index.html">About</a><a href="../download/index.html">Download</a></nav>
+        <nav aria-label="Primary"><a href="../index.html">Home</a><a href="../guide/index.html">Guide (TH)</a><a href="../thesis.html">Thesis</a><a href="../research/index.html" class="active" aria-current="page">Research</a><a href="../backtest/index.html">Backtest</a><a href="../about/index.html">About</a><a href="../download/index.html">Download</a></nav>
       </header>
       
-    <section class="page-intro">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <ol class="breadcrumbs-list">
+        <li class="breadcrumbs-item"><a href="../index.html" class="breadcrumbs-link">Home</a></li><li class="breadcrumbs-item"><span class="breadcrumbs-link" aria-current="page">Research</span></li>
+      </ol>
+    </nav>
+    
+      <main id="main-content">
+        
+    <section class="page-intro" aria-labelledby="research-title">
       <span class="eyebrow">Research architecture</span>
-      <h1>Methodology, datasource policy, and validation controls</h1>
+      <h1 id="research-title">Methodology, datasource policy, and validation controls</h1>
       <p>
         The research layer explains how the repository moves from free Thai equity data to dated observations,
         benchmark-relative backtests, and thesis-ready evidence artifacts.
@@ -44,9 +53,9 @@
 <h2 id="data-source-policy">Data source policy</h2>
 <ul><li><strong>Primary source:</strong> Yahoo Finance via <code>yfinance</code></li><li><strong>Validation source:</strong> official SET pages for optional manual spot checks only</li><li><strong>Cost constraint:</strong> free data only</li><li><strong>Datasource rule:</strong> when freshness conflicts with backtest strength, prefer the source that gives stronger historical/backtest completeness</li></ul>
 <p>See also:</p>
-<ul><li><code>docs/datasource-decision.md</code></li><li><code>research_data/latest/manifest.json</code></li></ul>
+<ul><li><code>docs/datasource-decision.md</code></li><li><code>research_data/source_of_truth_100/manifest.json</code></li></ul>
 <h2 id="dataset-used-in-this-repo">Dataset used in this repo</h2>
-<p>The current thesis workflow uses the generated research bundle under <code>research_data/latest/</code>.</p>
+<p>The current thesis workflow uses the generated research bundle under <code>research_data/source_of_truth_100/</code>.</p>
 <p>Core inputs:</p>
 <ul><li><code>fundamentals_snapshot.csv</code></li><li><code>fundamental_observations.csv</code></li><li><code>price_history.csv</code></li><li><code>benchmark_history.csv</code></li><li><code>fundamental_coverage.csv</code></li><li><code>price_coverage.csv</code></li></ul>
 <h2 id="observation-dating">Observation dating</h2>
@@ -65,16 +74,16 @@
 <p>Higher score means the company’s observed growth is stronger relative to what market price appears to imply.</p>
 <h2 id="backtest-design">Backtest design</h2>
 <p>Current implementation:</p>
-<ul><li><strong>Rebalance frequency:</strong> quarterly</li><li><strong>Portfolio construction:</strong> equal-weight top 10 names by signal score</li><li><strong>Benchmark:</strong> <code>^SET.BK</code></li><li><strong>Holding periods tested:</strong> 3, 6, 12 months</li><li><strong>WACC mode:</strong> <code>fixed</code></li></ul>
+<ul><li><strong>Rebalance frequency:</strong> quarterly (rebalance occurs when fundamentals change, aligned with the quarterly earnings cycle; see <a href="../METHODOLOGY.md"><code>METHODOLOGY.md</code></a> for the full Damodaran framework alignment)</li><li><strong>Portfolio construction:</strong> equal-weight top 10 names by signal score</li><li><strong>Benchmark:</strong> <code>^SET.BK</code></li><li><strong>Holding periods tested:</strong> 3, 6, 12 months</li><li><strong>WACC mode:</strong> <code>fixed</code></li></ul>
 <p>The fixed-WACC mode is intentional for historical safety. It avoids leaking latest snapshot WACC into historical scoring.</p>
 <h2 id="no-look-ahead-controls">No-look-ahead controls</h2>
 <p>Current controls implemented in code and artifacts:</p>
-<ul><li>only observations with <code>Availability_Date &amp;lt;= Rebalance_Date</code> are used</li><li>only prices on or before the rebalance date are used</li><li>backtest manifest records <code>wacc_mode</code></li><li>audit artifacts are written:</li><li><code>research_data/latest/backtest/audit_sample.csv</code></li><li><code>research_data/latest/backtest/no_lookahead_audit.md</code></li></ul>
+<ul><li>only observations with <code>Availability_Date &amp;lt;= Rebalance_Date</code> are used</li><li>only prices on or before the rebalance date are used</li><li>backtest manifest records <code>wacc_mode</code></li><li>audit artifacts are written:</li><li><code>research_data/source_of_truth_100/backtest/audit_sample.csv</code></li><li><code>research_data/source_of_truth_100/backtest/no_lookahead_audit.md</code></li></ul>
 <p>The latest run recorded:</p>
 <ul><li><code>no_lookahead_failures = 0</code></li></ul>
 <h2 id="universe-and-exclusions">Universe and exclusions</h2>
 <p>The backtest writes explicit exclusion artifacts instead of silently dropping names:</p>
-<ul><li><code>research_data/latest/backtest/exclusions.csv</code></li><li><code>research_data/latest/backtest/summary.csv</code></li></ul>
+<ul><li><code>research_data/source_of_truth_100/backtest/exclusions.csv</code></li><li><code>research_data/source_of_truth_100/backtest/summary.csv</code></li></ul>
 <p>Main exclusion reasons in the current run:</p>
 <ul><li><code>invalid_fcf</code></li><li><code>no_convergence</code></li><li><code>no_price_on_or_before</code></li><li><code>no_available_observation</code></li><li><code>invalid_shares</code></li></ul>
 <p>This makes the research more auditable and thesis-friendly.</p>
@@ -89,17 +98,17 @@
 <ul><li>it is not a full forecasting model</li></ul>
 <h2 id="reproducibility-commands">Reproducibility commands</h2>
 <p>Build data:</p>
-<pre><code class="language-bash">python -m rdcf.data_pipeline --output-dir research_data/latest --period 10y --sync-root-snapshot</code></pre>
+<pre><code class="language-bash">python -m rdcf.data_pipeline --output-dir research_data/source_of_truth_100 --period 10y --sync-root-snapshot</code></pre>
 <p>Run backtest:</p>
 <pre><code class="language-bash">python -m src.pipeline.backtest \
-  --output-dir research_data/latest/backtest \
+  --output-dir research_data/source_of_truth_100/backtest \
   --top-n 10 \
   --horizons 3 6 12 \
   --rebalance-frequency Q \
   --start-date 2020-01-01 \
   --wacc-mode fixed</code></pre>
 <h2 id="validation-checklist">Validation checklist</h2>
-<ul><li>review <code>research_data/latest/backtest/manifest.json</code></li><li>review <code>research_data/latest/backtest/no_lookahead_audit.md</code></li><li>review <code>research_data/latest/backtest/exclusions.csv</code></li><li>compare <code>summary.csv</code> with <code>report.md</code></li></ul>
+<ul><li>review <code>research_data/source_of_truth_100/backtest/manifest.json</code></li><li>review <code>research_data/source_of_truth_100/backtest/no_lookahead_audit.md</code></li><li>review <code>research_data/source_of_truth_100/backtest/exclusions.csv</code></li><li>compare <code>summary.csv</code> with <code>report.md</code></li></ul>
       </article>
       <article class="card span-4">
         <p class="kicker">Why this design</p>
@@ -129,17 +138,18 @@
       </article>
       <article class="card span-6 content-area">
         <h1 id="no-lookahead-audit">No-Lookahead Audit</h1>
-<ul><li>WACC mode: fixed</li><li>No-lookahead failures: 0</li></ul>
+<ul><li>Case: baseline</li><li>WACC mode: fixed</li><li>No-lookahead failures: 0</li></ul>
 <p>This audit samples the first generated rebalance cross-section. Each sampled row should satisfy:</p>
 <ol><li><code>Availability_Date &amp;lt;= Rebalance_Date</code></li><li><code>Price_Date &amp;lt;= Rebalance_Date</code></li><li>backtest WACC mode is fixed (not latest snapshot)</li></ol>
-<table><thead><tr><th>Ticker</th><th>Rebalance_Date</th><th>Availability_Date</th><th>Price_Date</th><th>WACC_Mode</th><th>No_Lookahead_Pass</th><th>Days_Since_Available</th></tr></thead><tbody><tr><td>TTB.BK</td><td>2023-03-31</td><td>2023-02-14</td><td>2023-03-31</td><td>fixed</td><td>True</td><td>45</td></tr><tr><td>IVL.BK</td><td>2023-03-31</td><td>2023-02-14</td><td>2023-03-31</td><td>fixed</td><td>True</td><td>45</td></tr><tr><td>BBL.BK</td><td>2023-03-31</td><td>2023-02-14</td><td>2023-03-31</td><td>fixed</td><td>True</td><td>45</td></tr><tr><td>MINT.BK</td><td>2023-03-31</td><td>2023-02-14</td><td>2023-03-31</td><td>fixed</td><td>True</td><td>45</td></tr><tr><td>ADVANC.BK</td><td>2023-03-31</td><td>2023-02-14</td><td>2023-03-31</td><td>fixed</td><td>True</td><td>45</td></tr><tr><td>SCGP.BK</td><td>2023-03-31</td><td>2023-02-14</td><td>2023-03-31</td><td>fixed</td><td>True</td><td>45</td></tr><tr><td>TOP.BK</td><td>2023-03-31</td><td>2023-02-14</td><td>2023-03-31</td><td>fixed</td><td>True</td><td>45</td></tr><tr><td>CPALL.BK</td><td>2023-03-31</td><td>2023-02-14</td><td>2023-03-31</td><td>fixed</td><td>True</td><td>45</td></tr><tr><td>EGCO.BK</td><td>2023-03-31</td><td>2023-02-14</td><td>2023-03-31</td><td>fixed</td><td>True</td><td>45</td></tr><tr><td>BJC.BK</td><td>2023-03-31</td><td>2023-02-14</td><td>2023-03-31</td><td>fixed</td><td>True</td><td>45</td></tr></tbody></table>
+<div class="table-wrapper" tabindex="0" role="region" aria-label="Scrollable data table"><table><thead><tr><th scope="col">Ticker</th><th scope="col">Rebalance_Date</th><th scope="col">Availability_Date</th><th scope="col">Price_Date</th><th scope="col">WACC_Mode</th><th scope="col">No_Lookahead_Pass</th><th scope="col">Days_Since_Available</th></tr></thead><tbody><tr><td>TTB.BK</td><td>2023-03-31</td><td>2023-02-14</td><td>2023-03-31</td><td>fixed</td><td>True</td><td>45</td></tr><tr><td>IVL.BK</td><td>2023-03-31</td><td>2023-02-14</td><td>2023-03-31</td><td>fixed</td><td>True</td><td>45</td></tr><tr><td>BBL.BK</td><td>2023-03-31</td><td>2023-02-14</td><td>2023-03-31</td><td>fixed</td><td>True</td><td>45</td></tr><tr><td>MINT.BK</td><td>2023-03-31</td><td>2023-02-14</td><td>2023-03-31</td><td>fixed</td><td>True</td><td>45</td></tr><tr><td>ADVANC.BK</td><td>2023-03-31</td><td>2023-02-14</td><td>2023-03-31</td><td>fixed</td><td>True</td><td>45</td></tr><tr><td>SCGP.BK</td><td>2023-03-31</td><td>2023-02-14</td><td>2023-03-31</td><td>fixed</td><td>True</td><td>45</td></tr><tr><td>TOP.BK</td><td>2023-03-31</td><td>2023-02-14</td><td>2023-03-31</td><td>fixed</td><td>True</td><td>45</td></tr><tr><td>CPALL.BK</td><td>2023-03-31</td><td>2023-02-14</td><td>2023-03-31</td><td>fixed</td><td>True</td><td>45</td></tr><tr><td>EGCO.BK</td><td>2023-03-31</td><td>2023-02-14</td><td>2023-03-31</td><td>fixed</td><td>True</td><td>45</td></tr><tr><td>BJC.BK</td><td>2023-03-31</td><td>2023-02-14</td><td>2023-03-31</td><td>fixed</td><td>True</td><td>45</td></tr></tbody></table></div>
       </article>
     </section>
     
+      </main>
       
     <footer class="site-footer">
       <p>Built from local thesis and backtest artifacts in this repository. Designed for Netlify and GitHub Pages deployment.</p>
-      <div class="footer-links"><a href="../thesis.html">Thesis</a><a href="../research/index.html">Research</a><a href="../backtest/index.html">Backtest</a><a href="../about/index.html">About</a><a href="../download/index.html">Download</a></div>
+      <nav class="footer-links" aria-label="Footer"><a href="../guide/index.html">Guide (TH)</a><a href="../thesis.html">Thesis</a><a href="../research/index.html">Research</a><a href="../backtest/index.html">Backtest</a><a href="../about/index.html">About</a><a href="../download/index.html">Download</a></nav>
     </footer>
     
     </div>

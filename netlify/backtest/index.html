@@ -9,28 +9,37 @@
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Backtest Results | Thai SET Reverse DCF" />
     <meta property="og:description" content="Backtest dashboard for the Thai SET reverse DCF thesis, including summary metrics, figures, and sensitivity analysis." />
-    <meta property="og:url" content="https://b9b4ymin.github.io/thai-set-reverse-dcf-research/backtest/" />
+    <meta property="og:url" content="https://rdcf.netlify.app/backtest/" />
     <meta property="og:site_name" content="Thai SET Reverse DCF Research" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="stylesheet" href="../css/style.css" />
     
   </head>
   <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     <div class="site-shell">
       <header class="topbar">
-        <a class="brand" href="../index.html">
+        <a class="brand" href="../index.html" aria-label="Thai SET Reverse DCF Research - Home">
           <span class="brand-mark">RDCF</span>
           <span class="brand-copy">
             <strong>Thai SET Reverse DCF</strong>
             <span>Deployment-ready thesis and backtest documentation</span>
           </span>
         </a>
-        <nav aria-label="Primary"><a href="../index.html">Home</a><a href="../thesis.html">Thesis</a><a href="../research/index.html">Research</a><a href="../backtest/index.html" class="active">Backtest</a><a href="../about/index.html">About</a><a href="../download/index.html">Download</a></nav>
+        <nav aria-label="Primary"><a href="../index.html">Home</a><a href="../guide/index.html">Guide (TH)</a><a href="../thesis.html">Thesis</a><a href="../research/index.html">Research</a><a href="../backtest/index.html" class="active" aria-current="page">Backtest</a><a href="../about/index.html">About</a><a href="../download/index.html">Download</a></nav>
       </header>
       
-    <section class="page-intro">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <ol class="breadcrumbs-list">
+        <li class="breadcrumbs-item"><a href="../index.html" class="breadcrumbs-link">Home</a></li><li class="breadcrumbs-item"><span class="breadcrumbs-link" aria-current="page">Backtest</span></li>
+      </ol>
+    </nav>
+    
+      <main id="main-content">
+        
+    <section class="page-intro" aria-labelledby="backtest-title">
       <span class="eyebrow">Audited performance</span>
-      <h1>Benchmark-relative backtest results and visual evidence</h1>
+      <h1 id="backtest-title">Benchmark-relative backtest results and visual evidence</h1>
       <p>
         This page packages the thesis-safe outputs: the summary table, no-lookahead status, sector dispersion,
         and WACC sensitivity figures copied into the static site for direct deployment.
@@ -42,24 +51,26 @@
         <h1>Positive average active return across all tested holding periods.</h1>
         <p>
           The current implementation uses quarterly rebalancing, top-10 equal weights, benchmark-relative forward
-          returns, and fixed WACC historical scoring. It generated 408 signals with
+          returns, and fixed WACC historical scoring. It generated 397 signals with
           0 no-lookahead failures.
         </p>
         
+    <div class="table-wrapper" tabindex="0" role="region" aria-label="Backtest performance summary table">
     <table class="summary-table">
       <thead>
         <tr>
-          <th>Horizon</th>
-          <th>Portfolio return</th>
-          <th>Benchmark return</th>
-          <th>Active return</th>
-          <th>Hit rate</th>
+          <th scope="col">Horizon</th>
+          <th scope="col">Portfolio return</th>
+          <th scope="col">Benchmark return</th>
+          <th scope="col">Active return</th>
+          <th scope="col">Hit rate</th>
         </tr>
       </thead>
       <tbody>
-    <tr><td>3 months</td><td>1.68%</td><td>-0.00%</td><td>1.68%</td><td>53.85%</td></tr><tr><td>6 months</td><td>2.20%</td><td>0.55%</td><td>1.65%</td><td>69.23%</td></tr><tr><td>12 months</td><td>2.43%</td><td>1.58%</td><td>0.85%</td><td>61.54%</td></tr>
+    <tr><td>3 months</td><td>6.62%</td><td>-0.00%</td><td>6.62%</td><td>76.92%</td></tr>
       </tbody>
     </table>
+    </div>
     
       </div>
       <aside class="hero-panel">
@@ -68,31 +79,19 @@
           
             <div class="metric-card">
               <span>3-month horizon</span>
-              <strong>1.68%</strong>
-              <small>Hit rate 53.85% vs. SET benchmark</small>
-            </div>
-            
-            <div class="metric-card">
-              <span>6-month horizon</span>
-              <strong>1.65%</strong>
-              <small>Hit rate 69.23% vs. SET benchmark</small>
-            </div>
-            
-            <div class="metric-card">
-              <span>12-month horizon</span>
-              <strong>0.85%</strong>
-              <small>Hit rate 61.54% vs. SET benchmark</small>
+              <strong>6.62%</strong>
+              <small>Hit rate 76.92% vs. SET benchmark</small>
             </div>
             
         <div class="metric-card">
           <span>Audit status</span>
           <strong>0</strong>
-          <small>No-lookahead failures across 39 portfolio rows</small>
+          <small>No-lookahead failures across 13 portfolio rows</small>
         </div>
         
         </div>
         <p class="panel-note">
-          Portfolio rows: 39 · Exclusion rows: 242 · Rebalance frequency: Q
+          Portfolio rows: 13 · Exclusion rows: 1603 · Rebalance frequency: Q
         </p>
       </aside>
     </section>
@@ -130,39 +129,42 @@
       <article class="card span-6">
         <p class="kicker">WACC sensitivity</p>
         <h2>Best-performing horizon per tested fixed WACC value</h2>
+        <div class="table-wrapper" tabindex="0" role="region" aria-label="WACC sensitivity summary table">
         <table class="summary-table">
           <thead>
             <tr>
-              <th>Fixed WACC</th>
-              <th>Best horizon</th>
-              <th>Best active return</th>
-              <th>Hit rate</th>
+              <th scope="col">Fixed WACC</th>
+              <th scope="col">Best horizon</th>
+              <th scope="col">Best active return</th>
+              <th scope="col">Hit rate</th>
             </tr>
           </thead>
           <tbody>
             <tr><td>6%</td><td>3 months</td><td>1.83%</td><td>53.85%</td></tr><tr><td>8%</td><td>3 months</td><td>1.68%</td><td>53.85%</td></tr><tr><td>10%</td><td>6 months</td><td>1.89%</td><td>69.23%</td></tr>
           </tbody>
         </table>
+        </div>
       </article>
       <article class="card span-6 content-area">
         <h1 id="reverse-dcf-backtest-report">Reverse DCF Backtest Report</h1>
-<ul><li>Rebalance frequency: Q</li><li>Horizons (months): [3, 6, 12]</li><li>Top N portfolio: 10</li><li>Signals generated: 408</li></ul>
+<ul><li>Case: baseline</li><li>Rebalance frequency: Q</li><li>Horizons (months): [3]</li><li>Top N portfolio: 5</li><li>Daily stop-loss enabled: False</li><li>Stop-loss pct: 0.0</li><li>Buy ban threshold (losing buy rounds): 2</li><li>Signals generated: 397</li></ul>
 <h2 id="summary">Summary</h2>
-<table><thead><tr><th>Horizon_Months</th><th>Portfolio_Return</th><th>Benchmark_Return</th><th>Active_Return</th><th>Hit_Rate</th><th>Observations</th><th>Avg_Turnover</th><th>Avg_Universe_Count</th><th>Avg_Excluded_Count</th></tr></thead><tbody><tr><td>3.0</td><td>0.01678489815587671</td><td>-3.3533295267861565e-05</td><td>0.016818431451144568</td><td>53.84615384615385</td><td>13.0</td><td>0.43076923076923074</td><td>50.0</td><td>18.615384615384617</td></tr><tr><td>6.0</td><td>0.022032207366547422</td><td>0.005518525046869962</td><td>0.01651368231967746</td><td>69.23076923076923</td><td>13.0</td><td>0.43076923076923074</td><td>50.0</td><td>18.615384615384617</td></tr><tr><td>12.0</td><td>0.024289821894102732</td><td>0.015788027672617392</td><td>0.008501794221485344</td><td>61.53846153846154</td><td>13.0</td><td>0.43076923076923074</td><td>50.0</td><td>18.615384615384617</td></tr></tbody></table>
+<div class="table-wrapper" tabindex="0" role="region" aria-label="Scrollable data table"><table><thead><tr><th scope="col">Horizon_Months</th><th scope="col">Portfolio_Return</th><th scope="col">Benchmark_Return</th><th scope="col">Active_Return</th><th scope="col">Hit_Rate</th><th scope="col">Observations</th><th scope="col">Avg_Turnover</th><th scope="col">Avg_Universe_Count</th><th scope="col">Avg_Excluded_Count</th><th scope="col">Case_Name</th><th scope="col">Top_N</th><th scope="col">Stop_Loss_Pct</th></tr></thead><tbody><tr><td>3</td><td>0.06615449834738273</td><td>-3.3533295267861565e-05</td><td>0.0661880316426506</td><td>76.92307692307693</td><td>13</td><td>0.47692307692307695</td><td>50.0</td><td>19.46153846153846</td><td>baseline</td><td>5</td><td>0.0</td></tr></tbody></table></div>
       </article>
       <article class="card span-6 content-area">
         <h1 id="backtest-appendix">Backtest Appendix</h1>
 <h2 id="sector-summary">Sector Summary</h2>
-<table><thead><tr><th>Sector</th><th>Horizon_Months</th><th>Mean_Forward_Return</th><th>Mean_Active_Return</th><th>Selections</th></tr></thead><tbody><tr><td>Technology</td><td>3</td><td>0.4613488860861852</td><td>0.4143933080968087</td><td>6</td></tr><tr><td>Communication Services</td><td>3</td><td>0.008649809496241901</td><td>0.08555921832919412</td><td>6</td></tr><tr><td>Financial Services</td><td>3</td><td>0.06254279334403214</td><td>0.03501964481556837</td><td>39</td></tr><tr><td>Energy</td><td>3</td><td>-0.015733655520182535</td><td>0.005744400181557801</td><td>11</td></tr><tr><td>Consumer Defensive</td><td>3</td><td>0.0009854598884221273</td><td>-0.0076710665057646375</td><td>11</td></tr><tr><td>Real Estate</td><td>3</td><td>0.024153817742604562</td><td>-0.018247739350018617</td><td>5</td></tr><tr><td>Consumer Cyclical</td><td>3</td><td>-0.025189314653763492</td><td>-0.018759621721667986</td><td>23</td></tr><tr><td>Basic Materials</td><td>3</td><td>-0.06544708906903332</td><td>-0.025149119909551876</td><td>4</td></tr><tr><td>Utilities</td><td>3</td><td>-0.019194202356364324</td><td>-0.030336869280744912</td><td>11</td></tr><tr><td>Industrials</td><td>3</td><td>-0.1153115758100499</td><td>-0.08511996157678957</td><td>11</td></tr><tr><td>Technology</td><td>6</td><td>0.5618065975954647</td><td>0.4977707372300752</td><td>6</td></tr><tr><td>Communication Services</td><td>6</td><td>0.00615749141179945</td><td>0.11984876185134752</td><td>6</td></tr><tr><td>Energy</td><td>6</td><td>0.10319866191902628</td><td>0.0827691211915541</td><td>11</td></tr><tr><td>Financial Services</td><td>6</td><td>0.10824465292889535</td><td>0.045197855974583895</td><td>39</td></tr><tr><td>Real Estate</td><td>6</td><td>0.00971587996892042</td><td>-0.02396183691022798</td><td>5</td></tr><tr><td>Consumer Defensive</td><td>6</td><td>-0.029182340822185224</td><td>-0.03215995350545988</td><td>11</td></tr><tr><td>Utilities</td><td>6</td><td>-0.04038951880423425</td><td>-0.05282145384514707</td><td>11</td></tr><tr><td>Consumer Cyclical</td><td>6</td><td>-0.08548986870961162</td><td>-0.05771235207992408</td><td>23</td></tr><tr><td>Basic Materials</td><td>6</td><td>-0.1869448282752621</td><td>-0.11212848602991371</td><td>4</td></tr><tr><td>Industrials</td><td>6</td><td>-0.17650247994028534</td><td>-0.13162690811337174</td><td>11</td></tr><tr><td>Technology</td><td>12</td><td>0.5375962771859402</td><td>0.47242170750077483</td><td>6</td></tr><tr><td>Communication Services</td><td>12</td><td>0.12155374553832939</td><td>0.20422695119797218</td><td>6</td></tr><tr><td>Energy</td><td>12</td><td>0.14060293112728894</td><td>0.11655948568594726</td><td>11</td></tr><tr><td>Financial Services</td><td>12</td><td>0.1609109582094794</td><td>0.06275720239265961</td><td>39</td></tr><tr><td>Real Estate</td><td>12</td><td>-0.04857594065790428</td><td>-0.00820522427983158</td><td>5</td></tr><tr><td>Consumer Defensive</td><td>12</td><td>-0.06598096949743346</td><td>-0.06298815177137157</td><td>11</td></tr><tr><td>Utilities</td><td>12</td><td>-0.021053274664529897</td><td>-0.07007439516295247</td><td>11</td></tr><tr><td>Basic Materials</td><td>12</td><td>-0.20270559811484118</td><td>-0.12224397738745309</td><td>4</td></tr><tr><td>Consumer Cyclical</td><td>12</td><td>-0.17306785960440377</td><td>-0.12578661828416268</td><td>23</td></tr><tr><td>Industrials</td><td>12</td><td>-0.23337671163984133</td><td>-0.18165920689605441</td><td>11</td></tr></tbody></table>
+<div class="table-wrapper" tabindex="0" role="region" aria-label="Scrollable data table"><table><thead><tr><th scope="col">Sector</th><th scope="col">Horizon_Months</th><th scope="col">Mean_Forward_Return</th><th scope="col">Mean_Active_Return</th><th scope="col">Selections</th></tr></thead><tbody><tr><td>Technology</td><td>3</td><td>0.4613488860861852</td><td>0.4143933080968087</td><td>6</td></tr><tr><td>Communication Services</td><td>3</td><td>0.008649809496241901</td><td>0.08555921832919412</td><td>6</td></tr><tr><td>Financial Services</td><td>3</td><td>0.06254279334403214</td><td>0.03501964481556837</td><td>39</td></tr><tr><td>Energy</td><td>3</td><td>-0.015733655520182535</td><td>0.005744400181557801</td><td>11</td></tr><tr><td>Consumer Defensive</td><td>3</td><td>0.0009854598884221273</td><td>-0.0076710665057646375</td><td>11</td></tr><tr><td>Real Estate</td><td>3</td><td>0.024153817742604562</td><td>-0.018247739350018617</td><td>5</td></tr><tr><td>Consumer Cyclical</td><td>3</td><td>-0.025189314653763492</td><td>-0.018759621721667986</td><td>23</td></tr><tr><td>Basic Materials</td><td>3</td><td>-0.06544708906903332</td><td>-0.025149119909551876</td><td>4</td></tr><tr><td>Utilities</td><td>3</td><td>-0.019194202356364324</td><td>-0.030336869280744912</td><td>11</td></tr><tr><td>Industrials</td><td>3</td><td>-0.1153115758100499</td><td>-0.08511996157678957</td><td>11</td></tr><tr><td>Technology</td><td>6</td><td>0.5618065975954647</td><td>0.4977707372300752</td><td>6</td></tr><tr><td>Communication Services</td><td>6</td><td>0.00615749141179945</td><td>0.11984876185134752</td><td>6</td></tr><tr><td>Energy</td><td>6</td><td>0.10319866191902628</td><td>0.0827691211915541</td><td>11</td></tr><tr><td>Financial Services</td><td>6</td><td>0.10824465292889535</td><td>0.045197855974583895</td><td>39</td></tr><tr><td>Real Estate</td><td>6</td><td>0.00971587996892042</td><td>-0.02396183691022798</td><td>5</td></tr><tr><td>Consumer Defensive</td><td>6</td><td>-0.029182340822185224</td><td>-0.03215995350545988</td><td>11</td></tr><tr><td>Utilities</td><td>6</td><td>-0.04038951880423425</td><td>-0.05282145384514707</td><td>11</td></tr><tr><td>Consumer Cyclical</td><td>6</td><td>-0.08548986870961162</td><td>-0.05771235207992408</td><td>23</td></tr><tr><td>Basic Materials</td><td>6</td><td>-0.1869448282752621</td><td>-0.11212848602991371</td><td>4</td></tr><tr><td>Industrials</td><td>6</td><td>-0.17650247994028534</td><td>-0.13162690811337174</td><td>11</td></tr><tr><td>Technology</td><td>12</td><td>0.5375962771859402</td><td>0.47242170750077483</td><td>6</td></tr><tr><td>Communication Services</td><td>12</td><td>0.12155374553832939</td><td>0.20422695119797218</td><td>6</td></tr><tr><td>Energy</td><td>12</td><td>0.14060293112728894</td><td>0.11655948568594726</td><td>11</td></tr><tr><td>Financial Services</td><td>12</td><td>0.1609109582094794</td><td>0.06275720239265961</td><td>39</td></tr><tr><td>Real Estate</td><td>12</td><td>-0.04857594065790428</td><td>-0.00820522427983158</td><td>5</td></tr><tr><td>Consumer Defensive</td><td>12</td><td>-0.06598096949743346</td><td>-0.06298815177137157</td><td>11</td></tr><tr><td>Utilities</td><td>12</td><td>-0.021053274664529897</td><td>-0.07007439516295247</td><td>11</td></tr><tr><td>Basic Materials</td><td>12</td><td>-0.20270559811484118</td><td>-0.12224397738745309</td><td>4</td></tr><tr><td>Consumer Cyclical</td><td>12</td><td>-0.17306785960440377</td><td>-0.12578661828416268</td><td>23</td></tr><tr><td>Industrials</td><td>12</td><td>-0.23337671163984133</td><td>-0.18165920689605441</td><td>11</td></tr></tbody></table></div>
 <h2 id="wacc-sensitivity">WACC Sensitivity</h2>
-<table><thead><tr><th>WACC_Assumption</th><th>Horizon_Months</th><th>Portfolio_Return</th><th>Benchmark_Return</th><th>Active_Return</th><th>Hit_Rate</th><th>Observations</th><th>Backtest_Output</th><th>Signals</th></tr></thead><tbody><tr><td>0.06</td><td>3</td><td>0.0182537205165945</td><td>-3.3533295267861565e-05</td><td>0.0182872538118624</td><td>53.84615384615385</td><td>13</td><td>research_data/latest/backtest/sensitivity_runs/wacc_06</td><td>417</td></tr><tr><td>0.08</td><td>3</td><td>0.0167848981558767</td><td>-3.3533295267861565e-05</td><td>0.0168184314511445</td><td>53.84615384615385</td><td>13</td><td>research_data/latest/backtest/sensitivity_runs/wacc_08</td><td>408</td></tr><tr><td>0.1</td><td>3</td><td>0.0182113903055804</td><td>-3.3533295267861565e-05</td><td>0.0182449236008482</td><td>53.84615384615385</td><td>13</td><td>research_data/latest/backtest/sensitivity_runs/wacc_10</td><td>403</td></tr><tr><td>0.06</td><td>6</td><td>0.0210398486330341</td><td>0.0055185250468699</td><td>0.0155213235861641</td><td>69.23076923076923</td><td>13</td><td>research_data/latest/backtest/sensitivity_runs/wacc_06</td><td>417</td></tr><tr><td>0.08</td><td>6</td><td>0.0220322073665474</td><td>0.0055185250468699</td><td>0.0165136823196774</td><td>69.23076923076923</td><td>13</td><td>research_data/latest/backtest/sensitivity_runs/wacc_08</td><td>408</td></tr><tr><td>0.1</td><td>6</td><td>0.0244317357216759</td><td>0.0055185250468699</td><td>0.0189132106748059</td><td>69.23076923076923</td><td>13</td><td>research_data/latest/backtest/sensitivity_runs/wacc_10</td><td>403</td></tr><tr><td>0.06</td><td>12</td><td>0.022051468744458</td><td>0.0157880276726173</td><td>0.0062634410718406</td><td>61.53846153846154</td><td>13</td><td>research_data/latest/backtest/sensitivity_runs/wacc_06</td><td>417</td></tr><tr><td>0.08</td><td>12</td><td>0.0242898218941027</td><td>0.0157880276726173</td><td>0.0085017942214853</td><td>61.53846153846154</td><td>13</td><td>research_data/latest/backtest/sensitivity_runs/wacc_08</td><td>408</td></tr><tr><td>0.1</td><td>12</td><td>0.0295740603330838</td><td>0.0157880276726173</td><td>0.0137860326604664</td><td>61.53846153846154</td><td>13</td><td>research_data/latest/backtest/sensitivity_runs/wacc_10</td><td>403</td></tr></tbody></table>
+<div class="table-wrapper" tabindex="0" role="region" aria-label="Scrollable data table"><table><thead><tr><th scope="col">WACC_Assumption</th><th scope="col">Horizon_Months</th><th scope="col">Portfolio_Return</th><th scope="col">Benchmark_Return</th><th scope="col">Active_Return</th><th scope="col">Hit_Rate</th><th scope="col">Observations</th><th scope="col">Backtest_Output</th><th scope="col">Signals</th></tr></thead><tbody><tr><td>0.06</td><td>3</td><td>0.0182537205165945</td><td>-3.3533295267861565e-05</td><td>0.0182872538118624</td><td>53.84615384615385</td><td>13</td><td>research_data/latest/backtest/sensitivity_runs/wacc_06</td><td>417</td></tr><tr><td>0.08</td><td>3</td><td>0.0167848981558767</td><td>-3.3533295267861565e-05</td><td>0.0168184314511445</td><td>53.84615384615385</td><td>13</td><td>research_data/latest/backtest/sensitivity_runs/wacc_08</td><td>408</td></tr><tr><td>0.1</td><td>3</td><td>0.0182113903055804</td><td>-3.3533295267861565e-05</td><td>0.0182449236008482</td><td>53.84615384615385</td><td>13</td><td>research_data/latest/backtest/sensitivity_runs/wacc_10</td><td>403</td></tr><tr><td>0.06</td><td>6</td><td>0.0210398486330341</td><td>0.0055185250468699</td><td>0.0155213235861641</td><td>69.23076923076923</td><td>13</td><td>research_data/latest/backtest/sensitivity_runs/wacc_06</td><td>417</td></tr><tr><td>0.08</td><td>6</td><td>0.0220322073665474</td><td>0.0055185250468699</td><td>0.0165136823196774</td><td>69.23076923076923</td><td>13</td><td>research_data/latest/backtest/sensitivity_runs/wacc_08</td><td>408</td></tr><tr><td>0.1</td><td>6</td><td>0.0244317357216759</td><td>0.0055185250468699</td><td>0.0189132106748059</td><td>69.23076923076923</td><td>13</td><td>research_data/latest/backtest/sensitivity_runs/wacc_10</td><td>403</td></tr><tr><td>0.06</td><td>12</td><td>0.022051468744458</td><td>0.0157880276726173</td><td>0.0062634410718406</td><td>61.53846153846154</td><td>13</td><td>research_data/latest/backtest/sensitivity_runs/wacc_06</td><td>417</td></tr><tr><td>0.08</td><td>12</td><td>0.0242898218941027</td><td>0.0157880276726173</td><td>0.0085017942214853</td><td>61.53846153846154</td><td>13</td><td>research_data/latest/backtest/sensitivity_runs/wacc_08</td><td>408</td></tr><tr><td>0.1</td><td>12</td><td>0.0295740603330838</td><td>0.0157880276726173</td><td>0.0137860326604664</td><td>61.53846153846154</td><td>13</td><td>research_data/latest/backtest/sensitivity_runs/wacc_10</td><td>403</td></tr></tbody></table></div>
       </article>
     </section>
     
+      </main>
       
     <footer class="site-footer">
       <p>Built from local thesis and backtest artifacts in this repository. Designed for Netlify and GitHub Pages deployment.</p>
-      <div class="footer-links"><a href="../thesis.html">Thesis</a><a href="../research/index.html">Research</a><a href="../backtest/index.html">Backtest</a><a href="../about/index.html">About</a><a href="../download/index.html">Download</a></div>
+      <nav class="footer-links" aria-label="Footer"><a href="../guide/index.html">Guide (TH)</a><a href="../thesis.html">Thesis</a><a href="../research/index.html">Research</a><a href="../backtest/index.html">Backtest</a><a href="../about/index.html">About</a><a href="../download/index.html">Download</a></nav>
     </footer>
     
     </div>

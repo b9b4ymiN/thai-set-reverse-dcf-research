@@ -9,28 +9,37 @@
     <meta property="og:type" content="website" />
     <meta property="og:title" content="About | Thai SET Reverse DCF" />
     <meta property="og:description" content="Project overview for the Thai SET reverse DCF thesis and audited backtest documentation site." />
-    <meta property="og:url" content="https://b9b4ymin.github.io/thai-set-reverse-dcf-research/about/" />
+    <meta property="og:url" content="https://rdcf.netlify.app/about/" />
     <meta property="og:site_name" content="Thai SET Reverse DCF Research" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="stylesheet" href="../css/style.css" />
     
   </head>
   <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
     <div class="site-shell">
       <header class="topbar">
-        <a class="brand" href="../index.html">
+        <a class="brand" href="../index.html" aria-label="Thai SET Reverse DCF Research - Home">
           <span class="brand-mark">RDCF</span>
           <span class="brand-copy">
             <strong>Thai SET Reverse DCF</strong>
             <span>Deployment-ready thesis and backtest documentation</span>
           </span>
         </a>
-        <nav aria-label="Primary"><a href="../index.html">Home</a><a href="../thesis.html">Thesis</a><a href="../research/index.html">Research</a><a href="../backtest/index.html">Backtest</a><a href="../about/index.html" class="active">About</a><a href="../download/index.html">Download</a></nav>
+        <nav aria-label="Primary"><a href="../index.html">Home</a><a href="../guide/index.html">Guide (TH)</a><a href="../thesis.html">Thesis</a><a href="../research/index.html">Research</a><a href="../backtest/index.html">Backtest</a><a href="../about/index.html" class="active" aria-current="page">About</a><a href="../download/index.html">Download</a></nav>
       </header>
       
-    <section class="page-intro">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <ol class="breadcrumbs-list">
+        <li class="breadcrumbs-item"><a href="../index.html" class="breadcrumbs-link">Home</a></li><li class="breadcrumbs-item"><span class="breadcrumbs-link" aria-current="page">About</span></li>
+      </ol>
+    </nav>
+    
+      <main id="main-content">
+        
+    <section class="page-intro" aria-labelledby="about-title">
       <span class="eyebrow">Project overview</span>
-      <h1>What this repository is trying to prove, and what it refuses to claim</h1>
+      <h1 id="about-title">What this repository is trying to prove, and what it refuses to claim</h1>
       <p>
         The project evaluates whether reverse discounted cash flow can function as a practical value-investing
         framework in Thai equities when the data budget is constrained to free sources.
@@ -64,10 +73,11 @@
       </article>
       <article class="card span-6">
         <p class="kicker">Audience</p>
-        <h2>Built for thesis reviewers, investors, and technical readers</h2>
+        <h2>Built first for investors and general readers, then for reviewers</h2>
         <ul class="list-clean">
-          <li>Reviewers can read the full thesis and jump to methods, results, and limitations quickly.</li>
+          <li>General readers can start with the Thai guide and understand the proof question before reading technical details.</li>
           <li>Investors can inspect benchmark-relative evidence, sector behavior, and sensitivity outputs.</li>
+          <li>Reviewers can still read the full thesis and jump to methods, results, and limitations quickly.</li>
           <li>Developers can deploy the static site without a build pipeline and trace each page back to source artifacts in the repo.</li>
         </ul>
       </article>
@@ -83,10 +93,11 @@
       </article>
     </section>
     
+      </main>
       
     <footer class="site-footer">
       <p>Built from local thesis and backtest artifacts in this repository. Designed for Netlify and GitHub Pages deployment.</p>
-      <div class="footer-links"><a href="../thesis.html">Thesis</a><a href="../research/index.html">Research</a><a href="../backtest/index.html">Backtest</a><a href="../about/index.html">About</a><a href="../download/index.html">Download</a></div>
+      <nav class="footer-links" aria-label="Footer"><a href="../guide/index.html">Guide (TH)</a><a href="../thesis.html">Thesis</a><a href="../research/index.html">Research</a><a href="../backtest/index.html">Backtest</a><a href="../about/index.html">About</a><a href="../download/index.html">Download</a></nav>
     </footer>
     
     </div>

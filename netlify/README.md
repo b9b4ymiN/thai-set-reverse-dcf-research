@@ -5,6 +5,7 @@ This directory contains a static documentation site for the Thai SET reverse DCF
 ## What is included
 
 - `index.html` landing page
+- `guide/index.html` Thai reader-first guide
 - `thesis.html` generated thesis page
 - `research/index.html` methodology and datasource notes
 - `backtest/index.html` results dashboard with local figures
@@ -19,7 +20,7 @@ This directory contains a static documentation site for the Thai SET reverse DCF
 From the repository root:
 
 ```bash
-python scripts/build_netlify_site.py --site-url https://b9b4ymin.github.io/thai-set-reverse-dcf-research
+python scripts/build_netlify_site.py --site-url https://rdcf.netlify.app
 ```
 
 If you know the production URL, replace the example value above before deployment so `sitemap.xml` and `robots.txt` use the correct base URL.

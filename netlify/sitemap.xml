@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://b9b4ymin.github.io/thai-set-reverse-dcf-research/</loc>
+    <loc>https://rdcf.netlify.app/</loc>
   </url>
   <url>
-    <loc>https://b9b4ymin.github.io/thai-set-reverse-dcf-research/thesis.html</loc>
+    <loc>https://rdcf.netlify.app/guide/</loc>
   </url>
   <url>
-    <loc>https://b9b4ymin.github.io/thai-set-reverse-dcf-research/research/</loc>
+    <loc>https://rdcf.netlify.app/thesis.html</loc>
   </url>
   <url>
-    <loc>https://b9b4ymin.github.io/thai-set-reverse-dcf-research/backtest/</loc>
+    <loc>https://rdcf.netlify.app/research/</loc>
   </url>
   <url>
-    <loc>https://b9b4ymin.github.io/thai-set-reverse-dcf-research/about/</loc>
+    <loc>https://rdcf.netlify.app/backtest/</loc>
   </url>
   <url>
-    <loc>https://b9b4ymin.github.io/thai-set-reverse-dcf-research/download/</loc>
+    <loc>https://rdcf.netlify.app/about/</loc>
+  </url>
+  <url>
+    <loc>https://rdcf.netlify.app/download/</loc>
   </url>
 </urlset>

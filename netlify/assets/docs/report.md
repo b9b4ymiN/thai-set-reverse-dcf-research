@@ -1,14 +1,16 @@
 # Reverse DCF Backtest Report
 
+- Case: baseline
 - Rebalance frequency: Q
-- Horizons (months): [3, 6, 12]
-- Top N portfolio: 10
-- Signals generated: 408
+- Horizons (months): [3]
+- Top N portfolio: 5
+- Daily stop-loss enabled: False
+- Stop-loss pct: 0.0
+- Buy ban threshold (losing buy rounds): 2
+- Signals generated: 397
 
 ## Summary
 
-| Horizon_Months | Portfolio_Return | Benchmark_Return | Active_Return | Hit_Rate | Observations | Avg_Turnover | Avg_Universe_Count | Avg_Excluded_Count |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 3.0 | 0.01678489815587671 | -3.3533295267861565e-05 | 0.016818431451144568 | 53.84615384615385 | 13.0 | 0.43076923076923074 | 50.0 | 18.615384615384617 |
-| 6.0 | 0.022032207366547422 | 0.005518525046869962 | 0.01651368231967746 | 69.23076923076923 | 13.0 | 0.43076923076923074 | 50.0 | 18.615384615384617 |
-| 12.0 | 0.024289821894102732 | 0.015788027672617392 | 0.008501794221485344 | 61.53846153846154 | 13.0 | 0.43076923076923074 | 50.0 | 18.615384615384617 |
+| Horizon_Months | Portfolio_Return | Benchmark_Return | Active_Return | Hit_Rate | Observations | Avg_Turnover | Avg_Universe_Count | Avg_Excluded_Count | Case_Name | Top_N | Stop_Loss_Pct |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| 3 | 0.06615449834738273 | -3.3533295267861565e-05 | 0.0661880316426506 | 76.92307692307693 | 13 | 0.47692307692307695 | 50.0 | 19.46153846153846 | baseline | 5 | 0.0 |

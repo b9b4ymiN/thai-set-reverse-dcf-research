@@ -1,0 +1,1087 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>คู่มือภาษาไทย | Thai SET Reverse DCF</title>
+    <meta name="description" content="หน้าสรุปภาษาไทยสำหรับนักลงทุนและคนทั่วไป พร้อม quarterly timeline และ stock highlights" />
+    <meta name="theme-color" content="#173144" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="คู่มือภาษาไทย | Thai SET Reverse DCF" />
+    <meta property="og:description" content="หน้าสรุปภาษาไทยสำหรับนักลงทุนและคนทั่วไป พร้อม quarterly timeline และ stock highlights" />
+    <meta property="og:url" content="https://rdcf.netlify.app/guide/" />
+    <meta property="og:site_name" content="Thai SET Reverse DCF Research" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="stylesheet" href="../css/style.css" />
+    <script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebPage", "headline": "คู่มือภาษาไทยแบบ reader-first สำหรับ Reverse DCF ตลาดหุ้นไทย", "description": "หน้าสรุปภาษาไทยที่อธิบายสิ่งที่โปรเจกต์ต้องการพิสูจน์ พร้อม quarterly timeline การลงทุนและไฮไลต์หุ้นเด่น", "url": "https://rdcf.netlify.app/guide/", "inLanguage": "th"}</script>
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <div class="site-shell">
+      <header class="topbar">
+        <a class="brand" href="../index.html" aria-label="Thai SET Reverse DCF Research - Home">
+          <span class="brand-mark">RDCF</span>
+          <span class="brand-copy">
+            <strong>Thai SET Reverse DCF</strong>
+            <span>Deployment-ready thesis and backtest documentation</span>
+          </span>
+        </a>
+        <nav aria-label="Primary"><a href="../index.html">Home</a><a href="../guide/index.html" class="active" aria-current="page">Guide (TH)</a><a href="../thesis.html">Thesis</a><a href="../research/index.html">Research</a><a href="../backtest/index.html">Backtest</a><a href="../about/index.html">About</a><a href="../download/index.html">Download</a></nav>
+      </header>
+      
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <ol class="breadcrumbs-list">
+        <li class="breadcrumbs-item"><a href="../index.html" class="breadcrumbs-link">Home</a></li><li class="breadcrumbs-item"><span class="breadcrumbs-link" aria-current="page">Guide (TH)</span></li>
+      </ol>
+    </nav>
+    
+      <main id="main-content">
+        
+    <div class="content-layout">
+      <div class="content-wrap">
+        
+    <section class="hero" aria-labelledby="guide-th-title">
+      <div class="hero-copy">
+        <span class="eyebrow">คู่มือภาษาไทยแบบ reader-first</span>
+        <h1 id="guide-th-title">เริ่มจากคำถามที่ชัด แล้วค่อยไล่ดูคำตอบผ่าน timeline การลงทุนรายไตรมาส</h1>
+        <p>
+          หน้านี้เป็นประตูหลักสำหรับนักลงทุนและคนทั่วไป: บอกให้ชัดว่าโปรเจกต์กำลังพิสูจน์อะไร,
+          ควรอ่านหลักฐานอย่างไร, และพอร์ตเปลี่ยนเมื่อ fundamentals เปลี่ยนตรงไหนบ้าง.
+        </p>
+        <div class="hero-actions">
+          <a class="button primary" href="../backtest/index.html">ดูผล backtest ที่มีอยู่ตอนนี้</a>
+          <a class="button secondary" href="../download/index.html">ดาวน์โหลดไฟล์อ้างอิง</a>
+        </div>
+      </div>
+      <aside class="hero-panel">
+        <h2>สถานะ surface นี้</h2>
+        <div class="metric-grid">
+          <div class="metric-card">
+            <span>Current repo bundle</span>
+            <strong>50</strong>
+            <small>ticker ใน output ล่าสุดที่ builder อ่านได้ตอนนี้</small>
+          </div>
+          <div class="metric-card">
+            <span>Quarterly timeline</span>
+            <strong>13</strong>
+            <small>รอบ rebalance ที่เล่าได้จากไฟล์พอร์ต 3 เดือน</small>
+          </div>
+          <div class="metric-card">
+            <span>Observations</span>
+            <strong>536</strong>
+            <small>dated observations ที่มีใน bundle ปัจจุบัน</small>
+          </div>
+          <div class="metric-card">
+            <span>Backtest rows</span>
+            <strong>13</strong>
+            <small>แถวพอร์ตจาก output ล่าสุดใน repo</small>
+          </div>
+        </div>
+        <p class="panel-note">โครงหน้านี้ทำให้ docs/site เดินหน้าได้ก่อน แม้ output 100 หุ้น + rules ใหม่จะยังไม่ build เสร็จจาก lane data/backtest.</p>
+      </aside>
+    </section>
+
+    <section class="story-grid">
+      <article class="qa-card content-area">
+        <h2 id="core-question">คำถามหลักที่งานนี้ต้องตอบ</h2>
+        <h1 id="ค-ม-ออ-านงาน-reverse-dcf-ตลาดห-นไทย">คู่มืออ่านงาน Reverse DCF ตลาดหุ้นไทย</h1>
+<h2 id="คำถามหล-กท-งานน-ต-องตอบ">คำถามหลักที่งานนี้ต้องตอบ</h2>
+<p>งานนี้ไม่ได้ถามแค่ว่า “หุ้นตัวไหนขึ้น” แต่ถามว่า <strong>Reverse DCF ช่วยให้เราเลือกหุ้นไทยได้ดีขึ้นจริงไหม เมื่ออ่านราคาหุ้นเป็นความคาดหวังของตลาด แล้วเทียบกับ fundamentals ที่บริษัทส่งออกมาทีละไตรมาส</strong></p>
+<h2 id="คำตอบส-นแบบคนท-วไป">คำตอบสั้นแบบคนทั่วไป</h2>
+<p>คำตอบที่ต้องพิสูจน์คือ:</p>
+<ol><li>ราคาหุ้นกำลัง “สะท้อนความคาดหวัง” อะไรอยู่</li><li>fundamentals ล่าสุดบอกเรื่องเดียวกันหรือไม่</li><li>เมื่อ fundamentals เปลี่ยน เราควร “ถือ / เข้า / ออก” หุ้นตัวไหนในพอร์ต</li><li>ถ้าทำแบบมีวินัยรายไตรมาส ผลลัพธ์ดีกว่าตลาดหรือไม่</li></ol>
+<h2 id="อ-านหน-าน-อย-างไร">อ่านหน้านี้อย่างไร</h2>
+<p>ลำดับที่ดีที่สุดสำหรับคนทั่วไปคือ:</p>
+<ol><li>ดูคำถามและคำตอบสั้นก่อน</li><li>ดู stock highlights เพื่อเห็นภาพเร็วว่าหุ้นไหนเด่น หุ้นไหนกำไรมาก และหุ้นไหนพลาด</li><li>เลื่อนลงไปอ่าน quarterly timeline ทีละรอบ เพื่อดูว่า “fundamental เปลี่ยนตรงไหน แล้วพอร์ตตอบสนองอย่างไร”</li><li>ถ้าต้องการรายละเอียดเชิงวิธีวิจัย ค่อยไปต่อที่หน้า thesis / research / backtest</li></ol>
+<h2 id="ส-งท-quarterly-timeline-ต-องทำให-ช-ด">สิ่งที่ quarterly timeline ต้องทำให้ชัด</h2>
+<p>ในแต่ละไตรมาส คนอ่านต้องเห็นให้ครบว่า:</p>
+<ul><li>พอร์ตถือหุ้นอะไรอยู่บ้าง</li><li>มีหุ้นอะไรเข้าใหม่</li><li>มีหุ้นอะไรออกจากพอร์ต</li><li>ใช้งบชุดไหนในการตัดสินใจ</li><li>signal ที่เปลี่ยนเกิดจากอะไร</li><li>สุดท้ายไตรมาสนั้นหุ้นไหนเด่นสุด กำไรมากสุด และขาดทุนมากสุด</li></ul>
+<h2 id="หล-กการเข-ยนเอกสารหน-าน">หลักการเขียนเอกสารหน้านี้</h2>
+<ul><li>ใช้ภาษาคนทั่วไปก่อน</li><li>เริ่มจาก “สิ่งที่ต้องพิสูจน์” ไม่ใช่เริ่มจากศัพท์เทคนิค</li><li>ถ้ามีสมการหรือคำอธิบายเชิงลึก ให้โยงไป appendix หรือ thesis</li><li>ถ้า output final ยังไม่พร้อม ให้บอกตรง ๆ ว่าตอนนี้เป็นโครงสร้าง/ผลล่าสุดที่มีใน repo ไม่ใช่ผลสรุปสุดท้าย</li></ul>
+<h2 id="ส-งท-ย-งต-องรอจาก-upstream-lanes">สิ่งที่ยังต้องรอจาก upstream lanes</h2>
+<ul><li>dataset 100 หุ้นแบบ multi-source ที่ใช้ scraping เป็นแกน</li><li>ผล backtest final แบบ Damodaran 2 case</li><li>กฎ stop-loss และ “แพ้เกิน 2 buy rounds แล้วห้ามซื้ออีก”</li><li>attribution ที่บอกให้ชัดกว่านี้ว่าหุ้นถูกคัดเข้า/ออกเพราะ metric ไหนเปลี่ยน</li></ul>
+      </article>
+      <aside class="dependency-card">
+        <span class="eyebrow">สิ่งที่หน้าเว็บนี้ตอบให้ได้ทันที</span>
+        <ol class="qa-list">
+          <li><a href="#core-question">เรากำลังพิสูจน์อะไร และคำตอบสั้นตอนนี้คืออะไร</a></li>
+          <li><a href="#quarterly-timeline">ไตรมาสไหนพอร์ตถืออะไร เข้าอะไร ออกอะไร</a></li>
+          <li>หุ้นไหนเด่นสุด / กำไรมากสุด / ขาดทุนมากสุด</li>
+          <li><a href="#dependencies">ส่วนไหนยังต้องรอ output final จาก upstream lanes</a></li>
+          <li><a href="#faq">คำถามที่พบบ่อย (FAQ)</a></li>
+        </ol>
+      </aside>
+    </section>
+
+    
+        <section class="highlight-grid">
+          
+    <article class='highlight-card'>
+      <span class="eyebrow">หุ้นเด่นล่าสุด</span>
+      <strong>RATCH</strong>
+      <p>คะแนน signal สูงสุดในรอบล่าสุด (76.8%)</p>
+      <p class='muted'><small>FCF: 5.5 พันล้านบาท</small></p>
+      <small>รอบลงทุน 31 มี.ค. 2026</small>
+    </article>
+    
+          
+    <article class='highlight-card accent-profit'>
+      <span class="eyebrow">กำไรมากสุดจาก output ปัจจุบัน</span>
+      <strong>CCET</strong>
+      <p>ผลตอบแทน 3 เดือน 171.51% และ active return 174.86%</p>
+      <p class='muted'><small>FCF: 11.7 พันล้านบาท</small></p>
+      <small>รอบลงทุน 30 ก.ย. 2024</small>
+    </article>
+    
+          
+    <article class='highlight-card accent-loss'>
+      <span class="eyebrow">ขาดทุนมากสุดจาก output ปัจจุบัน</span>
+      <strong>SCGP</strong>
+      <p>ผลตอบแทน 3 เดือน -32.86% และ active return -17.84%</p>
+      <p class='muted'><small>FCF: 1.5 พันล้านบาท</small></p>
+      <small>รอบลงทุน 2 ม.ค. 2025</small>
+    </article>
+    
+        
+          <article class="highlight-card">
+            <span class="eyebrow">หุ้นที่ถูกถือบ่อยสุด</span>
+            <strong>TTB</strong>
+            <p>ติดพอร์ต 8 รอบใน timeline 3 เดือนที่มีอยู่ตอนนี้</p>
+            <small>ใช้เพื่ออธิบายความสม่ำเสมอของ model ก่อนมี output final ชุดใหม่</small>
+          </article>
+            </section>
+    
+        <section class="timeline-shell">
+          <div class="page-intro">
+            <span class="eyebrow">Quarterly timeline</span>
+            <h2 id="quarterly-timeline">เส้นเวลา “ถือ / เข้า / ออก / ทำไมเปลี่ยน”</h2>
+            <p>ส่วนนี้อ่านตามรอบ rebalance รายไตรมาส โดยยึดไฟล์พอร์ต 3 เดือนเพื่อให้เล่าเรื่องการเปลี่ยนพอร์ตเป็นลำดับเวลาเดียวกันก่อน เมื่อ output case ใหม่พร้อมแล้ว โครงนี้จะ reuse ได้ทันที.</p>
+          </div>
+          <div class="timeline-stack">
+            
+                <details class="timeline-quarter" id="quarter-2023-03-31">
+                  <summary>
+                    <div class="timeline-summary-top">
+                      <strong>ไตรมาส 1/2023 · รอบลงทุน 31 มี.ค. 2023</strong>
+                      <span>Active return 12.56% | เข้า 5 ตัว | ออก 0 ตัว</span>
+                    </div>
+                    <div class="timeline-summary-meta">
+                      <span class="ticker-pill">ถือ 5 หุ้น</span>
+                      <span class="ticker-pill">Universe 50</span>
+                      <span class="ticker-pill">Eligible 30</span>
+                      <span class="ticker-pill">Turnover 0%</span>
+                    </div>
+                  </summary>
+                  <div class="timeline-body">
+                    <div class="mini-metrics">
+                      <div class="mini-card"><span>พอร์ตที่ถือ</span><strong>5 หุ้น</strong><small>annual 5</small></div>
+                      <div class="mini-card"><span>ผลตอบแทนพอร์ต</span><strong>5.97%</strong><small>เทียบ benchmark -6.59%</small></div>
+                      <div class="mini-card"><span>คำตอบของไตรมาสนี้</span><strong>TTB</strong><small>หุ้นที่คะแนน signal เด่นสุดในรอบนี้</small></div>
+                    </div>
+                    <div>
+                      <h3>ถืออะไรอยู่บ้าง</h3>
+                      <div class="ticker-pills"><span class="ticker-pill">ADVANC</span><span class="ticker-pill">BBL</span><span class="ticker-pill">IVL</span><span class="ticker-pill">MINT</span><span class="ticker-pill">TTB</span></div>
+                    </div>
+                    <div>
+                      <h3>เข้าใหม่ / ออก</h3>
+                      <p><strong>เข้าใหม่</strong></p>
+                      <div class="ticker-pills"><span class="ticker-pill">ADVANC</span><span class="ticker-pill">BBL</span><span class="ticker-pill">IVL</span><span class="ticker-pill">MINT</span><span class="ticker-pill">TTB</span></div>
+                      <p><strong>ออกจากพอร์ต</strong></p>
+                      <p class="muted">ไม่มีการเปลี่ยนแปลง</p>
+                    </div>
+                    <div>
+                      <h3>fundamental เปลี่ยนแล้วพอร์ตเปลี่ยนอย่างไร</h3>
+                      <ul class="timeline-list"><li>TTB: ใช้งบรายปี ณ 31 ธ.ค. 2022 — signal gap 23.4%.  รายได้ล่าสุด 0.0% เทียบกับ growth ที่ราคาหุ้นสะท้อน -23.4%. กระแสเงินสดอิสระ 46.6 พันล้านบาท.</li><li>จากงบรายปี ณ 31 ธ.ค. 2022, IVL มี signal gap 14.5%. รายได้ล่าสุด 0.0% เทียบกับ growth ที่ราคาหุ้นสะท้อน -14.5%. กระแสเงินสดอิสระ 49.4 พันล้านบาท.</li><li>BBL: งบงบรายปี (31 ธ.ค. 2022) ทำให้ signal อยู่ที่ 13.4%. รายได้ล่าสุด 0.0% เทียบกับ growth ที่ราคาหุ้นสะท้อน -13.4%. กระแสเงินสดอิสระ 70.8 พันล้านบาท.</li></ul>
+                    </div>
+                    <div class="highlight-grid">
+                      
+    <article class='highlight-card accent-profit'>
+      <span class="eyebrow">หุ้นเด่นของไตรมาส</span>
+      <strong>TTB</strong>
+      <p>signal gap 23.4% จากงบ annual</p>
+      <p class='muted'><small>FCF: 46.6 พันล้านบาท</small></p>
+      <small>รอบลงทุน 31 มี.ค. 2023</small>
+    </article>
+    
+                      
+    <article class='highlight-card accent-profit'>
+      <span class="eyebrow">กำไรมากสุดในไตรมาส</span>
+      <strong>TTB</strong>
+      <p>ผลตอบแทน 3 เดือน 13.30%</p>
+      <p class='muted'><small>FCF: 46.6 พันล้านบาท</small></p>
+      <small>รอบลงทุน 31 มี.ค. 2023</small>
+    </article>
+    
+                      
+    <article class='highlight-card accent-profit'>
+      <span class="eyebrow">ขาดทุนมากสุดในไตรมาส</span>
+      <strong>ADVANC</strong>
+      <p>ผลตอบแทน 3 เดือน 0.94%</p>
+      <p class='muted'><small>FCF: 38.0 พันล้านบาท</small></p>
+      <small>รอบลงทุน 31 มี.ค. 2023</small>
+    </article>
+    
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="timeline-quarter" id="quarter-2023-06-30">
+                  <summary>
+                    <div class="timeline-summary-top">
+                      <strong>ไตรมาส 2/2023 · รอบลงทุน 30 มิ.ย. 2023</strong>
+                      <span>Active return 0.95% | เข้า 0 ตัว | ออก 0 ตัว</span>
+                    </div>
+                    <div class="timeline-summary-meta">
+                      <span class="ticker-pill">ถือ 5 หุ้น</span>
+                      <span class="ticker-pill">Universe 50</span>
+                      <span class="ticker-pill">Eligible 30</span>
+                      <span class="ticker-pill">Turnover 0%</span>
+                    </div>
+                  </summary>
+                  <div class="timeline-body">
+                    <div class="mini-metrics">
+                      <div class="mini-card"><span>พอร์ตที่ถือ</span><strong>5 หุ้น</strong><small>annual 5</small></div>
+                      <div class="mini-card"><span>ผลตอบแทนพอร์ต</span><strong>-1.15%</strong><small>เทียบ benchmark -2.11%</small></div>
+                      <div class="mini-card"><span>คำตอบของไตรมาสนี้</span><strong>TTB</strong><small>หุ้นที่คะแนน signal เด่นสุดในรอบนี้</small></div>
+                    </div>
+                    <div>
+                      <h3>ถืออะไรอยู่บ้าง</h3>
+                      <div class="ticker-pills"><span class="ticker-pill">ADVANC</span><span class="ticker-pill">BBL</span><span class="ticker-pill">IVL</span><span class="ticker-pill">MINT</span><span class="ticker-pill">TTB</span></div>
+                    </div>
+                    <div>
+                      <h3>เข้าใหม่ / ออก</h3>
+                      <p><strong>เข้าใหม่</strong></p>
+                      <p class="muted">ไม่มีการเปลี่ยนแปลง</p>
+                      <p><strong>ออกจากพอร์ต</strong></p>
+                      <p class="muted">ไม่มีการเปลี่ยนแปลง</p>
+                    </div>
+                    <div>
+                      <h3>fundamental เปลี่ยนแล้วพอร์ตเปลี่ยนอย่างไร</h3>
+                      <ul class="timeline-list"><li>จากงบรายปี ณ 31 ธ.ค. 2022, TTB มี signal gap 22.3%. รายได้ล่าสุด 0.0% เทียบกับ growth ที่ราคาหุ้นสะท้อน -22.3%. กระแสเงินสดอิสระ 46.6 พันล้านบาท.</li><li>IVL: งบงบรายปี (31 ธ.ค. 2022) ทำให้ signal อยู่ที่ 14.4%. รายได้ล่าสุด 0.0% เทียบกับ growth ที่ราคาหุ้นสะท้อน -14.4%. กระแสเงินสดอิสระ 49.4 พันล้านบาท.</li><li>BBL: ใช้งบรายปี ณ 31 ธ.ค. 2022 — signal gap 12.8%.  รายได้ล่าสุด 0.0% เทียบกับ growth ที่ราคาหุ้นสะท้อน -12.8%. กระแสเงินสดอิสระ 70.8 พันล้านบาท.</li></ul>
+                    </div>
+                    <div class="highlight-grid">
+                      
+    <article class='highlight-card accent-profit'>
+      <span class="eyebrow">หุ้นเด่นของไตรมาส</span>
+      <strong>TTB</strong>
+      <p>signal gap 22.3% จากงบ annual</p>
+      <p class='muted'><small>FCF: 46.6 พันล้านบาท</small></p>
+      <small>รอบลงทุน 30 มิ.ย. 2023</small>
+    </article>
+    
+                      
+    <article class='highlight-card accent-profit'>
+      <span class="eyebrow">กำไรมากสุดในไตรมาส</span>
+      <strong>TTB</strong>
+      <p>ผลตอบแทน 3 เดือน 10.97%</p>
+      <p class='muted'><small>FCF: 46.6 พันล้านบาท</small></p>
+      <small>รอบลงทุน 30 มิ.ย. 2023</small>
+    </article>
+    
+                      
+    <article class='highlight-card accent-loss'>
+      <span class="eyebrow">ขาดทุนมากสุดในไตรมาส</span>
+      <strong>IVL</strong>
+      <p>ผลตอบแทน 3 เดือน -23.44%</p>
+      <p class='muted'><small>FCF: 49.4 พันล้านบาท</small></p>
+      <small>รอบลงทุน 30 มิ.ย. 2023</small>
+    </article>
+    
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="timeline-quarter" id="quarter-2023-10-02">
+                  <summary>
+                    <div class="timeline-summary-top">
+                      <strong>ไตรมาส 4/2023 · รอบลงทุน 2 ต.ค. 2023</strong>
+                      <span>Active return 1.45% | เข้า 0 ตัว | ออก 0 ตัว</span>
+                    </div>
+                    <div class="timeline-summary-meta">
+                      <span class="ticker-pill">ถือ 5 หุ้น</span>
+                      <span class="ticker-pill">Universe 50</span>
+                      <span class="ticker-pill">Eligible 30</span>
+                      <span class="ticker-pill">Turnover 0%</span>
+                    </div>
+                  </summary>
+                  <div class="timeline-body">
+                    <div class="mini-metrics">
+                      <div class="mini-card"><span>พอร์ตที่ถือ</span><strong>5 หุ้น</strong><small>annual 5</small></div>
+                      <div class="mini-card"><span>ผลตอบแทนพอร์ต</span><strong>-2.20%</strong><small>เทียบ benchmark -3.65%</small></div>
+                      <div class="mini-card"><span>คำตอบของไตรมาสนี้</span><strong>TTB</strong><small>หุ้นที่คะแนน signal เด่นสุดในรอบนี้</small></div>
+                    </div>
+                    <div>
+                      <h3>ถืออะไรอยู่บ้าง</h3>
+                      <div class="ticker-pills"><span class="ticker-pill">ADVANC</span><span class="ticker-pill">BBL</span><span class="ticker-pill">IVL</span><span class="ticker-pill">MINT</span><span class="ticker-pill">TTB</span></div>
+                    </div>
+                    <div>
+                      <h3>เข้าใหม่ / ออก</h3>
+                      <p><strong>เข้าใหม่</strong></p>
+                      <p class="muted">ไม่มีการเปลี่ยนแปลง</p>
+                      <p><strong>ออกจากพอร์ต</strong></p>
+                      <p class="muted">ไม่มีการเปลี่ยนแปลง</p>
+                    </div>
+                    <div>
+                      <h3>fundamental เปลี่ยนแล้วพอร์ตเปลี่ยนอย่างไร</h3>
+                      <ul class="timeline-list"><li>TTB: งบงบรายปี (31 ธ.ค. 2022) ทำให้ signal อยู่ที่ 21.4%. รายได้ล่าสุด 0.0% เทียบกับ growth ที่ราคาหุ้นสะท้อน -21.4%. กระแสเงินสดอิสระ 46.6 พันล้านบาท.</li><li>IVL: ใช้งบรายปี ณ 31 ธ.ค. 2022 — signal gap 16.5%.  รายได้ล่าสุด 0.0% เทียบกับ growth ที่ราคาหุ้นสะท้อน -16.5%. กระแสเงินสดอิสระ 49.4 พันล้านบาท.</li><li>จากงบรายปี ณ 31 ธ.ค. 2022, BBL มี signal gap 12.3%. รายได้ล่าสุด 0.0% เทียบกับ growth ที่ราคาหุ้นสะท้อน -12.3%. กระแสเงินสดอิสระ 70.8 พันล้านบาท.</li></ul>
+                    </div>
+                    <div class="highlight-grid">
+                      
+    <article class='highlight-card accent-profit'>
+      <span class="eyebrow">หุ้นเด่นของไตรมาส</span>
+      <strong>TTB</strong>
+      <p>signal gap 21.4% จากงบ annual</p>
+      <p class='muted'><small>FCF: 46.6 พันล้านบาท</small></p>
+      <small>รอบลงทุน 2 ต.ค. 2023</small>
+    </article>
+    
+                      
+    <article class='highlight-card accent-profit'>
+      <span class="eyebrow">กำไรมากสุดในไตรมาส</span>
+      <strong>IVL</strong>
+      <p>ผลตอบแทน 3 เดือน 5.85%</p>
+      <p class='muted'><small>FCF: 49.4 พันล้านบาท</small></p>
+      <small>รอบลงทุน 2 ต.ค. 2023</small>
+    </article>
+    
+                      
+    <article class='highlight-card accent-loss'>
+      <span class="eyebrow">ขาดทุนมากสุดในไตรมาส</span>
+      <strong>MINT</strong>
+      <p>ผลตอบแทน 3 เดือน -6.35%</p>
+      <p class='muted'><small>FCF: 25.1 พันล้านบาท</small></p>
+      <small>รอบลงทุน 2 ต.ค. 2023</small>
+    </article>
+    
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="timeline-quarter" id="quarter-2024-01-03">
+                  <summary>
+                    <div class="timeline-summary-top">
+                      <strong>ไตรมาส 1/2024 · รอบลงทุน 3 ม.ค. 2024</strong>
+                      <span>Active return 4.50% | เข้า 1 ตัว | ออก 1 ตัว</span>
+                    </div>
+                    <div class="timeline-summary-meta">
+                      <span class="ticker-pill">ถือ 5 หุ้น</span>
+                      <span class="ticker-pill">Universe 50</span>
+                      <span class="ticker-pill">Eligible 31</span>
+                      <span class="ticker-pill">Turnover 20%</span>
+                    </div>
+                  </summary>
+                  <div class="timeline-body">
+                    <div class="mini-metrics">
+                      <div class="mini-card"><span>พอร์ตที่ถือ</span><strong>5 หุ้น</strong><small>annual 5</small></div>
+                      <div class="mini-card"><span>ผลตอบแทนพอร์ต</span><strong>0.73%</strong><small>เทียบ benchmark -3.77%</small></div>
+                      <div class="mini-card"><span>คำตอบของไตรมาสนี้</span><strong>AOT</strong><small>หุ้นที่คะแนน signal เด่นสุดในรอบนี้</small></div>
+                    </div>
+                    <div>
+                      <h3>ถืออะไรอยู่บ้าง</h3>
+                      <div class="ticker-pills"><span class="ticker-pill">AOT</span><span class="ticker-pill">BBL</span><span class="ticker-pill">IVL</span><span class="ticker-pill">MINT</span><span class="ticker-pill">TTB</span></div>
+                    </div>
+                    <div>
+                      <h3>เข้าใหม่ / ออก</h3>
+                      <p><strong>เข้าใหม่</strong></p>
+                      <div class="ticker-pills"><span class="ticker-pill">AOT</span></div>
+                      <p><strong>ออกจากพอร์ต</strong></p>
+                      <div class="ticker-pills"><span class="ticker-pill">ADVANC</span></div>
+                    </div>
+                    <div>
+                      <h3>fundamental เปลี่ยนแล้วพอร์ตเปลี่ยนอย่างไร</h3>
+                      <ul class="timeline-list"><li>AOT: ใช้งบรายปี ณ 30 ก.ย. 2023 — signal gap 129.4%.  รายได้ล่าสุด 190.7% เทียบกับ growth ที่ราคาหุ้นสะท้อน 61.3%. กระแสเงินสดอิสระ 5.3 พันล้านบาท.</li></ul>
+                    </div>
+                    <div class="highlight-grid">
+                      
+    <article class='highlight-card accent-profit'>
+      <span class="eyebrow">หุ้นเด่นของไตรมาส</span>
+      <strong>AOT</strong>
+      <p>signal gap 129.4% จากงบ annual</p>
+      <p class='muted'><small>FCF: 5.3 พันล้านบาท</small></p>
+      <small>รอบลงทุน 3 ม.ค. 2024</small>
+    </article>
+    
+                      
+    <article class='highlight-card accent-profit'>
+      <span class="eyebrow">กำไรมากสุดในไตรมาส</span>
+      <strong>MINT</strong>
+      <p>ผลตอบแทน 3 เดือน 11.97%</p>
+      <p class='muted'><small>FCF: 25.1 พันล้านบาท</small></p>
+      <small>รอบลงทุน 3 ม.ค. 2024</small>
+    </article>
+    
+                      
+    <article class='highlight-card accent-loss'>
+      <span class="eyebrow">ขาดทุนมากสุดในไตรมาส</span>
+      <strong>BBL</strong>
+      <p>ผลตอบแทน 3 เดือน -11.33%</p>
+      <p class='muted'><small>FCF: 70.8 พันล้านบาท</small></p>
+      <small>รอบลงทุน 3 ม.ค. 2024</small>
+    </article>
+    
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="timeline-quarter" id="quarter-2024-04-01">
+                  <summary>
+                    <div class="timeline-summary-top">
+                      <strong>ไตรมาส 2/2024 · รอบลงทุน 1 เม.ย. 2024</strong>
+                      <span>Active return 10.45% | เข้า 2 ตัว | ออก 2 ตัว</span>
+                    </div>
+                    <div class="timeline-summary-meta">
+                      <span class="ticker-pill">ถือ 5 หุ้น</span>
+                      <span class="ticker-pill">Universe 50</span>
+                      <span class="ticker-pill">Eligible 34</span>
+                      <span class="ticker-pill">Turnover 40%</span>
+                    </div>
+                  </summary>
+                  <div class="timeline-body">
+                    <div class="mini-metrics">
+                      <div class="mini-card"><span>พอร์ตที่ถือ</span><strong>5 หุ้น</strong><small>annual 5</small></div>
+                      <div class="mini-card"><span>ผลตอบแทนพอร์ต</span><strong>4.64%</strong><small>เทียบ benchmark -5.81%</small></div>
+                      <div class="mini-card"><span>คำตอบของไตรมาสนี้</span><strong>AOT</strong><small>หุ้นที่คะแนน signal เด่นสุดในรอบนี้</small></div>
+                    </div>
+                    <div>
+                      <h3>ถืออะไรอยู่บ้าง</h3>
+                      <div class="ticker-pills"><span class="ticker-pill">AOT</span><span class="ticker-pill">BBL</span><span class="ticker-pill">CCET</span><span class="ticker-pill">CPN</span><span class="ticker-pill">MINT</span></div>
+                    </div>
+                    <div>
+                      <h3>เข้าใหม่ / ออก</h3>
+                      <p><strong>เข้าใหม่</strong></p>
+                      <div class="ticker-pills"><span class="ticker-pill">CCET</span><span class="ticker-pill">CPN</span></div>
+                      <p><strong>ออกจากพอร์ต</strong></p>
+                      <div class="ticker-pills"><span class="ticker-pill">IVL</span><span class="ticker-pill">TTB</span></div>
+                    </div>
+                    <div>
+                      <h3>fundamental เปลี่ยนแล้วพอร์ตเปลี่ยนอย่างไร</h3>
+                      <ul class="timeline-list"><li>จากงบรายปี ณ 31 ธ.ค. 2023, CPN มี signal gap 25.0%. รายได้ล่าสุด 28.2% เทียบกับ growth ที่ราคาหุ้นสะท้อน 3.2%. กระแสเงินสดอิสระ 19.9 พันล้านบาท.</li><li>CCET: งบงบรายปี (31 ธ.ค. 2023) ทำให้ signal อยู่ที่ 22.7%. รายได้ล่าสุด -12.4% เทียบกับ growth ที่ราคาหุ้นสะท้อน -35.1%. กระแสเงินสดอิสระ 11.7 พันล้านบาท.</li></ul>
+                    </div>
+                    <div class="highlight-grid">
+                      
+    <article class='highlight-card accent-loss'>
+      <span class="eyebrow">หุ้นเด่นของไตรมาส</span>
+      <strong>AOT</strong>
+      <p>signal gap 128.0% จากงบ annual</p>
+      <p class='muted'><small>FCF: 5.3 พันล้านบาท</small></p>
+      <small>รอบลงทุน 1 เม.ย. 2024</small>
+    </article>
+    
+                      
+    <article class='highlight-card accent-profit'>
+      <span class="eyebrow">กำไรมากสุดในไตรมาส</span>
+      <strong>CCET</strong>
+      <p>ผลตอบแทน 3 เดือน 59.35%</p>
+      <p class='muted'><small>FCF: 11.7 พันล้านบาท</small></p>
+      <small>รอบลงทุน 1 เม.ย. 2024</small>
+    </article>
+    
+                      
+    <article class='highlight-card accent-loss'>
+      <span class="eyebrow">ขาดทุนมากสุดในไตรมาส</span>
+      <strong>CPN</strong>
+      <p>ผลตอบแทน 3 เดือน -12.65%</p>
+      <p class='muted'><small>FCF: 19.9 พันล้านบาท</small></p>
+      <small>รอบลงทุน 1 เม.ย. 2024</small>
+    </article>
+    
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="timeline-quarter" id="quarter-2024-07-01">
+                  <summary>
+                    <div class="timeline-summary-top">
+                      <strong>ไตรมาส 3/2024 · รอบลงทุน 1 ก.ค. 2024</strong>
+                      <span>Active return -1.11% | เข้า 2 ตัว | ออก 2 ตัว</span>
+                    </div>
+                    <div class="timeline-summary-meta">
+                      <span class="ticker-pill">ถือ 5 หุ้น</span>
+                      <span class="ticker-pill">Universe 50</span>
+                      <span class="ticker-pill">Eligible 31</span>
+                      <span class="ticker-pill">Turnover 40%</span>
+                    </div>
+                  </summary>
+                  <div class="timeline-body">
+                    <div class="mini-metrics">
+                      <div class="mini-card"><span>พอร์ตที่ถือ</span><strong>5 หุ้น</strong><small>annual 5</small></div>
+                      <div class="mini-card"><span>ผลตอบแทนพอร์ต</span><strong>11.61%</strong><small>เทียบ benchmark 12.72%</small></div>
+                      <div class="mini-card"><span>คำตอบของไตรมาสนี้</span><strong>AOT</strong><small>หุ้นที่คะแนน signal เด่นสุดในรอบนี้</small></div>
+                    </div>
+                    <div>
+                      <h3>ถืออะไรอยู่บ้าง</h3>
+                      <div class="ticker-pills"><span class="ticker-pill">AOT</span><span class="ticker-pill">AWC</span><span class="ticker-pill">CCET</span><span class="ticker-pill">CPN</span><span class="ticker-pill">OR</span></div>
+                    </div>
+                    <div>
+                      <h3>เข้าใหม่ / ออก</h3>
+                      <p><strong>เข้าใหม่</strong></p>
+                      <div class="ticker-pills"><span class="ticker-pill">AWC</span><span class="ticker-pill">OR</span></div>
+                      <p><strong>ออกจากพอร์ต</strong></p>
+                      <div class="ticker-pills"><span class="ticker-pill">BBL</span><span class="ticker-pill">MINT</span></div>
+                    </div>
+                    <div>
+                      <h3>fundamental เปลี่ยนแล้วพอร์ตเปลี่ยนอย่างไร</h3>
+                      <ul class="timeline-list"><li>OR: งบงบรายปี (31 ธ.ค. 2023) ทำให้ signal อยู่ที่ 19.1%. รายได้ล่าสุด -2.5% เทียบกับ growth ที่ราคาหุ้นสะท้อน -21.7%. กระแสเงินสดอิสระ 28.8 พันล้านบาท.</li><li>AWC: ใช้งบรายปี ณ 31 ธ.ค. 2023 — signal gap 13.0%.  รายได้ล่าสุด 46.4% เทียบกับ growth ที่ราคาหุ้นสะท้อน 33.4%. กระแสเงินสดอิสระ 2.7 พันล้านบาท.</li></ul>
+                    </div>
+                    <div class="highlight-grid">
+                      
+    <article class='highlight-card accent-profit'>
+      <span class="eyebrow">หุ้นเด่นของไตรมาส</span>
+      <strong>AOT</strong>
+      <p>signal gap 131.7% จากงบ annual</p>
+      <p class='muted'><small>FCF: 5.3 พันล้านบาท</small></p>
+      <small>รอบลงทุน 1 ก.ค. 2024</small>
+    </article>
+    
+                      
+    <article class='highlight-card accent-profit'>
+      <span class="eyebrow">กำไรมากสุดในไตรมาส</span>
+      <strong>CPN</strong>
+      <p>ผลตอบแทน 3 เดือน 21.72%</p>
+      <p class='muted'><small>FCF: 19.9 พันล้านบาท</small></p>
+      <small>รอบลงทุน 1 ก.ค. 2024</small>
+    </article>
+    
+                      
+    <article class='highlight-card accent-profit'>
+      <span class="eyebrow">ขาดทุนมากสุดในไตรมาส</span>
+      <strong>CCET</strong>
+      <p>ผลตอบแทน 3 เดือน 4.49%</p>
+      <p class='muted'><small>FCF: 11.7 พันล้านบาท</small></p>
+      <small>รอบลงทุน 1 ก.ค. 2024</small>
+    </article>
+    
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="timeline-quarter" id="quarter-2024-09-30">
+                  <summary>
+                    <div class="timeline-summary-top">
+                      <strong>ไตรมาส 3/2024 · รอบลงทุน 30 ก.ย. 2024</strong>
+                      <span>Active return 27.24% | เข้า 0 ตัว | ออก 0 ตัว</span>
+                    </div>
+                    <div class="timeline-summary-meta">
+                      <span class="ticker-pill">ถือ 5 หุ้น</span>
+                      <span class="ticker-pill">Universe 50</span>
+                      <span class="ticker-pill">Eligible 31</span>
+                      <span class="ticker-pill">Turnover 0%</span>
+                    </div>
+                  </summary>
+                  <div class="timeline-body">
+                    <div class="mini-metrics">
+                      <div class="mini-card"><span>พอร์ตที่ถือ</span><strong>5 หุ้น</strong><small>annual 5</small></div>
+                      <div class="mini-card"><span>ผลตอบแทนพอร์ต</span><strong>23.89%</strong><small>เทียบ benchmark -3.36%</small></div>
+                      <div class="mini-card"><span>คำตอบของไตรมาสนี้</span><strong>AOT</strong><small>หุ้นที่คะแนน signal เด่นสุดในรอบนี้</small></div>
+                    </div>
+                    <div>
+                      <h3>ถืออะไรอยู่บ้าง</h3>
+                      <div class="ticker-pills"><span class="ticker-pill">AOT</span><span class="ticker-pill">AWC</span><span class="ticker-pill">CCET</span><span class="ticker-pill">CPN</span><span class="ticker-pill">OR</span></div>
+                    </div>
+                    <div>
+                      <h3>เข้าใหม่ / ออก</h3>
+                      <p><strong>เข้าใหม่</strong></p>
+                      <p class="muted">ไม่มีการเปลี่ยนแปลง</p>
+                      <p><strong>ออกจากพอร์ต</strong></p>
+                      <p class="muted">ไม่มีการเปลี่ยนแปลง</p>
+                    </div>
+                    <div>
+                      <h3>fundamental เปลี่ยนแล้วพอร์ตเปลี่ยนอย่างไร</h3>
+                      <ul class="timeline-list"><li>AOT: ใช้งบรายปี ณ 30 ก.ย. 2023 — signal gap 128.7%.  รายได้ล่าสุด 190.7% เทียบกับ growth ที่ราคาหุ้นสะท้อน 62.0%. กระแสเงินสดอิสระ 5.3 พันล้านบาท.</li><li>จากงบรายปี ณ 31 ธ.ค. 2023, CPN มี signal gap 24.2%. รายได้ล่าสุด 28.2% เทียบกับ growth ที่ราคาหุ้นสะท้อน 4.1%. กระแสเงินสดอิสระ 19.9 พันล้านบาท.</li><li>CCET: งบงบรายปี (31 ธ.ค. 2023) ทำให้ signal อยู่ที่ 18.6%. รายได้ล่าสุด -12.4% เทียบกับ growth ที่ราคาหุ้นสะท้อน -31.0%. กระแสเงินสดอิสระ 11.7 พันล้านบาท.</li></ul>
+                    </div>
+                    <div class="highlight-grid">
+                      
+    <article class='highlight-card accent-loss'>
+      <span class="eyebrow">หุ้นเด่นของไตรมาส</span>
+      <strong>AOT</strong>
+      <p>signal gap 128.7% จากงบ annual</p>
+      <p class='muted'><small>FCF: 5.3 พันล้านบาท</small></p>
+      <small>รอบลงทุน 30 ก.ย. 2024</small>
+    </article>
+    
+                      
+    <article class='highlight-card accent-profit'>
+      <span class="eyebrow">กำไรมากสุดในไตรมาส</span>
+      <strong>CCET</strong>
+      <p>ผลตอบแทน 3 เดือน 171.51%</p>
+      <p class='muted'><small>FCF: 11.7 พันล้านบาท</small></p>
+      <small>รอบลงทุน 30 ก.ย. 2024</small>
+    </article>
+    
+                      
+    <article class='highlight-card accent-loss'>
+      <span class="eyebrow">ขาดทุนมากสุดในไตรมาส</span>
+      <strong>OR</strong>
+      <p>ผลตอบแทน 3 เดือน -24.43%</p>
+      <p class='muted'><small>FCF: 28.8 พันล้านบาท</small></p>
+      <small>รอบลงทุน 30 ก.ย. 2024</small>
+    </article>
+    
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="timeline-quarter" id="quarter-2025-01-02">
+                  <summary>
+                    <div class="timeline-summary-top">
+                      <strong>ไตรมาส 1/2025 · รอบลงทุน 2 ม.ค. 2025</strong>
+                      <span>Active return 1.41% | เข้า 5 ตัว | ออก 5 ตัว</span>
+                    </div>
+                    <div class="timeline-summary-meta">
+                      <span class="ticker-pill">ถือ 5 หุ้น</span>
+                      <span class="ticker-pill">Universe 50</span>
+                      <span class="ticker-pill">Eligible 7</span>
+                      <span class="ticker-pill">Turnover 100%</span>
+                    </div>
+                  </summary>
+                  <div class="timeline-body">
+                    <div class="mini-metrics">
+                      <div class="mini-card"><span>พอร์ตที่ถือ</span><strong>5 หุ้น</strong><small>quarterly 5</small></div>
+                      <div class="mini-card"><span>ผลตอบแทนพอร์ต</span><strong>-13.61%</strong><small>เทียบ benchmark -15.01%</small></div>
+                      <div class="mini-card"><span>คำตอบของไตรมาสนี้</span><strong>GPSC</strong><small>หุ้นที่คะแนน signal เด่นสุดในรอบนี้</small></div>
+                    </div>
+                    <div>
+                      <h3>ถืออะไรอยู่บ้าง</h3>
+                      <div class="ticker-pills"><span class="ticker-pill">ADVANC</span><span class="ticker-pill">GPSC</span><span class="ticker-pill">SCGP</span><span class="ticker-pill">TRUE</span><span class="ticker-pill">TU</span></div>
+                    </div>
+                    <div>
+                      <h3>เข้าใหม่ / ออก</h3>
+                      <p><strong>เข้าใหม่</strong></p>
+                      <div class="ticker-pills"><span class="ticker-pill">ADVANC</span><span class="ticker-pill">GPSC</span><span class="ticker-pill">SCGP</span><span class="ticker-pill">TRUE</span><span class="ticker-pill">TU</span></div>
+                      <p><strong>ออกจากพอร์ต</strong></p>
+                      <div class="ticker-pills"><span class="ticker-pill">AOT</span><span class="ticker-pill">AWC</span><span class="ticker-pill">CCET</span><span class="ticker-pill">CPN</span><span class="ticker-pill">OR</span></div>
+                    </div>
+                    <div>
+                      <h3>fundamental เปลี่ยนแล้วพอร์ตเปลี่ยนอย่างไร</h3>
+                      <ul class="timeline-list"><li>จากงบรายไตรมาส ณ 30 ก.ย. 2024, GPSC มี signal gap -14.1%. รายได้ล่าสุด 0.0% เทียบกับ growth ที่ราคาหุ้นสะท้อน 14.1%. กระแสเงินสดอิสระ 6.9 พันล้านบาท.</li><li>TU: งบงบรายไตรมาส (30 ก.ย. 2024) ทำให้ signal อยู่ที่ -23.0%. รายได้ล่าสุด 0.0% เทียบกับ growth ที่ราคาหุ้นสะท้อน 23.0%. กระแสเงินสดอิสระ 2.4 พันล้านบาท.</li><li>ADVANC: ใช้งบรายไตรมาส ณ 30 ก.ย. 2024 — signal gap -27.4%.  รายได้ล่าสุด 0.0% เทียบกับ growth ที่ราคาหุ้นสะท้อน 27.4%. กระแสเงินสดอิสระ 18.3 พันล้านบาท.</li></ul>
+                    </div>
+                    <div class="highlight-grid">
+                      
+    <article class='highlight-card accent-loss'>
+      <span class="eyebrow">หุ้นเด่นของไตรมาส</span>
+      <strong>GPSC</strong>
+      <p>signal gap -14.1% จากงบ quarterly</p>
+      <p class='muted'><small>FCF: 6.9 พันล้านบาท</small></p>
+      <small>รอบลงทุน 2 ม.ค. 2025</small>
+    </article>
+    
+                      
+    <article class='highlight-card accent-profit'>
+      <span class="eyebrow">กำไรมากสุดในไตรมาส</span>
+      <strong>TRUE</strong>
+      <p>ผลตอบแทน 3 เดือน 6.25%</p>
+      <p class='muted'><small>FCF: 14.4 พันล้านบาท</small></p>
+      <small>รอบลงทุน 2 ม.ค. 2025</small>
+    </article>
+    
+                      
+    <article class='highlight-card accent-loss'>
+      <span class="eyebrow">ขาดทุนมากสุดในไตรมาส</span>
+      <strong>SCGP</strong>
+      <p>ผลตอบแทน 3 เดือน -32.86%</p>
+      <p class='muted'><small>FCF: 1.5 พันล้านบาท</small></p>
+      <small>รอบลงทุน 2 ม.ค. 2025</small>
+    </article>
+    
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="timeline-quarter" id="quarter-2025-03-31">
+                  <summary>
+                    <div class="timeline-summary-top">
+                      <strong>ไตรมาส 1/2025 · รอบลงทุน 31 มี.ค. 2025</strong>
+                      <span>Active return 1.98% | เข้า 5 ตัว | ออก 5 ตัว</span>
+                    </div>
+                    <div class="timeline-summary-meta">
+                      <span class="ticker-pill">ถือ 5 หุ้น</span>
+                      <span class="ticker-pill">Universe 50</span>
+                      <span class="ticker-pill">Eligible 34</span>
+                      <span class="ticker-pill">Turnover 100%</span>
+                    </div>
+                  </summary>
+                  <div class="timeline-body">
+                    <div class="mini-metrics">
+                      <div class="mini-card"><span>พอร์ตที่ถือ</span><strong>5 หุ้น</strong><small>quarterly 5</small></div>
+                      <div class="mini-card"><span>ผลตอบแทนพอร์ต</span><strong>-3.94%</strong><small>เทียบ benchmark -5.92%</small></div>
+                      <div class="mini-card"><span>คำตอบของไตรมาสนี้</span><strong>KBANK</strong><small>หุ้นที่คะแนน signal เด่นสุดในรอบนี้</small></div>
+                    </div>
+                    <div>
+                      <h3>ถืออะไรอยู่บ้าง</h3>
+                      <div class="ticker-pills"><span class="ticker-pill">KBANK</span><span class="ticker-pill">KKP</span><span class="ticker-pill">KTB</span><span class="ticker-pill">OR</span><span class="ticker-pill">TTB</span></div>
+                    </div>
+                    <div>
+                      <h3>เข้าใหม่ / ออก</h3>
+                      <p><strong>เข้าใหม่</strong></p>
+                      <div class="ticker-pills"><span class="ticker-pill">KBANK</span><span class="ticker-pill">KKP</span><span class="ticker-pill">KTB</span><span class="ticker-pill">OR</span><span class="ticker-pill">TTB</span></div>
+                      <p><strong>ออกจากพอร์ต</strong></p>
+                      <div class="ticker-pills"><span class="ticker-pill">ADVANC</span><span class="ticker-pill">GPSC</span><span class="ticker-pill">SCGP</span><span class="ticker-pill">TRUE</span><span class="ticker-pill">TU</span></div>
+                    </div>
+                    <div>
+                      <h3>fundamental เปลี่ยนแล้วพอร์ตเปลี่ยนอย่างไร</h3>
+                      <ul class="timeline-list"><li>KBANK: งบงบรายไตรมาส (31 ธ.ค. 2024) ทำให้ signal อยู่ที่ 36.4%. รายได้ล่าสุด 0.0% เทียบกับ growth ที่ราคาหุ้นสะท้อน -36.4%. กระแสเงินสดอิสระ 71.2 พันล้านบาท.</li><li>KTB: ใช้งบรายไตรมาส ณ 31 ธ.ค. 2024 — signal gap 34.6%.  รายได้ล่าสุด 0.0% เทียบกับ growth ที่ราคาหุ้นสะท้อน -34.6%. กระแสเงินสดอิสระ 76.4 พันล้านบาท.</li><li>จากงบรายไตรมาส ณ 31 ธ.ค. 2024, TTB มี signal gap 26.6%. รายได้ล่าสุด 0.0% เทียบกับ growth ที่ราคาหุ้นสะท้อน -26.6%. กระแสเงินสดอิสระ 9.3 พันล้านบาท.</li></ul>
+                    </div>
+                    <div class="highlight-grid">
+                      
+    <article class='highlight-card accent-profit'>
+      <span class="eyebrow">หุ้นเด่นของไตรมาส</span>
+      <strong>KBANK</strong>
+      <p>signal gap 36.4% จากงบ quarterly</p>
+      <p class='muted'><small>FCF: 71.2 พันล้านบาท</small></p>
+      <small>รอบลงทุน 31 มี.ค. 2025</small>
+    </article>
+    
+                      
+    <article class='highlight-card accent-profit'>
+      <span class="eyebrow">กำไรมากสุดในไตรมาส</span>
+      <strong>KBANK</strong>
+      <p>ผลตอบแทน 3 เดือน 1.79%</p>
+      <p class='muted'><small>FCF: 71.2 พันล้านบาท</small></p>
+      <small>รอบลงทุน 31 มี.ค. 2025</small>
+    </article>
+    
+                      
+    <article class='highlight-card accent-loss'>
+      <span class="eyebrow">ขาดทุนมากสุดในไตรมาส</span>
+      <strong>KKP</strong>
+      <p>ผลตอบแทน 3 เดือน -12.14%</p>
+      <p class='muted'><small>FCF: 8.5 พันล้านบาท</small></p>
+      <small>รอบลงทุน 31 มี.ค. 2025</small>
+    </article>
+    
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="timeline-quarter" id="quarter-2025-06-30">
+                  <summary>
+                    <div class="timeline-summary-top">
+                      <strong>ไตรมาส 2/2025 · รอบลงทุน 30 มิ.ย. 2025</strong>
+                      <span>Active return 27.99% | เข้า 4 ตัว | ออก 4 ตัว</span>
+                    </div>
+                    <div class="timeline-summary-meta">
+                      <span class="ticker-pill">ถือ 5 หุ้น</span>
+                      <span class="ticker-pill">Universe 50</span>
+                      <span class="ticker-pill">Eligible 34</span>
+                      <span class="ticker-pill">Turnover 80%</span>
+                    </div>
+                  </summary>
+                  <div class="timeline-body">
+                    <div class="mini-metrics">
+                      <div class="mini-card"><span>พอร์ตที่ถือ</span><strong>5 หุ้น</strong><small>quarterly 5</small></div>
+                      <div class="mini-card"><span>ผลตอบแทนพอร์ต</span><strong>44.93%</strong><small>เทียบ benchmark 16.94%</small></div>
+                      <div class="mini-card"><span>คำตอบของไตรมาสนี้</span><strong>KKP</strong><small>หุ้นที่คะแนน signal เด่นสุดในรอบนี้</small></div>
+                    </div>
+                    <div>
+                      <h3>ถืออะไรอยู่บ้าง</h3>
+                      <div class="ticker-pills"><span class="ticker-pill">GLOBAL</span><span class="ticker-pill">KCE</span><span class="ticker-pill">KKP</span><span class="ticker-pill">KTC</span><span class="ticker-pill">SAWAD</span></div>
+                    </div>
+                    <div>
+                      <h3>เข้าใหม่ / ออก</h3>
+                      <p><strong>เข้าใหม่</strong></p>
+                      <div class="ticker-pills"><span class="ticker-pill">GLOBAL</span><span class="ticker-pill">KCE</span><span class="ticker-pill">KTC</span><span class="ticker-pill">SAWAD</span></div>
+                      <p><strong>ออกจากพอร์ต</strong></p>
+                      <div class="ticker-pills"><span class="ticker-pill">KBANK</span><span class="ticker-pill">KTB</span><span class="ticker-pill">OR</span><span class="ticker-pill">TTB</span></div>
+                    </div>
+                    <div>
+                      <h3>fundamental เปลี่ยนแล้วพอร์ตเปลี่ยนอย่างไร</h3>
+                      <ul class="timeline-list"><li>SAWAD: ใช้งบรายไตรมาส ณ 31 มี.ค. 2025 — signal gap 2.0%.  รายได้ล่าสุด 6.0% เทียบกับ growth ที่ราคาหุ้นสะท้อน 4.0%. กระแสเงินสดอิสระ 4.3 พันล้านบาท.</li><li>จากงบรายไตรมาส ณ 31 มี.ค. 2025, KTC มี signal gap -2.7%. รายได้ล่าสุด -2.7% เทียบกับ growth ที่ราคาหุ้นสะท้อน 0.0%. กระแสเงินสดอิสระ 6.7 พันล้านบาท.</li><li>KCE: งบงบรายไตรมาส (31 มี.ค. 2025) ทำให้ signal อยู่ที่ -4.7%. รายได้ล่าสุด 2.6% เทียบกับ growth ที่ราคาหุ้นสะท้อน 7.3%. กระแสเงินสดอิสระ 851.4 ล้านบาท.</li></ul>
+                    </div>
+                    <div class="highlight-grid">
+                      
+    <article class='highlight-card accent-profit'>
+      <span class="eyebrow">หุ้นเด่นของไตรมาส</span>
+      <strong>KKP</strong>
+      <p>signal gap 6.2% จากงบ quarterly</p>
+      <p class='muted'><small>FCF: 7.7 พันล้านบาท</small></p>
+      <small>รอบลงทุน 30 มิ.ย. 2025</small>
+    </article>
+    
+                      
+    <article class='highlight-card accent-profit'>
+      <span class="eyebrow">กำไรมากสุดในไตรมาส</span>
+      <strong>SAWAD</strong>
+      <p>ผลตอบแทน 3 เดือน 86.34%</p>
+      <p class='muted'><small>FCF: 4.3 พันล้านบาท</small></p>
+      <small>รอบลงทุน 30 มิ.ย. 2025</small>
+    </article>
+    
+                      
+    <article class='highlight-card accent-profit'>
+      <span class="eyebrow">ขาดทุนมากสุดในไตรมาส</span>
+      <strong>KTC</strong>
+      <p>ผลตอบแทน 3 เดือน 25.00%</p>
+      <p class='muted'><small>FCF: 6.7 พันล้านบาท</small></p>
+      <small>รอบลงทุน 30 มิ.ย. 2025</small>
+    </article>
+    
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="timeline-quarter" id="quarter-2025-09-30">
+                  <summary>
+                    <div class="timeline-summary-top">
+                      <strong>ไตรมาส 3/2025 · รอบลงทุน 30 ก.ย. 2025</strong>
+                      <span>Active return 5.89% | เข้า 4 ตัว | ออก 4 ตัว</span>
+                    </div>
+                    <div class="timeline-summary-meta">
+                      <span class="ticker-pill">ถือ 5 หุ้น</span>
+                      <span class="ticker-pill">Universe 50</span>
+                      <span class="ticker-pill">Eligible 39</span>
+                      <span class="ticker-pill">Turnover 80%</span>
+                    </div>
+                  </summary>
+                  <div class="timeline-body">
+                    <div class="mini-metrics">
+                      <div class="mini-card"><span>พอร์ตที่ถือ</span><strong>5 หุ้น</strong><small>quarterly 5</small></div>
+                      <div class="mini-card"><span>ผลตอบแทนพอร์ต</span><strong>4.75%</strong><small>เทียบ benchmark -1.14%</small></div>
+                      <div class="mini-card"><span>คำตอบของไตรมาสนี้</span><strong>TTB</strong><small>หุ้นที่คะแนน signal เด่นสุดในรอบนี้</small></div>
+                    </div>
+                    <div>
+                      <h3>ถืออะไรอยู่บ้าง</h3>
+                      <div class="ticker-pills"><span class="ticker-pill">KBANK</span><span class="ticker-pill">KKP</span><span class="ticker-pill">TIDLOR</span><span class="ticker-pill">TLI</span><span class="ticker-pill">TTB</span></div>
+                    </div>
+                    <div>
+                      <h3>เข้าใหม่ / ออก</h3>
+                      <p><strong>เข้าใหม่</strong></p>
+                      <div class="ticker-pills"><span class="ticker-pill">KBANK</span><span class="ticker-pill">TIDLOR</span><span class="ticker-pill">TLI</span><span class="ticker-pill">TTB</span></div>
+                      <p><strong>ออกจากพอร์ต</strong></p>
+                      <div class="ticker-pills"><span class="ticker-pill">GLOBAL</span><span class="ticker-pill">KCE</span><span class="ticker-pill">KTC</span><span class="ticker-pill">SAWAD</span></div>
+                    </div>
+                    <div>
+                      <h3>fundamental เปลี่ยนแล้วพอร์ตเปลี่ยนอย่างไร</h3>
+                      <ul class="timeline-list"><li>จากงบรายไตรมาส ณ 30 มิ.ย. 2025, TIDLOR มี signal gap ค่าสูงผิดปกติในข้อมูลปัจจุบัน. กระแสเงินสดอิสระ 1.3 พันล้านบาท.</li><li>TTB: งบงบรายไตรมาส (30 มิ.ย. 2025) ทำให้ signal อยู่ที่ 30.9%. รายได้ล่าสุด -1.0% เทียบกับ growth ที่ราคาหุ้นสะท้อน -31.9%. กระแสเงินสดอิสระ 22.3 พันล้านบาท.</li><li>KBANK: ใช้งบรายไตรมาส ณ 30 มิ.ย. 2025 — signal gap 23.0%.  รายได้ล่าสุด 6.0% เทียบกับ growth ที่ราคาหุ้นสะท้อน -17.0%. กระแสเงินสดอิสระ 32.6 พันล้านบาท.</li></ul>
+                    </div>
+                    <div class="highlight-grid">
+                      
+    <article class='highlight-card accent-profit'>
+      <span class="eyebrow">หุ้นเด่นของไตรมาส</span>
+      <strong>TTB</strong>
+      <p>signal gap 30.9% จากงบ quarterly</p>
+      <p class='muted'><small>FCF: 22.3 พันล้านบาท</small></p>
+      <small>รอบลงทุน 30 ก.ย. 2025</small>
+    </article>
+    
+                      
+    <article class='highlight-card accent-profit'>
+      <span class="eyebrow">กำไรมากสุดในไตรมาส</span>
+      <strong>KBANK</strong>
+      <p>ผลตอบแทน 3 เดือน 16.12%</p>
+      <p class='muted'><small>FCF: 32.6 พันล้านบาท</small></p>
+      <small>รอบลงทุน 30 ก.ย. 2025</small>
+    </article>
+    
+                      
+    <article class='highlight-card accent-loss'>
+      <span class="eyebrow">ขาดทุนมากสุดในไตรมาส</span>
+      <strong>TIDLOR</strong>
+      <p>ผลตอบแทน 3 เดือน -12.10%</p>
+      <p class='muted'><small>FCF: 1.3 พันล้านบาท</small></p>
+      <small>รอบลงทุน 30 ก.ย. 2025</small>
+    </article>
+    
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="timeline-quarter" id="quarter-2026-01-05">
+                  <summary>
+                    <div class="timeline-summary-top">
+                      <strong>ไตรมาส 1/2026 · รอบลงทุน 5 ม.ค. 2026</strong>
+                      <span>Active return -3.11% | เข้า 4 ตัว | ออก 4 ตัว</span>
+                    </div>
+                    <div class="timeline-summary-meta">
+                      <span class="ticker-pill">ถือ 5 หุ้น</span>
+                      <span class="ticker-pill">Universe 50</span>
+                      <span class="ticker-pill">Eligible 31</span>
+                      <span class="ticker-pill">Turnover 80%</span>
+                    </div>
+                  </summary>
+                  <div class="timeline-body">
+                    <div class="mini-metrics">
+                      <div class="mini-card"><span>พอร์ตที่ถือ</span><strong>5 หุ้น</strong><small>quarterly 5</small></div>
+                      <div class="mini-card"><span>ผลตอบแทนพอร์ต</span><strong>10.47%</strong><small>เทียบ benchmark 13.59%</small></div>
+                      <div class="mini-card"><span>คำตอบของไตรมาสนี้</span><strong>TTB</strong><small>หุ้นที่คะแนน signal เด่นสุดในรอบนี้</small></div>
+                    </div>
+                    <div>
+                      <h3>ถืออะไรอยู่บ้าง</h3>
+                      <div class="ticker-pills"><span class="ticker-pill">CPN</span><span class="ticker-pill">EA</span><span class="ticker-pill">KTB</span><span class="ticker-pill">TISCO</span><span class="ticker-pill">TTB</span></div>
+                    </div>
+                    <div>
+                      <h3>เข้าใหม่ / ออก</h3>
+                      <p><strong>เข้าใหม่</strong></p>
+                      <div class="ticker-pills"><span class="ticker-pill">CPN</span><span class="ticker-pill">EA</span><span class="ticker-pill">KTB</span><span class="ticker-pill">TISCO</span></div>
+                      <p><strong>ออกจากพอร์ต</strong></p>
+                      <div class="ticker-pills"><span class="ticker-pill">KBANK</span><span class="ticker-pill">KKP</span><span class="ticker-pill">TIDLOR</span><span class="ticker-pill">TLI</span></div>
+                    </div>
+                    <div>
+                      <h3>fundamental เปลี่ยนแล้วพอร์ตเปลี่ยนอย่างไร</h3>
+                      <ul class="timeline-list"><li>KTB: งบงบรายไตรมาส (30 ก.ย. 2025) ทำให้ signal อยู่ที่ 15.6%. รายได้ล่าสุด 5.4% เทียบกับ growth ที่ราคาหุ้นสะท้อน -10.2%. กระแสเงินสดอิสระ 72.1 พันล้านบาท.</li><li>CPN: ใช้งบรายไตรมาส ณ 30 ก.ย. 2025 — signal gap -2.4%.  รายได้ล่าสุด 2.2% เทียบกับ growth ที่ราคาหุ้นสะท้อน 4.6%. กระแสเงินสดอิสระ 17.3 พันล้านบาท.</li><li>จากงบรายไตรมาส ณ 30 ก.ย. 2025, EA มี signal gap -5.4%. รายได้ล่าสุด 12.8% เทียบกับ growth ที่ราคาหุ้นสะท้อน 18.2%. กระแสเงินสดอิสระ 1.8 พันล้านบาท.</li></ul>
+                    </div>
+                    <div class="highlight-grid">
+                      
+    <article class='highlight-card accent-profit'>
+      <span class="eyebrow">หุ้นเด่นของไตรมาส</span>
+      <strong>TTB</strong>
+      <p>signal gap 17.7% จากงบ quarterly</p>
+      <p class='muted'><small>FCF: 44.1 พันล้านบาท</small></p>
+      <small>รอบลงทุน 5 ม.ค. 2026</small>
+    </article>
+    
+                      
+    <article class='highlight-card accent-profit'>
+      <span class="eyebrow">กำไรมากสุดในไตรมาส</span>
+      <strong>KTB</strong>
+      <p>ผลตอบแทน 3 เดือน 22.61%</p>
+      <p class='muted'><small>FCF: 72.1 พันล้านบาท</small></p>
+      <small>รอบลงทุน 5 ม.ค. 2026</small>
+    </article>
+    
+                      
+    <article class='highlight-card accent-loss'>
+      <span class="eyebrow">ขาดทุนมากสุดในไตรมาส</span>
+      <strong>EA</strong>
+      <p>ผลตอบแทน 3 เดือน -1.48%</p>
+      <p class='muted'><small>FCF: 1.8 พันล้านบาท</small></p>
+      <small>รอบลงทุน 5 ม.ค. 2026</small>
+    </article>
+    
+                    </div>
+                  </div>
+                </details>
+                
+                <details class="timeline-quarter" open id="quarter-2026-03-31">
+                  <summary>
+                    <div class="timeline-summary-top">
+                      <strong>ไตรมาส 1/2026 · รอบลงทุน 31 มี.ค. 2026</strong>
+                      <span>Active return -4.16% | เข้า 4 ตัว | ออก 4 ตัว</span>
+                    </div>
+                    <div class="timeline-summary-meta">
+                      <span class="ticker-pill">ถือ 5 หุ้น</span>
+                      <span class="ticker-pill">Universe 50</span>
+                      <span class="ticker-pill">Eligible 35</span>
+                      <span class="ticker-pill">Turnover 80%</span>
+                    </div>
+                  </summary>
+                  <div class="timeline-body">
+                    <div class="mini-metrics">
+                      <div class="mini-card"><span>พอร์ตที่ถือ</span><strong>5 หุ้น</strong><small>quarterly 5</small></div>
+                      <div class="mini-card"><span>ผลตอบแทนพอร์ต</span><strong>-0.10%</strong><small>เทียบ benchmark 4.05%</small></div>
+                      <div class="mini-card"><span>คำตอบของไตรมาสนี้</span><strong>RATCH</strong><small>หุ้นที่คะแนน signal เด่นสุดในรอบนี้</small></div>
+                    </div>
+                    <div>
+                      <h3>ถืออะไรอยู่บ้าง</h3>
+                      <div class="ticker-pills"><span class="ticker-pill">BTS</span><span class="ticker-pill">KBANK</span><span class="ticker-pill">RATCH</span><span class="ticker-pill">TOP</span><span class="ticker-pill">TTB</span></div>
+                    </div>
+                    <div>
+                      <h3>เข้าใหม่ / ออก</h3>
+                      <p><strong>เข้าใหม่</strong></p>
+                      <div class="ticker-pills"><span class="ticker-pill">BTS</span><span class="ticker-pill">KBANK</span><span class="ticker-pill">RATCH</span><span class="ticker-pill">TOP</span></div>
+                      <p><strong>ออกจากพอร์ต</strong></p>
+                      <div class="ticker-pills"><span class="ticker-pill">CPN</span><span class="ticker-pill">EA</span><span class="ticker-pill">KTB</span><span class="ticker-pill">TISCO</span></div>
+                    </div>
+                    <div>
+                      <h3>fundamental เปลี่ยนแล้วพอร์ตเปลี่ยนอย่างไร</h3>
+                      <ul class="timeline-list"><li>RATCH: ใช้งบรายไตรมาส ณ 31 ธ.ค. 2025 — signal gap 76.8%.  รายได้ล่าสุด 90.4% เทียบกับ growth ที่ราคาหุ้นสะท้อน 13.6%. กระแสเงินสดอิสระ 5.5 พันล้านบาท.</li><li>จากงบรายไตรมาส ณ 31 ธ.ค. 2025, KBANK มี signal gap 58.2%. รายได้ล่าสุด 24.8% เทียบกับ growth ที่ราคาหุ้นสะท้อน -33.4%. กระแสเงินสดอิสระ 95.1 พันล้านบาท.</li><li>TOP: งบงบรายไตรมาส (31 ธ.ค. 2025) ทำให้ signal อยู่ที่ 50.5%. รายได้ล่าสุด 36.1% เทียบกับ growth ที่ราคาหุ้นสะท้อน -14.5%. กระแสเงินสดอิสระ 21.8 พันล้านบาท.</li></ul>
+                    </div>
+                    <div class="highlight-grid">
+                      
+    <article class='highlight-card'>
+      <span class="eyebrow">หุ้นเด่นของไตรมาส</span>
+      <strong>RATCH</strong>
+      <p>signal gap 76.8% จากงบ quarterly</p>
+      <p class='muted'><small>FCF: 5.5 พันล้านบาท</small></p>
+      <small>รอบลงทุน 31 มี.ค. 2026</small>
+    </article>
+    
+                      
+    <article class='highlight-card accent-profit'>
+      <span class="eyebrow">กำไรมากสุดในไตรมาส</span>
+      <strong>TTB</strong>
+      <p>ผลตอบแทน 3 เดือน 3.48%</p>
+      <p class='muted'><small>FCF: 31.2 พันล้านบาท</small></p>
+      <small>รอบลงทุน 31 มี.ค. 2026</small>
+    </article>
+    
+                      
+    <article class='highlight-card accent-loss'>
+      <span class="eyebrow">ขาดทุนมากสุดในไตรมาส</span>
+      <strong>TOP</strong>
+      <p>ผลตอบแทน 3 เดือน -3.59%</p>
+      <p class='muted'><small>FCF: 21.8 พันล้านบาท</small></p>
+      <small>รอบลงทุน 31 มี.ค. 2026</small>
+    </article>
+    
+                    </div>
+                  </div>
+                </details>
+                
+          </div>
+        </section>
+        
+    
+    <section class="timeline-shell">
+      <div class="page-intro">
+        <span class="eyebrow">FAQ</span>
+        <h2 id="faq">คำถามที่พบบ่อย (Investor FAQ)</h2>
+      </div>
+      <div class="timeline-stack">
+        
+            <details class="timeline-quarter">
+              <summary><strong>Reverse DCF คืออะไร?</strong></summary>
+              <div class="timeline-body"><p>คือการคำนวณย้อนกลับจากราคาหุ้นในตลาด เพื่อหาว่านักลงทุนกำลังคาดหวังการเติบโตของกำไรหรือกระแสเงินสดเท่าไหร่ แล้วจึงนำมาเทียบกับตัวเลขจริงที่บริษัททำได้เพื่อให้เห็นว่าหุ้นแพงหรือถูกเกินไปจากความคาดหวังนั้น</p></div>
+            </details>
+            
+            <details class="timeline-quarter">
+              <summary><strong>ทำไมต้องเน้นหุ้นใน SET100?</strong></summary>
+              <div class="timeline-body"><p>เพราะเป็นกลุ่มหุ้นที่มีสภาพคล่องสูงและมีการเปิดเผยข้อมูลพื้นฐานสม่ำเสมอเพียงพอที่จะนำมาสร้างโมเดลย้อนกลับ (Reverse) ได้อย่างน่าเชื่อถือเมื่อเทียบกับหุ้นขนาดเล็ก</p></div>
+            </details>
+            
+            <details class="timeline-quarter">
+              <summary><strong>พอร์ตลงทุนปรับเปลี่ยนทุกไตรมาสหมายถึงอะไร?</strong></summary>
+              <div class="timeline-body"><p>โมเดลจะทำการตรวจสอบงบการเงินล่าสุดที่ประกาศออกมาทุก 3 เดือน หากพื้นฐานเปลี่ยนไปจนทำให้ความคาดหวังในราคาหุ้นไม่สมเหตุสมผล พอร์ตจะทำการหมุนเวียนหุ้น (Rebalance) ทันที</p></div>
+            </details>
+            
+            <details class="timeline-quarter">
+              <summary><strong>ความเสี่ยงที่สำคัญที่สุดคืออะไร?</strong></summary>
+              <div class="timeline-body"><p>คือความถูกต้องและรวดเร็วของข้อมูล (Data Lag) รวมถึงความผันผวนของตลาดในระยะสั้นที่อาจไม่สะท้อนพื้นฐานทันที เราจึงต้องใช้การถือครอง 3-12 เดือนเพื่อรอให้ราคาตอบสนองต่อพื้นฐาน</p></div>
+            </details>
+            
+      </div>
+    </section>
+    
+
+    <section class="dependency-card" id="dependencies">
+      <span class="eyebrow">Dependencies ที่ยังต้องรอจาก lanes อื่น</span>
+      <h2>สิ่งที่ต้องเข้ามาเติมก่อนหน้า public final จะสมบูรณ์</h2>
+      <ul class="dependency-list">
+        <li>output ชุด <strong>100 หุ้นแบบ multi-source</strong> ที่ใช้ scraping เป็นแกนและเติม yfinance เมื่อจำเป็น</li>
+        <li>ผล backtest final ตามแผน Damodaran 2 case: baseline และ risk-control พร้อม Top 5 / Top 10 / SL 5% / 10%</li>
+        <li>กติกา “แพ้เกิน 2 buy rounds แล้วห้ามซื้ออีก” จาก backtest engine รอบใหม่</li>
+        <li>stock-change attribution ที่ละเอียดกว่า signal summary ถ้าฝั่ง engine ส่งเหตุผลระดับ factor/metric ออกมาได้</li>
+        <li>บทสรุป thesis/public wording รอบสุดท้ายหลังเลข final นิ่งแล้ว</li>
+      </ul>
+    </section>
+    
+      </div>
+      
+    <aside class="toc-card" aria-label="สารบัญเนื้อหา">
+      <h2>ในหน้านี้</h2>
+      <ul class="toc-list">
+        <li><a href="#core-question">คำถามหลักที่งานนี้ต้องตอบ</a></li><li><a href="#คำถามหล-กท-งานน-ต-องตอบ">คำถามหลักที่งานนี้ต้องตอบ</a></li><li><a href="#คำตอบส-นแบบคนท-วไป">คำตอบสั้นแบบคนทั่วไป</a></li><li><a href="#อ-านหน-าน-อย-างไร">อ่านหน้านี้อย่างไร</a></li><li><a href="#ส-งท-quarterly-timeline-ต-องทำให-ช-ด">สิ่งที่ quarterly timeline ต้องทำให้ชัด</a></li><li><a href="#หล-กการเข-ยนเอกสารหน-าน">หลักการเขียนเอกสารหน้านี้</a></li><li><a href="#ส-งท-ย-งต-องรอจาก-upstream-lanes">สิ่งที่ยังต้องรอจาก upstream lanes</a></li><li><a href="#quarterly-timeline">เส้นเวลา “ถือ / เข้า / ออก / ทำไมเปลี่ยน”</a></li><li><a href="#faq">คำถามที่พบบ่อย (Investor FAQ)</a></li>
+      </ul>
+    </aside>
+    
+    </div>
+    
+      </main>
+      
+    <footer class="site-footer">
+      <p>Built from local thesis and backtest artifacts in this repository. Designed for Netlify and GitHub Pages deployment.</p>
+      <nav class="footer-links" aria-label="Footer"><a href="../guide/index.html">Guide (TH)</a><a href="../thesis.html">Thesis</a><a href="../research/index.html">Research</a><a href="../backtest/index.html">Backtest</a><a href="../about/index.html">About</a><a href="../download/index.html">Download</a></nav>
+    </footer>
+    
+    </div>
+  </body>
+</html>
