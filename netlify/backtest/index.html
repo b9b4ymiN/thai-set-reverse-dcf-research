@@ -38,61 +38,65 @@
       <main id="main-content">
         
     <section class="page-intro" aria-labelledby="backtest-title">
-      <span class="eyebrow">Audited performance</span>
-      <h1 id="backtest-title">Benchmark-relative backtest results and visual evidence</h1>
+      <span class="eyebrow">Audited performance — Damodaran WACC</span>
+      <h1 id="backtest-title">ผล Backtest เปรียบเทียบ Top 10 vs Top 5 ด้วย Damodaran WACC</h1>
       <p>
-        This page packages the thesis-safe outputs: the summary table, no-lookahead status, sector dispersion,
-        and WACC sensitivity figures copied into the static site for direct deployment.
+        ทั้งสองพอร์ตโฟลิโอใช้ WACC แบบ Damodaran (dynamic ตาม industry beta, ICR default spread, Thai ERP)
+        รันบน 100 หุ้น, 20 ไตรมาส (Q2/2021 → Q1/2026), rebalance รายไตรมาส
       </p>
     </section>
     <section class="hero">
       <div class="hero-copy">
-        <span class="eyebrow">Backtest snapshot</span>
-        <h1>Positive average active return across all tested holding periods.</h1>
+        <span class="eyebrow">Damodaran WACC — Top 10</span>
+        <h2>Top 10 equal weight — ผลตอบแทนส่วนเกินเป็นบวกทุกระยะเวลาถือ</h2>
         <p>
-          The current implementation uses quarterly rebalancing, top-10 equal weights, benchmark-relative forward
-          returns, and fixed WACC historical scoring. It generated 1026 signals with
-          0 no-lookahead failures.
+          1028 สัญญาณ, 0 look-ahead errors,
+          WACC mode: damodaran
         </p>
         
-    <div class="table-wrapper" tabindex="0" role="region" aria-label="ตารางสรุปผลการทดสอบย้อนหลัง">
+    <div class="table-wrapper" tabindex="0" role="region" aria-label="ตารางสรุปผลตอบแทน">
     <table class="summary-table">
       <thead>
         <tr>
           <th scope="col">ระยะเวลา</th>
           <th scope="col">ผลตอบแทนพอร์ต</th>
-          <th scope="col">ผลตอบแทนดัชนี</th>
+          <th scope="col">ผลตอบแทนดัชนี SET</th>
           <th scope="col">ผลตอบแทนส่วนเกิน</th>
-          <th scope="col">อัตราความสำเร็จ</th>
+          <th scope="col">Hit Rate</th>
+          <th scope="col">ลงทุน 500K (บาท)</th>
         </tr>
       </thead>
       <tbody>
-    <tr><td>3 เดือน</td><td>1.93%</td><td>0.02%</td><td>1.91%</td><td>65.00%</td></tr><tr><td>6 เดือน</td><td>2.08%</td><td>0.08%</td><td>1.99%</td><td>55.00%</td></tr><tr><td>12 เดือน</td><td>1.98%</td><td>-0.65%</td><td>2.63%</td><td>40.00%</td></tr>
+    <tr><td>3 เดือน <small>(สะสม)</small></td><td>25.42%</td><td>-5.08%</td><td>30.50%</td><td>55%</td><td>+127,088 → 627,088</td></tr><tr><td>6 เดือน <small>(เฉลี่ย/งวด)</small></td><td>2.05%</td><td>0.08%</td><td>1.97%</td><td>60%</td><td>—</td></tr><tr><td>12 เดือน <small>(เฉลี่ย/งวด)</small></td><td>1.49%</td><td>-0.65%</td><td>2.14%</td><td>40%</td><td>—</td></tr>
       </tbody>
     </table>
+    <p class="panel-note">
+      ระยะ 3 เดือน = สะสมทบตัวจริง (20 งวดไม่ซ้ำ ตั้งแต่ Q2/2021 → Q1/2026)
+      · ระยะ 6/12 เดือน = เฉลี่ยต่องวด (งวดทับซ้ำกัน จึงทบตัวไม่ได้)
+    </p>
     </div>
     
       </div>
       <aside class="hero-panel">
-        <h2>Headline diagnostics</h2>
+        <h2>Top 10 Diagnostics</h2>
         <div class="metric-grid">
           
             <div class="metric-card">
-              <span>ระยะเวลา 3 เดือน</span>
-              <strong>1.91%</strong>
-              <small>อัตราความสำเร็จ 65.00% เทียบดัชนี SET</small>
+              <span>ระยะเวลา 3 เดือน (สะสม)</span>
+              <strong>30.50%</strong>
+              <small>ผลตอบแทนส่วนเกิน · Hit Rate 55% · 500K → 627,088 บาท</small>
             </div>
             
             <div class="metric-card">
-              <span>ระยะเวลา 6 เดือน</span>
-              <strong>1.99%</strong>
-              <small>อัตราความสำเร็จ 55.00% เทียบดัชนี SET</small>
+              <span>ระยะเวลา 6 เดือน (เฉลี่ย/งวด)</span>
+              <strong>1.97%</strong>
+              <small>ผลตอบแทนส่วนเกิน · Hit Rate 60%</small>
             </div>
             
             <div class="metric-card">
-              <span>ระยะเวลา 12 เดือน</span>
-              <strong>2.63%</strong>
-              <small>อัตราความสำเร็จ 40.00% เทียบดัชนี SET</small>
+              <span>ระยะเวลา 12 เดือน (เฉลี่ย/งวด)</span>
+              <strong>2.14%</strong>
+              <small>ผลตอบแทนส่วนเกิน · Hit Rate 40%</small>
             </div>
             
         <div class="metric-card">
@@ -103,9 +107,126 @@
         
         </div>
         <p class="panel-note">
-          Portfolio rows: 60 · Exclusion rows: 2974 · Rebalance frequency: Q
+          Portfolio rows: 60 · Exclusion rows: 2972 · Rebalance: Q
         </p>
       </aside>
+    </section>
+    <section class="hero" style="margin-top:2rem;">
+      <div class="hero-copy">
+        <span class="eyebrow">Damodaran WACC — Top 5</span>
+        <h2>Top 5 equal weight — ผลตอบแทนส่วนเกินติดลบ</h2>
+        <p>
+          1077 สัญญาณ, 0 look-ahead errors,
+          WACC mode: damodaran
+        </p>
+        
+    <div class="table-wrapper" tabindex="0" role="region" aria-label="ตารางสรุปผลตอบแทน">
+    <table class="summary-table">
+      <thead>
+        <tr>
+          <th scope="col">ระยะเวลา</th>
+          <th scope="col">ผลตอบแทนพอร์ต</th>
+          <th scope="col">ผลตอบแทนดัชนี SET</th>
+          <th scope="col">ผลตอบแทนส่วนเกิน</th>
+          <th scope="col">Hit Rate</th>
+          <th scope="col">ลงทุน 500K (บาท)</th>
+        </tr>
+      </thead>
+      <tbody>
+    <tr><td>3 เดือน <small>(สะสม)</small></td><td>-29.57%</td><td>-5.08%</td><td>-24.49%</td><td>40%</td><td>-147,833 → 352,167</td></tr><tr><td>6 เดือน <small>(เฉลี่ย/งวด)</small></td><td>-2.29%</td><td>0.08%</td><td>-2.37%</td><td>40%</td><td>—</td></tr><tr><td>12 เดือน <small>(เฉลี่ย/งวด)</small></td><td>-5.86%</td><td>-0.65%</td><td>-5.20%</td><td>25%</td><td>—</td></tr>
+      </tbody>
+    </table>
+    <p class="panel-note">
+      ระยะ 3 เดือน = สะสมทบตัวจริง (20 งวดไม่ซ้ำ ตั้งแต่ Q2/2021 → Q1/2026)
+      · ระยะ 6/12 เดือน = เฉลี่ยต่องวด (งวดทับซ้ำกัน จึงทบตัวไม่ได้)
+    </p>
+    </div>
+    
+      </div>
+      <aside class="hero-panel">
+        <h2>Top 5 Diagnostics</h2>
+        <div class="metric-grid">
+          
+            <div class="metric-card">
+              <span>ระยะเวลา 3 เดือน (สะสม)</span>
+              <strong>-24.49%</strong>
+              <small>ผลตอบแทนส่วนเกิน · Hit Rate 40% · 500K → 352,167 บาท</small>
+            </div>
+            
+            <div class="metric-card">
+              <span>ระยะเวลา 6 เดือน (เฉลี่ย/งวด)</span>
+              <strong>-2.37%</strong>
+              <small>ผลตอบแทนส่วนเกิน · Hit Rate 40%</small>
+            </div>
+            
+            <div class="metric-card">
+              <span>ระยะเวลา 12 เดือน (เฉลี่ย/งวด)</span>
+              <strong>-5.20%</strong>
+              <small>ผลตอบแทนส่วนเกิน · Hit Rate 25%</small>
+            </div>
+            
+        <div class="metric-card">
+          <span>สถานะการตรวจสอบ</span>
+          <strong>0</strong>
+          <small>ไม่มีความผิดพลาด Look-ahead ตลอด 60 แถวพอร์ต</small>
+        </div>
+        
+        </div>
+        <p class="panel-note">
+          Portfolio rows: 60 · Exclusion rows: 2923 · Rebalance: Q
+        </p>
+      </aside>
+    </section>
+    <section class="card-grid" style="margin-top:2rem;">
+      <article class="card span-12">
+        <p class="kicker">Damodaran WACC เปรียบเทียบ</p>
+        <h2>Top 10 vs Top 5 — ตารางเปรียบเทียบผลตอบแทนระยะเวลาถือ</h2>
+        
+    <div class="table-wrapper" tabindex="0" role="region" aria-label="ตารางเปรียบเทียบ Damodaran WACC Top 10 vs Top 5">
+    <table class="summary-table">
+      <thead>
+        <tr>
+          <th scope="col" rowspan="2">ระยะเวลา</th>
+          <th scope="col" colspan="3" style="text-align:center;">Damodaran WACC — Top 10</th>
+          <th scope="col" colspan="3" style="text-align:center;">Damodaran WACC — Top 5</th>
+        </tr>
+        <tr>
+          <th scope="col">ผลตอบแทนพอร์ต</th><th scope="col">ผลตอบแทนส่วนเกิน</th><th scope="col">Hit Rate</th>
+          <th scope="col">ผลตอบแทนพอร์ต</th><th scope="col">ผลตอบแทนส่วนเกิน</th><th scope="col">Hit Rate</th>
+        </tr>
+      </thead>
+      <tbody>
+    <tr><td>12 เดือน</td><td>1.49%</td><td>2.14%</td><td>40%</td><td>-5.86%</td><td>-5.20%</td><td>25%</td></tr><tr><td>3 เดือน</td><td>25.42%</td><td>30.50%</td><td>55%</td><td>-29.57%</td><td>-24.49%</td><td>40%</td></tr><tr><td>6 เดือน</td><td>2.05%</td><td>1.97%</td><td>60%</td><td>-2.29%</td><td>-2.37%</td><td>40%</td></tr>
+      </tbody>
+    </table>
+    <p class="panel-note">
+      ทั้งสองพอร์ตใช้ WACC แบบ Damodaran (industry beta + Thai ERP + ICR-based cost of debt)
+      · ข้อมูล 100 หุ้น SET · 20 ไตรมาส (Q2/2021 → Q1/2026)
+    </p>
+    </div>
+    
+        <div class="metric-grid" style="margin-top:1rem;">
+          
+            <div class="metric-card">
+              <span>Damodaran Top 10 — ดีที่สุด</span>
+              <strong>30.50%</strong>
+              <small>ผลตอบแทนส่วนเกินที่ 3 เดือน · Hit 55%</small>
+            </div>
+            
+            <div class="metric-card">
+              <span>Damodaran Top 5 — ดีที่สุด</span>
+              <strong>-2.37%</strong>
+              <small>ผลตอบแทนส่วนเกินที่ 6 เดือน · Hit 40%</small>
+            </div>
+            
+            <div class="metric-card">
+              <span>Top 10 ที่ 6 เดือน</span>
+              <strong>2.05%</strong>
+              <small>ผลตอบแทนพอร์ต vs เบญจ 0.08% ดัชนี</small>
+            </div>
+            
+        </div>
+      </article>
     </section>
     <section class="card-grid">
       <article class="card span-12">

@@ -1,0 +1,27 @@
+{
+  "output_dir": "research_data/source_of_truth_100/backtest_damodaran_top10",
+  "case_name": "damodaran",
+  "daily_stop_loss_enabled": false,
+  "stop_loss_pct": 0.0,
+  "max_losing_buy_rounds": 2,
+  "horizons_months": [
+    3,
+    6,
+    12
+  ],
+  "top_n": 10,
+  "rebalance_frequency": "Q",
+  "signals": 1028,
+  "portfolio_rows": 60,
+  "trade_rows": 200,
+  "buy_ban_rows": 17,
+  "exclusion_rows": 2972,
+  "summary_rows": 3,
+  "no_lookahead_failures": 0,
+  "wacc_mode": "damodaran",
+  "input_bundle_dir": "research_data/source_of_truth_100",
+  "input_bundle_source": "scraping_first_hybrid",
+  "universe_size": 100,
+  "methodology": "Damodaran Stern Reverse DCF",
+  "framework_reference": "https://pages.stern.nyu.edu/~adamodar/New_Home_Page/home.htm"
+}

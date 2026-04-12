@@ -19,7 +19,7 @@ DEFAULT_SNAPSHOT_FIELDS = (
 )
 STATEMENT_OBSERVATION_FIELDS = (
     'Ticker', 'Period_Type', 'Statement_Date', 'Availability_Date', 'Reporting_Lag_Days',
-    'Revenue', 'EBIT', 'FCF', 'Total_Debt', 'Total_Cash', 'Net_Debt',
+    'Revenue', 'EBIT', 'Interest_Expense', 'FCF', 'Total_Debt', 'Total_Cash', 'Net_Debt',
     'Shares_Issued', 'Diluted_Average_Shares', 'Revenue_Growth'
 )
 
@@ -191,6 +191,7 @@ class YahooFinanceSource:
                 'Reporting_Lag_Days': reporting_lag_days,
                 'Revenue': self._frame_column_value(income_stmt, 'Total Revenue', statement_date),
                 'EBIT': self._frame_column_value(income_stmt, 'EBIT', statement_date),
+                'Interest_Expense': self._frame_column_value(income_stmt, 'Interest Expense', statement_date),
                 'FCF': self._extract_fcf_for_date(cash_flow, statement_date),
                 'Total_Debt': total_debt,
                 'Total_Cash': total_cash,

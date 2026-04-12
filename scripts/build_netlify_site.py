@@ -1588,12 +1588,20 @@ def stats_cards(summary_rows: list[dict[str, str]], manifest: dict) -> str:
     cards = []
     for row in ordered:
         horizon = int(float(row["Horizon_Months"]))
+        rtype = row.get("return_type", "avg_per_period")
+        final_500k = row.get("final_500k")
+        if rtype == "cumulative" and final_500k:
+            label = f"ระยะเวลา {horizon} เดือน (สะสม)"
+            extra = f" · 500K → {final_500k:,.0f} บาท"
+        else:
+            label = f"ระยะเวลา {horizon} เดือน (เฉลี่ย/งวด)"
+            extra = ""
         cards.append(
             f"""
             <div class="metric-card">
-              <span>ระยะเวลา {horizon} เดือน</span>
+              <span>{label}</span>
               <strong>{pct(float(row["Active_Return"]))}</strong>
-              <small>อัตราความสำเร็จ {float(row['Hit_Rate']):.2f}% เทียบดัชนี SET</small>
+              <small>ผลตอบแทนส่วนเกิน · Hit Rate {float(row['Hit_Rate']):.0f}%{extra}</small>
             </div>
             """
         )
@@ -1613,33 +1621,141 @@ def summary_table(summary_rows: list[dict[str, str]]) -> str:
     ordered = sorted(summary_rows, key=lambda row: float(row["Horizon_Months"]))
     rows_html = []
     for row in ordered:
+        horizon = int(float(row["Horizon_Months"]))
+        rtype = row.get("return_type", "avg_per_period")
+        if rtype == "cumulative":
+            label = f"{horizon} เดือน <small>(สะสม)</small>"
+            final_500k = row.get("final_500k")
+            if final_500k:
+                pnl = final_500k - 500000
+                pnl_cell = f"<td>{pnl:+,.0f} → {final_500k:,.0f}</td>"
+            else:
+                pnl_cell = "<td>—</td>"
+        else:
+            label = f"{horizon} เดือน <small>(เฉลี่ย/งวด)</small>"
+            pnl_cell = "<td>—</td>"
         rows_html.append(
             "<tr>"
-            f"<td>{int(float(row['Horizon_Months']))} เดือน</td>"
+            f"<td>{label}</td>"
             f"<td>{pct(float(row['Portfolio_Return']))}</td>"
             f"<td>{pct(float(row['Benchmark_Return']))}</td>"
             f"<td>{pct(float(row['Active_Return']))}</td>"
-            f"<td>{float(row['Hit_Rate']):.2f}%</td>"
+            f"<td>{float(row['Hit_Rate']):.0f}%</td>"
+            f"{pnl_cell}"
             "</tr>"
         )
     return """
-    <div class="table-wrapper" tabindex="0" role="region" aria-label="ตารางสรุปผลการทดสอบย้อนหลัง">
+    <div class="table-wrapper" tabindex="0" role="region" aria-label="ตารางสรุปผลตอบแทน">
     <table class="summary-table">
       <thead>
         <tr>
           <th scope="col">ระยะเวลา</th>
           <th scope="col">ผลตอบแทนพอร์ต</th>
-          <th scope="col">ผลตอบแทนดัชนี</th>
+          <th scope="col">ผลตอบแทนดัชนี SET</th>
           <th scope="col">ผลตอบแทนส่วนเกิน</th>
-          <th scope="col">อัตราความสำเร็จ</th>
+          <th scope="col">Hit Rate</th>
+          <th scope="col">ลงทุน 500K (บาท)</th>
         </tr>
       </thead>
       <tbody>
     """ + "".join(rows_html) + """
       </tbody>
     </table>
+    <p class="panel-note">
+      ระยะ 3 เดือน = สะสมทบตัวจริง (20 งวดไม่ซ้ำ ตั้งแต่ Q2/2021 → Q1/2026)
+      · ระยะ 6/12 เดือน = เฉลี่ยต่องวด (งวดทับซ้ำกัน จึงทบตัวไม่ได้)
+    </p>
     </div>
     """
+
+
+def damodaran_summary_table(
+    top10_rows: list[dict[str, str]],
+    top5_rows: list[dict[str, str]],
+) -> str:
+    """Side-by-side comparison table: Damodaran WACC Top 10 vs Top 5."""
+    top10_by_h = {row["Horizon_Months"]: row for row in top10_rows}
+    top5_by_h = {row["Horizon_Months"]: row for row in top5_rows}
+    horizons = sorted(set(top10_by_h) | set(top5_by_h))
+    rows_html = []
+    for h in horizons:
+        t10 = top10_by_h.get(h, {})
+        t5 = top5_by_h.get(h, {})
+        if not t10 and not t5:
+            continue
+        label = f"{int(float(h))} เดือน"
+        t10_active = pct(float(t10["Active_Return"])) if t10 else "—"
+        t10_hit = f"{float(t10['Hit_Rate']):.0f}%" if t10 else "—"
+        t10_port = pct(float(t10["Portfolio_Return"])) if t10 else "—"
+        t5_active = pct(float(t5["Active_Return"])) if t5 else "—"
+        t5_hit = f"{float(t5['Hit_Rate']):.0f}%" if t5 else "—"
+        t5_port = pct(float(t5["Portfolio_Return"])) if t5 else "—"
+        rows_html.append(
+            "<tr>"
+            f"<td>{label}</td>"
+            f"<td>{t10_port}</td><td>{t10_active}</td><td>{t10_hit}</td>"
+            f"<td>{t5_port}</td><td>{t5_active}</td><td>{t5_hit}</td>"
+            "</tr>"
+        )
+    return """
+    <div class="table-wrapper" tabindex="0" role="region" aria-label="ตารางเปรียบเทียบ Damodaran WACC Top 10 vs Top 5">
+    <table class="summary-table">
+      <thead>
+        <tr>
+          <th scope="col" rowspan="2">ระยะเวลา</th>
+          <th scope="col" colspan="3" style="text-align:center;">Damodaran WACC — Top 10</th>
+          <th scope="col" colspan="3" style="text-align:center;">Damodaran WACC — Top 5</th>
+        </tr>
+        <tr>
+          <th scope="col">ผลตอบแทนพอร์ต</th><th scope="col">ผลตอบแทนส่วนเกิน</th><th scope="col">Hit Rate</th>
+          <th scope="col">ผลตอบแทนพอร์ต</th><th scope="col">ผลตอบแทนส่วนเกิน</th><th scope="col">Hit Rate</th>
+        </tr>
+      </thead>
+      <tbody>
+    """ + "".join(rows_html) + """
+      </tbody>
+    </table>
+    <p class="panel-note">
+      ทั้งสองพอร์ตใช้ WACC แบบ Damodaran (industry beta + Thai ERP + ICR-based cost of debt)
+      · ข้อมูล 100 หุ้น SET · 20 ไตรมาส (Q2/2021 → Q1/2026)
+    </p>
+    </div>
+    """
+
+
+def damodaran_metric_cards(
+    top10_rows: list[dict[str, str]],
+    top5_rows: list[dict[str, str]],
+) -> str:
+    """Metric cards for Damodaran Top 10 + Top 5."""
+    cards = []
+    for label, rows in [("Top 10", top10_rows), ("Top 5", top5_rows)]:
+        if not rows:
+            continue
+        ordered = sorted(rows, key=lambda r: float(r["Horizon_Months"]))
+        best = max(ordered, key=lambda r: float(r["Active_Return"]))
+        horizon = int(float(best["Horizon_Months"]))
+        cards.append(
+            f"""
+            <div class="metric-card">
+              <span>Damodaran {label} — ดีที่สุด</span>
+              <strong>{pct(float(best["Active_Return"]))}</strong>
+              <small>ผลตอบแทนส่วนเกินที่ {horizon} เดือน · Hit {float(best['Hit_Rate']):.0f}%</small>
+            </div>
+            """
+        )
+    if top10_rows:
+        h6 = next((r for r in top10_rows if r["Horizon_Months"] == "6"), top10_rows[0])
+        cards.append(
+            f"""
+            <div class="metric-card">
+              <span>Top 10 ที่ 6 เดือน</span>
+              <strong>{pct(float(h6["Portfolio_Return"]))}</strong>
+              <small>ผลตอบแทนพอร์ต vs เบญจ {pct(float(h6["Benchmark_Return"]))} ดัชนี</small>
+            </div>
+            """
+        )
+    return "".join(cards)
 
 
 def render_ticker_pills(items: list[str]) -> str:
@@ -1911,14 +2027,14 @@ def render_reader_guide_page(
             <small>มูลค่าสุดท้าย 682,570 บาท</small>
           </div>
           <div class="metric-card">
-            <span>Hit Rate</span>
-            <strong>45%</strong>
-            <small>9/20 ไตรมาส ผลตอบแทนเป็นบวก</small>
+            <span>Hit Rate 3 เดือน</span>
+            <strong>65%</strong>
+            <small>13/20 ไตรมาส ผลตอบแทนเป็นบวก</small>
           </div>
           <div class="metric-card">
-            <span>12 เดือน (สะสม)</span>
-            <strong>+7.17%</strong>
-            <small>เทียบ SET -27.54%</small>
+            <span>12 เดือน (เฉลี่ย/งวด)</span>
+            <strong>+2.63%</strong>
+            <small>ผลตอบแทนส่วนเกินเฉลี่ยต่องวด</small>
           </div>
         </div>
         <p class="panel-note">Backtest 100 หุ้น, 20 ไตรมาส (2021-Q2 → 2026-Q1), 1,026 signals, 15 หุ้นถูกห้ามซื้อ — โครงการนี้ใช้แนวทาง Reverse DCF ตามกรอบของ Aswath Damodaran</p>
@@ -2032,9 +2148,9 @@ def render_home_page(
             <small>มูลค่าสุดท้าย 682,570 บาท</small>
           </div>
           <div class="metric-card">
-            <span>12 เดือน</span>
-            <strong>+7.17%</strong>
-            <small>เทียบ SET -27.54%</small>
+            <span>12 เดือน (เฉลี่ย/งวด)</span>
+            <strong>+2.63%</strong>
+            <small>ผลตอบแทนส่วนเกินเฉลี่ยต่องวด</small>
           </div>
         </div>
         <p class="panel-note">
@@ -2070,10 +2186,10 @@ def render_home_page(
       </article>
       <article class="card span-6">
         <p class="kicker">สรุปผลตอบแทน</p>
-        <h2>ผลตอบแทนสะสมเป็นบวกทุกระยะเวลาถือที่ทดสอบ</h2>
+        <h2>ผลตอบแทนสะสม +36.51% ใน 5 ปี (3 เดือน, 20 งวด)</h2>
         <p>
-          Backtest 100 หุ้น 20 ไตรมาส: พอร์ตทำผลตอบแทนเหนือ SET benchmark ในทุกระยะเวลาถือ
-          โดย 3 เดือนให้ผลตอบแทน active สูงสุด และ 12 เดือนทำ +7.17% vs SET -27.54%
+          Backtest 100 หุ้น 20 ไตรมาส: ระยะ 3 เดือน (สะสมทบตัวจริง) ทำ +36.51% vs SET -5.08%
+          · ระยะ 6/12 เดือน เฉลี่ยต่องวดเป็นบวกทุกระยะ (งวดทับซ้ำจึงทบตัวไม่ได้)
         </p>
         {summary_table(summary_rows)}
       </article>
@@ -2171,8 +2287,9 @@ def render_thesis_page(
             </tr>
           </thead>
           <tbody>
-            <tr><td>สะสม (20 ไตรมาส)</td><td>+36.51%</td><td>-5.08%</td><td>+41.59%</td><td>45%</td></tr>
-            <tr><td>12 เดือน</td><td>+7.17%</td><td>-27.54%</td><td>+34.71%</td><td>-</td></tr>
+            <tr><td>3 เดือน (สะสม 20 ไตรมาส)</td><td>+36.51%</td><td>-5.08%</td><td>+41.59%</td><td>65%</td></tr>
+            <tr><td>6 เดือน (เฉลี่ย/งวด)</td><td>+2.08%</td><td>+0.08%</td><td>+1.99%</td><td>55%</td></tr>
+            <tr><td>12 เดือน (เฉลี่ย/งวด)</td><td>+1.98%</td><td>-0.65%</td><td>+2.63%</td><td>40%</td></tr>
           </tbody>
         </table>
         </div>
@@ -2270,7 +2387,10 @@ def render_research_page(
 
 
 def render_backtest_page(
-    summary_rows: list[dict[str, str]],
+    summary_top10: list[dict[str, str]],
+    summary_top5: list[dict[str, str]],
+    manifest_top10: dict,
+    manifest_top5: dict,
     sector_rows: list[dict[str, str]],
     wacc_rows: list[dict[str, str]],
     manifest: dict,
@@ -2307,33 +2427,62 @@ def render_backtest_page(
 
     body = f"""
     <section class="page-intro" aria-labelledby="backtest-title">
-      <span class="eyebrow">Audited performance</span>
-      <h1 id="backtest-title">Benchmark-relative backtest results and visual evidence</h1>
+      <span class="eyebrow">Audited performance — Damodaran WACC</span>
+      <h1 id="backtest-title">ผล Backtest เปรียบเทียบ Top 10 vs Top 5 ด้วย Damodaran WACC</h1>
       <p>
-        This page packages the thesis-safe outputs: the summary table, no-lookahead status, sector dispersion,
-        and WACC sensitivity figures copied into the static site for direct deployment.
+        ทั้งสองพอร์ตโฟลิโอใช้ WACC แบบ Damodaran (dynamic ตาม industry beta, ICR default spread, Thai ERP)
+        รันบน 100 หุ้น, 20 ไตรมาส (Q2/2021 → Q1/2026), rebalance รายไตรมาส
       </p>
     </section>
     <section class="hero">
       <div class="hero-copy">
-        <span class="eyebrow">Backtest snapshot</span>
-        <h1>Positive average active return across all tested holding periods.</h1>
+        <span class="eyebrow">Damodaran WACC — Top 10</span>
+        <h2>Top 10 equal weight — ผลตอบแทนส่วนเกินเป็นบวกทุกระยะเวลาถือ</h2>
         <p>
-          The current implementation uses quarterly rebalancing, top-10 equal weights, benchmark-relative forward
-          returns, and fixed WACC historical scoring. It generated {manifest["signals"]} signals with
-          {manifest["no_lookahead_failures"]} no-lookahead failures.
+          {manifest_top10["signals"]} สัญญาณ, {manifest_top10["no_lookahead_failures"]} look-ahead errors,
+          WACC mode: {manifest_top10["wacc_mode"]}
         </p>
-        {summary_table(summary_rows)}
+        {summary_table(summary_top10)}
       </div>
       <aside class="hero-panel">
-        <h2>Headline diagnostics</h2>
+        <h2>Top 10 Diagnostics</h2>
         <div class="metric-grid">
-          {stats_cards(summary_rows, manifest)}
+          {stats_cards(summary_top10, manifest_top10)}
         </div>
         <p class="panel-note">
-          Portfolio rows: {manifest["portfolio_rows"]} · Exclusion rows: {manifest["exclusion_rows"]} · Rebalance frequency: {manifest["rebalance_frequency"]}
+          Portfolio rows: {manifest_top10["portfolio_rows"]} · Exclusion rows: {manifest_top10["exclusion_rows"]} · Rebalance: {manifest_top10["rebalance_frequency"]}
         </p>
       </aside>
+    </section>
+    <section class="hero" style="margin-top:2rem;">
+      <div class="hero-copy">
+        <span class="eyebrow">Damodaran WACC — Top 5</span>
+        <h2>Top 5 equal weight — ผลตอบแทนส่วนเกินติดลบ</h2>
+        <p>
+          {manifest_top5["signals"]} สัญญาณ, {manifest_top5["no_lookahead_failures"]} look-ahead errors,
+          WACC mode: {manifest_top5["wacc_mode"]}
+        </p>
+        {summary_table(summary_top5)}
+      </div>
+      <aside class="hero-panel">
+        <h2>Top 5 Diagnostics</h2>
+        <div class="metric-grid">
+          {stats_cards(summary_top5, manifest_top5)}
+        </div>
+        <p class="panel-note">
+          Portfolio rows: {manifest_top5["portfolio_rows"]} · Exclusion rows: {manifest_top5["exclusion_rows"]} · Rebalance: {manifest_top5["rebalance_frequency"]}
+        </p>
+      </aside>
+    </section>
+    <section class="card-grid" style="margin-top:2rem;">
+      <article class="card span-12">
+        <p class="kicker">Damodaran WACC เปรียบเทียบ</p>
+        <h2>Top 10 vs Top 5 — ตารางเปรียบเทียบผลตอบแทนระยะเวลาถือ</h2>
+        {damodaran_summary_table(summary_top10, summary_top5)}
+        <div class="metric-grid" style="margin-top:1rem;">
+          {damodaran_metric_cards(summary_top10, summary_top5)}
+        </div>
+      </article>
     </section>
     <section class="card-grid">
       <article class="card span-12">
@@ -2512,6 +2661,10 @@ def render_download_page(site_url: str) -> str:
           <li><a href="../assets/data/wacc_sensitivity.csv">WACC sensitivity CSV</a></li>
           <li><a href="../assets/data/exclusions.csv">Exclusions CSV</a></li>
           <li><a href="../assets/data/portfolio_returns.csv">Portfolio returns CSV</a></li>
+          <li><a href="../assets/data/damodaran_top10_summary.csv">Damodaran Top 10 summary CSV</a></li>
+          <li><a href="../assets/data/damodaran_top10_manifest.json">Damodaran Top 10 manifest JSON</a></li>
+          <li><a href="../assets/data/damodaran_top5_summary.csv">Damodaran Top 5 summary CSV</a></li>
+          <li><a href="../assets/data/damodaran_top5_manifest.json">Damodaran Top 5 manifest JSON</a></li>
         </ul>
       </article>
       <article class="card span-12">
@@ -2643,6 +2796,10 @@ def build_asset_sources() -> dict[Path, Path]:
         ROOT / "research_data/source_of_truth_100/backtest/portfolio_returns.csv": NETLIFY / "assets/data/portfolio_returns.csv",
         ROOT / "research_data/source_of_truth_100/backtest/manifest.json": NETLIFY / "assets/data/backtest_manifest.json",
         ROOT / "research_data/source_of_truth_100/manifest.json": NETLIFY / "assets/data/research_manifest.json",
+        ROOT / "research_data/source_of_truth_100/backtest_damodaran_top10/summary.csv": NETLIFY / "assets/data/damodaran_top10_summary.csv",
+        ROOT / "research_data/source_of_truth_100/backtest_damodaran_top10/manifest.json": NETLIFY / "assets/data/damodaran_top10_manifest.json",
+        ROOT / "research_data/source_of_truth_100/backtest_damodaran_top5/summary.csv": NETLIFY / "assets/data/damodaran_top5_summary.csv",
+        ROOT / "research_data/source_of_truth_100/backtest_damodaran_top5/manifest.json": NETLIFY / "assets/data/damodaran_top5_manifest.json",
         ROOT / "backtest_results/metrics_20260411_133531.txt": NETLIFY / "assets/data/metrics_20260411_133531.txt",
         ROOT / "backtest_results/portfolio_20260411_133531.csv": NETLIFY / "assets/data/portfolio_20260411_133531.csv",
         ROOT / "run_full_backtest.py": NETLIFY / "assets/code/run_full_backtest.py",
@@ -2692,10 +2849,75 @@ def main() -> None:
     thesis_excerpt = "\n".join(thesis_md.splitlines()[:32])
     thesis_excerpt_html, _ = markdown_to_html(thesis_excerpt, toc_levels=(2,), link_map=root_link_map)
 
+    # Original fixed-WACC backtest data (home page, sector, WACC sensitivity)
     summary_rows = read_csv(ROOT / "research_data/source_of_truth_100/backtest/summary.csv")
     sector_rows = read_csv(ROOT / "research_data/source_of_truth_100/backtest/sector_summary.csv")
     wacc_rows = read_csv(ROOT / "research_data/source_of_truth_100/backtest/wacc_sensitivity.csv")
     manifest = read_json(ROOT / "research_data/source_of_truth_100/backtest/manifest.json")
+
+    # Compute cumulative compounded returns for 3M only (non-overlapping)
+    # 6M/12M overlap with quarterly rebalance → can't compound, keep per-period average
+    portfolio_returns = read_csv(ROOT / "research_data/source_of_truth_100/backtest/portfolio_returns.csv")
+    for row in summary_rows:
+        horizon = row["Horizon_Months"]
+        if horizon == "3":
+            h_rows = [r for r in portfolio_returns if r["Horizon_Months"] == horizon]
+            if h_rows:
+                port_product = 1.0
+                bench_product = 1.0
+                for r in h_rows:
+                    port_product *= (1 + float(r["Portfolio_Return"]))
+                    bench_product *= (1 + float(r["Benchmark_Return"]))
+                row["Portfolio_Return"] = str(port_product - 1)
+                row["Benchmark_Return"] = str(bench_product - 1)
+                row["Active_Return"] = str((port_product - 1) - (bench_product - 1))
+                row["final_500k"] = 500000 * port_product
+                row["return_type"] = "cumulative"
+        else:
+            row["return_type"] = "avg_per_period"
+
+    # Damodaran WACC backtest — Top 10
+    summary_top10 = read_csv(ROOT / "research_data/source_of_truth_100/backtest_damodaran_top10/summary.csv")
+    manifest_top10 = read_json(ROOT / "research_data/source_of_truth_100/backtest_damodaran_top10/manifest.json")
+    portfolio_top10 = read_csv(ROOT / "research_data/source_of_truth_100/backtest_damodaran_top10/portfolio_returns.csv")
+    for row in summary_top10:
+        horizon = row["Horizon_Months"]
+        if horizon == "3":
+            h_rows = [r for r in portfolio_top10 if r["Horizon_Months"] == horizon]
+            if h_rows:
+                pp, bp = 1.0, 1.0
+                for r in h_rows:
+                    pp *= (1 + float(r["Portfolio_Return"]))
+                    bp *= (1 + float(r["Benchmark_Return"]))
+                row["Portfolio_Return"] = str(pp - 1)
+                row["Benchmark_Return"] = str(bp - 1)
+                row["Active_Return"] = str((pp - 1) - (bp - 1))
+                row["final_500k"] = 500000 * pp
+                row["return_type"] = "cumulative"
+        else:
+            row["return_type"] = "avg_per_period"
+
+    # Damodaran WACC backtest — Top 5
+    summary_top5 = read_csv(ROOT / "research_data/source_of_truth_100/backtest_damodaran_top5/summary.csv")
+    manifest_top5 = read_json(ROOT / "research_data/source_of_truth_100/backtest_damodaran_top5/manifest.json")
+    portfolio_top5 = read_csv(ROOT / "research_data/source_of_truth_100/backtest_damodaran_top5/portfolio_returns.csv")
+    for row in summary_top5:
+        horizon = row["Horizon_Months"]
+        if horizon == "3":
+            h_rows = [r for r in portfolio_top5 if r["Horizon_Months"] == horizon]
+            if h_rows:
+                pp, bp = 1.0, 1.0
+                for r in h_rows:
+                    pp *= (1 + float(r["Portfolio_Return"]))
+                    bp *= (1 + float(r["Benchmark_Return"]))
+                row["Portfolio_Return"] = str(pp - 1)
+                row["Benchmark_Return"] = str(bp - 1)
+                row["Active_Return"] = str((pp - 1) - (bp - 1))
+                row["final_500k"] = 500000 * pp
+                row["return_type"] = "cumulative"
+        else:
+            row["return_type"] = "avg_per_period"
+
     research_manifest = read_json(ROOT / "research_data/source_of_truth_100/manifest.json")
     quarterly_story = build_quarterly_story(ROOT / "research_data/source_of_truth_100/backtest")
 
@@ -2715,7 +2937,7 @@ def main() -> None:
     )
     write_text(
         NETLIFY / "backtest/index.html",
-        render_backtest_page(summary_rows, sector_rows, wacc_rows, manifest, report_html, appendix_html, site_url),
+        render_backtest_page(summary_top10, summary_top5, manifest_top10, manifest_top5, sector_rows, wacc_rows, manifest, report_html, appendix_html, site_url),
     )
     write_text(NETLIFY / "about/index.html", render_about_page(site_url))
     write_text(NETLIFY / "download/index.html", render_download_page(site_url))

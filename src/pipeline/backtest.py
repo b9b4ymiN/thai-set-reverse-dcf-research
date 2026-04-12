@@ -8,6 +8,7 @@ from typing import Callable, Dict, List, Optional, Sequence, Tuple
 
 import pandas as pd
 
+from rdcf.wacc_provider import DamodaranWACCProvider
 from reverse_dcf_model import solve_reverse_dcf
 
 
@@ -15,6 +16,7 @@ DEFAULT_HORIZONS = (3, 6, 12)
 DEFAULT_CASE_NAME = 'baseline'
 BASELINE_CASE_NAME = 'baseline'
 RISK_CONTROL_CASE_NAME = 'risk_control'
+DAMODARAN_CASE_NAME = 'damodaran'
 DEFAULT_TOP_N_VALUES = (5, 10)
 DEFAULT_STOP_LOSS_VALUES = (0.05, 0.10)
 
@@ -43,6 +45,9 @@ class ReverseDCFBacktester:
         self.observations = self.observations.sort_values(['Ticker', 'Availability_Date', 'Statement_Date'])
         self.prices = self.prices.sort_values(['Ticker', 'Date'])
         self.benchmark = self.benchmark.sort_values('Date')
+
+        self.wacc_provider = DamodaranWACCProvider()
+        self.ticker_to_industry = self.snapshot.set_index('Ticker')['Industry'].to_dict()
 
         self.price_lookup = {
             ticker: frame.reset_index(drop=True)
@@ -379,9 +384,9 @@ class ReverseDCFBacktester:
 
     def _normalize_case(self, case_name: str, stop_loss_pct: Optional[float]) -> Tuple[str, Optional[float]]:
         normalized = (case_name or DEFAULT_CASE_NAME).strip().lower()
-        if normalized not in {BASELINE_CASE_NAME, RISK_CONTROL_CASE_NAME}:
+        if normalized not in {BASELINE_CASE_NAME, RISK_CONTROL_CASE_NAME, DAMODARAN_CASE_NAME}:
             raise ValueError(f'Unsupported case_name: {case_name}')
-        if normalized == BASELINE_CASE_NAME:
+        if normalized in {BASELINE_CASE_NAME, DAMODARAN_CASE_NAME}:
             return normalized, None
         if stop_loss_pct is None:
             raise ValueError('risk_control case requires --stop-loss-pct')
@@ -528,7 +533,7 @@ class ReverseDCFBacktester:
         if fcf < 1000000 and shares > 1000000:
             fcf *= 1000000
 
-        wacc = self._resolve_wacc(ticker)
+        wacc = self._resolve_wacc(ticker, rebalance_date, observation, price)
         net_debt = observation.get('Net_Debt', 0)
         if pd.isna(net_debt) or net_debt == 0:
             # Fallback to earliest known valid net debt if observation is missing it
@@ -575,7 +580,31 @@ class ReverseDCFBacktester:
             'Intrinsic_Value': details.get('intrinsic_value', 0.0),
         }, None
 
-    def _resolve_wacc(self, ticker: str) -> float:
+    def _resolve_wacc(
+        self, 
+        ticker: str, 
+        date: Optional[pd.Timestamp] = None, 
+        observation: Optional[pd.Series] = None,
+        price: Optional[float] = None
+    ) -> float:
+        if self.wacc_mode == 'damodaran' and observation is not None and price is not None:
+            industry = self.ticker_to_industry.get(ticker, 'DEFAULT')
+            shares = observation.get('Diluted_Average_Shares') or observation.get('Shares_Issued') or 0
+            equity_value = float(price * shares)
+            total_debt = float(observation.get('Total_Debt', 0))
+            ebit = float(observation.get('EBIT', 0))
+            interest = float(observation.get('Interest_Expense', 0))
+            
+            res = self.wacc_provider.calculate_wacc(
+                industry=industry,
+                equity_value=equity_value,
+                total_debt=total_debt,
+                ebit=ebit,
+                interest_expense=interest,
+                date=date
+            )
+            return float(res['wacc'])
+
         if self.wacc_mode == 'snapshot':
             snapshot = self.snapshot_lookup.get(ticker, {})
             return float(snapshot.get('WACC', self.default_wacc) or self.default_wacc)
@@ -907,8 +936,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument('--rebalance-frequency', default='Q', help='Rebalance frequency (e.g., Q for quarterly alignment with fundamentals)')
     parser.add_argument('--start-date', default=None, help='Backtest start date (YYYY-MM-DD)')
     parser.add_argument('--end-date', default=None, help='Backtest end date (YYYY-MM-DD)')
-    parser.add_argument('--wacc-mode', default='fixed', choices=['fixed', 'snapshot'], help='WACC calculation mode (fixed 8 percent per Damodaran Thai equity risk premium norms or snapshot-based)')
-    parser.add_argument('--case-name', default=DEFAULT_CASE_NAME, choices=[BASELINE_CASE_NAME, RISK_CONTROL_CASE_NAME], help='Case name for single run (baseline: Damodaran-style portfolio; risk_control: includes daily stop-loss)')
+    parser.add_argument('--wacc-mode', default='fixed', choices=['fixed', 'snapshot', 'damodaran'], help='WACC calculation mode (fixed 8 percent, snapshot-based, or dynamic Damodaran-style)')
+    parser.add_argument('--case-name', default=DEFAULT_CASE_NAME, choices=[BASELINE_CASE_NAME, RISK_CONTROL_CASE_NAME, DAMODARAN_CASE_NAME], help='Case name for single run (baseline: Damodaran-style portfolio; risk_control: includes daily stop-loss; damodaran: dynamic WACC)')
     parser.add_argument('--stop-loss-pct', type=float, default=None, help='Stop loss percentage for risk_control case (e.g., 0.1 for 10 percent)')
     parser.add_argument('--stop-loss-values', nargs='*', type=float, default=list(DEFAULT_STOP_LOSS_VALUES), help='Stop loss values for matrix run (risk_control cases)')
     parser.add_argument('--max-losing-buy-rounds', type=int, default=2, help='Maximum number of losing buy rounds before permanent ban (Damodaran-style persistence check)')
