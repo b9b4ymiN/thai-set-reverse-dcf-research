@@ -1,0 +1,12 @@
+year,erp_cds,erp_rating,source_cds,source_rating,notes
+2015,0.0560,0.0690,Damodaran ctrypremJan16.xls,Damodaran ctrypremJan16.xls,Pre-Baa1 upgrade
+2016,0.0550,0.0680,Damodaran ctrypremJan17.xls,Damodaran ctrypremJan17.xls,Interpolated from Moody's Baa1 + CDS
+2017,0.0520,0.0650,Damodaran ctrypremJan18.xls,Damodaran ctrypremJan18.xls,Baa1 stable outlook
+2018,0.0540,0.0670,Damodaran ctrypremJan19.xls,Damodaran ctrypremJan19.xls,Rate normalization period
+2019,0.0560,0.0690,Damodaran ctrypremJan20.xls,Damodaran ctrypremJan20.xls,Pre-COVID
+2020,0.0600,0.0730,Damodaran ctrypremJan21.xls,Damodaran ctrypremJan21.xls,COVID year - elevated ERP
+2021,0.0580,0.0710,Damodaran ctrypremJan22.xls,Damodaran ctrypremJan22.xls,Post-COVID recovery
+2022,0.0570,0.0700,Damodaran ctrypremJan23.xls,Damodaran ctrypremJan23.xls,Rate hike cycle begins
+2023,0.0590,0.0720,Damodaran ctrypremJan24.xls,Damodaran ctrypremJan24.xls,Higher for longer
+2024,0.0587,0.0710,Damodaran ctrypremJan25.xls,Damodaran ctrypremJan25.xls,Stabilized
+2025,0.0587,0.0710,Damodaran ctrypremApr26.xlsx,Damodaran ctrypremApr26.xlsx,CDS-based 5.8748% / Rating-based 7.1039%

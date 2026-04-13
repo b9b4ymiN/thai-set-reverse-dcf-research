@@ -1,0 +1,6 @@
+market_cap_floor_thb_b,market_cap_ceil_thb_b,size_premium,decile,source
+0,5,0.040,1-2,Damodaran size premium emerging markets Jan 2026
+5,20,0.025,3-4,Damodaran size premium emerging markets Jan 2026
+20,50,0.015,5-6,Damodaran size premium emerging markets Jan 2026
+50,100,0.008,7-8,Damodaran size premium emerging markets Jan 2026
+100,99999,0.000,9-10,Damodaran size premium emerging markets Jan 2026

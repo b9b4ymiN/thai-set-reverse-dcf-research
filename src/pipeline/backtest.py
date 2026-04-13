@@ -20,6 +20,54 @@ DAMODARAN_CASE_NAME = 'damodaran'
 DEFAULT_TOP_N_VALUES = (5, 10)
 DEFAULT_STOP_LOSS_VALUES = (0.05, 0.10)
 
+# Comprehensive WACC mode configurations (Damodaran NYU Stern framework)
+# Each mode isolates a specific WACC dimension for hypothesis testing
+COMPREHENSIVE_WACC_MODES = {
+    'damodaran_cds': {
+        'erp_mode': 'cds',
+        'include_size_premium': False,
+        'beta_mode': 'fundamental_only',
+        'blend_weight': 0.5,
+    },
+    'damodaran_rating': {
+        'erp_mode': 'rating',
+        'include_size_premium': False,
+        'beta_mode': 'fundamental_only',
+        'blend_weight': 0.5,
+    },
+    'damodaran_size': {
+        'erp_mode': 'cds',
+        'include_size_premium': True,
+        'beta_mode': 'fundamental_only',
+        'blend_weight': 0.5,
+    },
+    'damodaran_beta': {
+        'erp_mode': 'cds',
+        'include_size_premium': False,
+        'beta_mode': 'balanced',
+        'blend_weight': 0.5,
+    },
+    'damodaran_full': {
+        'erp_mode': 'rating',
+        'include_size_premium': True,
+        'beta_mode': 'balanced',
+        'blend_weight': 0.5,
+    },
+    'damodaran_full_cds': {
+        'erp_mode': 'cds',
+        'include_size_premium': True,
+        'beta_mode': 'balanced',
+        'blend_weight': 0.5,
+    },
+    'damodaran_roic': {
+        'erp_mode': 'cds',
+        'include_size_premium': True,
+        'beta_mode': 'balanced',
+        'blend_weight': 0.5,
+        'roic_screen': True,
+    },
+}
+
 
 @dataclass
 class ReverseDCFBacktester:
@@ -384,9 +432,10 @@ class ReverseDCFBacktester:
 
     def _normalize_case(self, case_name: str, stop_loss_pct: Optional[float]) -> Tuple[str, Optional[float]]:
         normalized = (case_name or DEFAULT_CASE_NAME).strip().lower()
-        if normalized not in {BASELINE_CASE_NAME, RISK_CONTROL_CASE_NAME, DAMODARAN_CASE_NAME}:
+        valid_cases = {BASELINE_CASE_NAME, RISK_CONTROL_CASE_NAME, DAMODARAN_CASE_NAME} | set(COMPREHENSIVE_WACC_MODES.keys())
+        if normalized not in valid_cases:
             raise ValueError(f'Unsupported case_name: {case_name}')
-        if normalized in {BASELINE_CASE_NAME, DAMODARAN_CASE_NAME}:
+        if normalized in {BASELINE_CASE_NAME, DAMODARAN_CASE_NAME} | set(COMPREHENSIVE_WACC_MODES.keys()):
             return normalized, None
         if stop_loss_pct is None:
             raise ValueError('risk_control case requires --stop-loss-pct')
@@ -458,6 +507,37 @@ class ReverseDCFBacktester:
                 continue
             row, reason = self._score_observation(ticker, observation, price, price_date, rebalance_date)
             if row is not None:
+                # ROIC Quality Screen: boost signal for stocks where ROIC > WACC
+                # (Damodaran EVA: ROIC > WACC = value creation, Investment Valuation Ch.31)
+                # ROIC = NOPAT / Invested Capital = EBIT*(1-t) / (Book Equity + Total Debt - Cash)
+                if self.wacc_mode in COMPREHENSIVE_WACC_MODES:
+                    mode_config = COMPREHENSIVE_WACC_MODES.get(self.wacc_mode, {})
+                    if mode_config.get('roic_screen'):
+                        ebit = float(observation.get('EBIT', 0) or 0)
+                        total_debt = float(observation.get('Total_Debt', 0) or 0)
+                        total_cash = float(observation.get('Total_Cash', 0) or 0)
+                        # Estimate book equity from snapshot D/E ratio
+                        # (Damodaran ROIC uses book values, not market cap)
+                        snap = self.snapshot_lookup.get(ticker, {})
+                        de_ratio = float(snap.get('Debt_to_Equity', 0) or 0)
+                        if de_ratio > 0:
+                            book_equity = total_debt / de_ratio
+                        else:
+                            shares_obs = observation.get('Diluted_Average_Shares') or observation.get('Shares_Issued') or 0
+                            book_equity = float(price * shares_obs)
+                        roic = self.wacc_provider.calculate_roic(ebit, total_debt, book_equity, total_cash)
+                        wacc_val = row.get('WACC', self.default_wacc)
+                        if isinstance(wacc_val, (int, float)):
+                            wacc_val = float(wacc_val)
+                        else:
+                            wacc_val = self.default_wacc
+                        # Signal boost: ROIC > WACC stocks get ranked higher
+                        # The boost is proportional to the ROIC-WACC spread (EVA spread)
+                        if roic > wacc_val and wacc_val > 0:
+                            eva_spread = roic - wacc_val
+                            row['Signal_Score'] = float(row.get('Signal_Score', 0)) + eva_spread
+                        row['ROIC'] = roic
+                        row['ROIC_WACC_Spread'] = roic - wacc_val
                 row['Losing_Buy_Rounds'] = losing_buy_rounds.get(ticker, 0)
                 row['Buy_Ban_Active'] = False
                 rows.append(row)
@@ -578,12 +658,15 @@ class ReverseDCFBacktester:
             'Implied_Growth_Rate': float(implied_growth),
             'Signal_Score': signal_score,
             'Intrinsic_Value': details.get('intrinsic_value', 0.0),
+            'ERP_Lag_Year': int(rebalance_date.year) - 1 if self.wacc_mode in COMPREHENSIVE_WACC_MODES else 0,
+            'ERP_Source': 'dynamic' if self.wacc_mode in COMPREHENSIVE_WACC_MODES else ('damodaran' if self.wacc_mode == 'damodaran' else 'static'),
+            'Beta_Mode': COMPREHENSIVE_WACC_MODES.get(self.wacc_mode, {}).get('beta_mode', 'fundamental_only'),
         }, None
 
     def _resolve_wacc(
-        self, 
-        ticker: str, 
-        date: Optional[pd.Timestamp] = None, 
+        self,
+        ticker: str,
+        date: Optional[pd.Timestamp] = None,
         observation: Optional[pd.Series] = None,
         price: Optional[float] = None
     ) -> float:
@@ -594,7 +677,7 @@ class ReverseDCFBacktester:
             total_debt = float(observation.get('Total_Debt', 0))
             ebit = float(observation.get('EBIT', 0))
             interest = float(observation.get('Interest_Expense', 0))
-            
+
             res = self.wacc_provider.calculate_wacc(
                 industry=industry,
                 equity_value=equity_value,
@@ -602,6 +685,31 @@ class ReverseDCFBacktester:
                 ebit=ebit,
                 interest_expense=interest,
                 date=date
+            )
+            return float(res['wacc'])
+
+        # Comprehensive WACC modes (Damodaran NYU Stern framework)
+        if self.wacc_mode in COMPREHENSIVE_WACC_MODES and observation is not None and price is not None:
+            config = COMPREHENSIVE_WACC_MODES[self.wacc_mode].copy()
+            config['ticker'] = ticker
+            config['price_lookup'] = self.price_lookup  # Passed from backtest engine
+            config['benchmark_df'] = self.benchmark      # SET Index for regression beta
+
+            industry = self.ticker_to_industry.get(ticker, 'DEFAULT')
+            shares = observation.get('Diluted_Average_Shares') or observation.get('Shares_Issued') or 0
+            equity_value = float(price * shares)
+            total_debt = float(observation.get('Total_Debt', 0))
+            ebit = float(observation.get('EBIT', 0))
+            interest = float(observation.get('Interest_Expense', 0))
+
+            res = self.wacc_provider.calculate_wacc_comprehensive(
+                industry=industry,
+                equity_value=equity_value,
+                total_debt=total_debt,
+                ebit=ebit,
+                interest_expense=interest,
+                date=date,
+                config=config,
             )
             return float(res['wacc'])
 
@@ -936,8 +1044,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument('--rebalance-frequency', default='Q', help='Rebalance frequency (e.g., Q for quarterly alignment with fundamentals)')
     parser.add_argument('--start-date', default=None, help='Backtest start date (YYYY-MM-DD)')
     parser.add_argument('--end-date', default=None, help='Backtest end date (YYYY-MM-DD)')
-    parser.add_argument('--wacc-mode', default='fixed', choices=['fixed', 'snapshot', 'damodaran'], help='WACC calculation mode (fixed 8 percent, snapshot-based, or dynamic Damodaran-style)')
-    parser.add_argument('--case-name', default=DEFAULT_CASE_NAME, choices=[BASELINE_CASE_NAME, RISK_CONTROL_CASE_NAME, DAMODARAN_CASE_NAME], help='Case name for single run (baseline: Damodaran-style portfolio; risk_control: includes daily stop-loss; damodaran: dynamic WACC)')
+    parser.add_argument('--wacc-mode', default='fixed', choices=['fixed', 'snapshot', 'damodaran', 'damodaran_cds', 'damodaran_rating', 'damodaran_size', 'damodaran_beta', 'damodaran_full', 'damodaran_full_cds'], help='WACC calculation mode')
+    parser.add_argument('--case-name', default=DEFAULT_CASE_NAME, choices=[BASELINE_CASE_NAME, RISK_CONTROL_CASE_NAME, DAMODARAN_CASE_NAME, 'damodaran_cds', 'damodaran_rating', 'damodaran_size', 'damodaran_beta', 'damodaran_full', 'damodaran_full_cds'], help='Case name for single run')
     parser.add_argument('--stop-loss-pct', type=float, default=None, help='Stop loss percentage for risk_control case (e.g., 0.1 for 10 percent)')
     parser.add_argument('--stop-loss-values', nargs='*', type=float, default=list(DEFAULT_STOP_LOSS_VALUES), help='Stop loss values for matrix run (risk_control cases)')
     parser.add_argument('--max-losing-buy-rounds', type=int, default=2, help='Maximum number of losing buy rounds before permanent ban (Damodaran-style persistence check)')

@@ -131,9 +131,11 @@ def solve_reverse_dcf(base_fcf: float,
 
     for iteration in range(max_iterations):
         mid = (low + high) / 2
-        # Terminal growth cap at 2.5%, floor at 0.5%, and at least 1% below WACC
-        # Consistent with Damodaran's guidance: g_terminal <= risk-free rate (Investment Valuation Ch.12)
-        safe_terminal_growth = min(0.025, max(wacc - 0.01, 0.005))
+        # Terminal growth cap: Damodaran rule g_terminal <= Rf (Investment Valuation Ch.12)
+        # For Thai equities, Rf ~3.5% in recent years, so cap at 3.5% (not hardcoded 2.5%)
+        # Floor at 0.5% and must be at least 1% below WACC for convergence
+        rf_cap = 0.035  # Thai 10Y bond yield approximation for current era
+        safe_terminal_growth = min(rf_cap, max(wacc - 0.01, 0.005))
         intrinsic_value = calculate_intrinsic_value_static(
             base_fcf=base_fcf,
             growth_rate=mid,
