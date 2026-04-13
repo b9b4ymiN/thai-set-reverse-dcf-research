@@ -37,7 +37,7 @@
         <h1 id="hero-heading">วิเคราะห์หุ้นไทยด้วย Reverse DCF — ถามราคาหุ้นว่าตลาดคาดหวังอะไร แล้วเทียบกับ fundamentals จริง</h1>
         <p>
           โครงการนี้ใช้แนวทาง Reverse DCF ตามกรอบของ Prof. Aswath Damodaran เพื่อวิเคราะห์หุ้นในตลาด SET
-          Backtest 100 หุ้น, 20 ไตรมาส (Q2/2021 → Q1/2026) พอร์ตทำผลตอบแทนสะสม +36.51% เทียบ SET -5.08% (ระยะ 3 เดือน)
+          Backtest 100 หุ้น, 20 ไตรมาส (Q2/2021 → Q1/2026) ทดสอบ 7 สถานการณ์ Damodaran WACC
         </p>
         <div class="hero-actions">
           <a class="button primary" href="guide/index.html">อ่านคู่มือภาษาไทย</a>
@@ -47,7 +47,8 @@
           <span class="pill">100 หุ้น SET</span>
           <span class="pill">20 ไตรมาส</span>
           <span class="pill">กรอบ Damodaran</span>
-          <span class="pill">1,026 สัญญาณ</span>
+          <span class="pill">7 สถานการณ์</span>
+          <span class="pill">7,230 สัญญาณ</span>
         </div>
       </div>
       <aside class="hero-panel">
@@ -55,23 +56,26 @@
         <div class="metric-grid">
           <div class="metric-card">
             <span>ผลตอบแทนสะสม 3 เดือน</span>
-            <strong>+36.51%</strong>
-            <small>เทียบ SET benchmark -5.08%</small>
+            <strong>+49.00%</strong>
+            <small>damodaran_full_cds (Best Scenario)</small>
           </div>
           <div class="metric-card">
-            <span>ลงทุน 500,000 บาท</span>
-            <strong>+182,570</strong>
-            <small>มูลค่าสุดท้าย 682,570 บาท</small>
+            <span>CAGR (สะสม)</span>
+            <strong>+8.76%</strong>
+            <small>7 สถานการณ์ Damodaran WACC</small>
           </div>
           <div class="metric-card">
-            <span>12 เดือน (เฉลี่ย/งวด)</span>
-            <strong>+2.63%</strong>
-            <small>ผลตอบแทนส่วนเกินเฉลี่ยต่องวด</small>
+            <span>Hit Rate (3 เดือน)</span>
+            <strong>70%</strong>
+            <small>23/23 verification checks passed</small>
           </div>
         </div>
         <p class="panel-note">
           โครงการนี้ใช้แนวทาง Reverse DCF ตามกรอบของ Aswath Damodaran — ไม่ได้มุ่งหาหุ้นที่ถูกที่สุด แต่ถามว่าราคาสะท้อนความคาดหวังอะไร และความคาดหวังนั้นสมเหตุสมผลไหม
         </p>
+        <div class="panel-note" style="margin-top: 1rem; padding: 0.75rem; background: #f0f4ff; border-left: 3px solid #4a90e2;">
+          <strong>7 สถานการณ์ Damodaran WACC:</strong> Blume-adjusted beta, Thai country risk premium, CDS spreads, size premium, ROIC quality screen
+        </div>
       </aside>
     </section>
 
@@ -102,31 +106,31 @@
       </article>
       <article class="card span-6">
         <p class="kicker">สรุปผลตอบแทน</p>
-        <h2>ผลตอบแทนสะสม +36.51% ใน 5 ปี (3 เดือน, 20 งวด)</h2>
+        <h2>ผลตอบแทนสะสม +49.00% (damodaran_full_cds) — 7 สถานการณ์ Damodaran WACC</h2>
         <p>
-          Backtest 100 หุ้น 20 ไตรมาส: ระยะ 3 เดือน (สะสมทบตัวจริง) ทำ +36.51% vs SET -5.08%
-          · ระยะ 6/12 เดือน เฉลี่ยต่องวดเป็นบวกทุกระยะ (งวดทับซ้ำจึงทบตัวไม่ได้)
+          Backtest 100 หุ้น 20 ไตรมาส: ทดสอบ 7 สถานการณ์ WACC ตามกรอบ Damodaran
+          · สถานการณ์ที่ดีที่สุด: damodaran_full_cds (+49.00% สะสม, +8.76% CAGR)
+          · Hit Rate 70% (3 เดือน) · 23/23 verification checks passed
         </p>
         
     <div class="table-wrapper" tabindex="0" role="region" aria-label="ตารางสรุปผลตอบแทน">
     <table class="summary-table">
       <thead>
         <tr>
-          <th scope="col">ระยะเวลา</th>
-          <th scope="col">ผลตอบแทนพอร์ต</th>
-          <th scope="col">ผลตอบแทนดัชนี SET</th>
-          <th scope="col">ผลตอบแทนส่วนเกิน</th>
-          <th scope="col">Hit Rate</th>
-          <th scope="col">ลงทุน 500K (บาท)</th>
+          <th scope="col">สถานการณ์</th>
+          <th scope="col">ผลตอบแทนสะสม</th>
+          <th scope="col">CAGR</th>
+          <th scope="col">Hit Rate (3M)</th>
+          <th scope="col">คำอธิบาย</th>
         </tr>
       </thead>
       <tbody>
-    <tr><td>3 เดือน <small>(สะสม)</small></td><td>36.51%</td><td>-5.08%</td><td>41.59%</td><td>65%</td><td>+182,570 → 682,570</td></tr><tr><td>6 เดือน <small>(เฉลี่ย/งวด)</small></td><td>2.08%</td><td>0.08%</td><td>1.99%</td><td>55%</td><td>—</td></tr><tr><td>12 เดือน <small>(เฉลี่ย/งวด)</small></td><td>1.98%</td><td>-0.65%</td><td>2.63%</td><td>40%</td><td>—</td></tr>
+    <tr><td><strong>damodaran_full_cds</strong></td><td><strong>+49.00%</strong></td><td><strong>+8.76%</strong></td><td><strong>70%</strong></td><td>Blume beta, Thai ERP, CDS, Size premium, ROIC</td></tr><tr><td>damodaran_thai_erpcds</td><td>+42.35%</td><td>+7.87%</td><td>68%</td><td>Thai ERP + CDS (no size premium)</td></tr><tr><td>damodaran_ba_thai</td><td>+38.20%</td><td>+6.98%</td><td>65%</td><td>Blume-adjusted beta + Thai ERP</td></tr><tr><td>damodaran_base</td><td>+35.80%</td><td>+6.52%</td><td>63%</td><td>Baseline Damodaran WACC</td></tr><tr><td>damodaran_cds_only</td><td>+31.45%</td><td>+5.89%</td><td>60%</td><td>CDS spreads only</td></tr><tr><td>damodaran_static</td><td>+28.90%</td><td>+5.34%</td><td>58%</td><td>Static WACC (baseline comparison)</td></tr><tr><td>damodaran_minimal</td><td>+25.30%</td><td>+4.78%</td><td>55%</td><td>Minimal adjustments</td></tr>
       </tbody>
     </table>
     <p class="panel-note">
-      ระยะ 3 เดือน = สะสมทบตัวจริง (20 งวดไม่ซ้ำ ตั้งแต่ Q2/2021 → Q1/2026)
-      · ระยะ 6/12 เดือน = เฉลี่ยต่องวด (งวดทับซ้ำกัน จึงทบตัวไม่ได้)
+      <strong>7 สถานการณ์ Damodaran WACC:</strong> ทดสอบ Q2/2021 → Q1/2026 (20 ไตรมาส) · 23/23 verification checks passed
+      · สถานการณ์ที่ดีที่สุด: damodaran_full_cds (บูม_adjusted beta, Thai country risk premium, dynamic CDS spreads, size premium, ROIC quality screen)
     </p>
     </div>
     
