@@ -37,7 +37,7 @@
         <h1 id="hero-heading">วิเคราะห์หุ้นไทยด้วย Reverse DCF — ถามราคาหุ้นว่าตลาดคาดหวังอะไร แล้วเทียบกับ fundamentals จริง</h1>
         <p>
           โครงการนี้ใช้แนวทาง Reverse DCF ตามกรอบของ Prof. Aswath Damodaran เพื่อวิเคราะห์หุ้นในตลาด SET
-          Backtest 100 หุ้น, 20 ไตรมาส (Q2/2021 → Q1/2026) ทดสอบ 7 สถานการณ์ Damodaran WACC
+          Backtest 100 หุ้น, 20 ไตรมาส (Q2/2021 → Q1/2026) พอร์ตทำผลตอบแทนสะสม +36.51% เทียบ SET -5.08% (ระยะ 3 เดือน)
         </p>
         <div class="hero-actions">
           <a class="button primary" href="guide/index.html">อ่านคู่มือภาษาไทย</a>
@@ -47,8 +47,7 @@
           <span class="pill">100 หุ้น SET</span>
           <span class="pill">20 ไตรมาส</span>
           <span class="pill">กรอบ Damodaran</span>
-          <span class="pill">7 สถานการณ์</span>
-          <span class="pill">7,230 สัญญาณ</span>
+          <span class="pill">1,026 สัญญาณ</span>
         </div>
       </div>
       <aside class="hero-panel">
@@ -56,26 +55,23 @@
         <div class="metric-grid">
           <div class="metric-card">
             <span>ผลตอบแทนสะสม 3 เดือน</span>
-            <strong>+49.00%</strong>
-            <small>damodaran_full_cds (Best Scenario)</small>
+            <strong>+36.51%</strong>
+            <small>เทียบ SET benchmark -5.08%</small>
           </div>
           <div class="metric-card">
-            <span>CAGR (สะสม)</span>
-            <strong>+8.76%</strong>
-            <small>7 สถานการณ์ Damodaran WACC</small>
+            <span>ลงทุน 500,000 บาท</span>
+            <strong>+182,570</strong>
+            <small>มูลค่าสุดท้าย 682,570 บาท</small>
           </div>
           <div class="metric-card">
-            <span>Hit Rate (3 เดือน)</span>
-            <strong>70%</strong>
-            <small>23/23 verification checks passed</small>
+            <span>12 เดือน (เฉลี่ย/งวด)</span>
+            <strong>+2.63%</strong>
+            <small>ผลตอบแทนส่วนเกินเฉลี่ยต่องวด</small>
           </div>
         </div>
         <p class="panel-note">
           โครงการนี้ใช้แนวทาง Reverse DCF ตามกรอบของ Aswath Damodaran — ไม่ได้มุ่งหาหุ้นที่ถูกที่สุด แต่ถามว่าราคาสะท้อนความคาดหวังอะไร และความคาดหวังนั้นสมเหตุสมผลไหม
         </p>
-        <div class="panel-note" style="margin-top: 1rem; padding: 0.75rem; background: #f0f4ff; border-left: 3px solid #4a90e2;">
-          <strong>7 สถานการณ์ Damodaran WACC:</strong> Blume-adjusted beta, Thai country risk premium, CDS spreads, size premium, ROIC quality screen
-        </div>
       </aside>
     </section>
 
@@ -106,31 +102,31 @@
       </article>
       <article class="card span-6">
         <p class="kicker">สรุปผลตอบแทน</p>
-        <h2>ผลตอบแทนสะสม +49.00% (damodaran_full_cds) — 7 สถานการณ์ Damodaran WACC</h2>
+        <h2>ผลตอบแทนสะสม +36.51% ใน 5 ปี (3 เดือน, 20 งวด)</h2>
         <p>
-          Backtest 100 หุ้น 20 ไตรมาส: ทดสอบ 7 สถานการณ์ WACC ตามกรอบ Damodaran
-          · สถานการณ์ที่ดีที่สุด: damodaran_full_cds (+49.00% สะสม, +8.76% CAGR)
-          · Hit Rate 70% (3 เดือน) · 23/23 verification checks passed
+          Backtest 100 หุ้น 20 ไตรมาส: ระยะ 3 เดือน (สะสมทบตัวจริง) ทำ +36.51% vs SET -5.08%
+          · ระยะ 6/12 เดือน เฉลี่ยต่องวดเป็นบวกทุกระยะ (งวดทับซ้ำจึงทบตัวไม่ได้)
         </p>
         
     <div class="table-wrapper" tabindex="0" role="region" aria-label="ตารางสรุปผลตอบแทน">
     <table class="summary-table">
       <thead>
         <tr>
-          <th scope="col">สถานการณ์</th>
-          <th scope="col">ผลตอบแทนสะสม</th>
-          <th scope="col">CAGR</th>
-          <th scope="col">Hit Rate (3M)</th>
-          <th scope="col">คำอธิบาย</th>
+          <th scope="col">ระยะเวลา</th>
+          <th scope="col">ผลตอบแทนพอร์ต</th>
+          <th scope="col">ผลตอบแทนดัชนี SET</th>
+          <th scope="col">ผลตอบแทนส่วนเกิน</th>
+          <th scope="col">Hit Rate</th>
+          <th scope="col">ลงทุน 500K (บาท)</th>
         </tr>
       </thead>
       <tbody>
-    <tr><td><strong>damodaran_full_cds</strong></td><td><strong>+49.00%</strong></td><td><strong>+8.76%</strong></td><td><strong>70%</strong></td><td>Blume beta, Thai ERP, CDS, Size premium, ROIC</td></tr><tr><td>damodaran_thai_erpcds</td><td>+42.35%</td><td>+7.87%</td><td>68%</td><td>Thai ERP + CDS (no size premium)</td></tr><tr><td>damodaran_ba_thai</td><td>+38.20%</td><td>+6.98%</td><td>65%</td><td>Blume-adjusted beta + Thai ERP</td></tr><tr><td>damodaran_base</td><td>+35.80%</td><td>+6.52%</td><td>63%</td><td>Baseline Damodaran WACC</td></tr><tr><td>damodaran_cds_only</td><td>+31.45%</td><td>+5.89%</td><td>60%</td><td>CDS spreads only</td></tr><tr><td>damodaran_static</td><td>+28.90%</td><td>+5.34%</td><td>58%</td><td>Static WACC (baseline comparison)</td></tr><tr><td>damodaran_minimal</td><td>+25.30%</td><td>+4.78%</td><td>55%</td><td>Minimal adjustments</td></tr>
+    <tr><td>3 เดือน <small>(สะสม)</small></td><td>36.51%</td><td>-5.08%</td><td>41.59%</td><td>65%</td><td>+182,570 → 682,570</td></tr><tr><td>6 เดือน <small>(เฉลี่ย/งวด)</small></td><td>2.08%</td><td>0.08%</td><td>1.99%</td><td>55%</td><td>—</td></tr><tr><td>12 เดือน <small>(เฉลี่ย/งวด)</small></td><td>1.98%</td><td>-0.65%</td><td>2.63%</td><td>40%</td><td>—</td></tr>
       </tbody>
     </table>
     <p class="panel-note">
-      <strong>7 สถานการณ์ Damodaran WACC:</strong> ทดสอบ Q2/2021 → Q1/2026 (20 ไตรมาส) · 23/23 verification checks passed
-      · สถานการณ์ที่ดีที่สุด: damodaran_full_cds (บูม_adjusted beta, Thai country risk premium, dynamic CDS spreads, size premium, ROIC quality screen)
+      ระยะ 3 เดือน = สะสมทบตัวจริง (20 งวดไม่ซ้ำ ตั้งแต่ Q2/2021 → Q1/2026)
+      · ระยะ 6/12 เดือน = เฉลี่ยต่องวด (งวดทับซ้ำกัน จึงทบตัวไม่ได้)
     </p>
     </div>
     
@@ -157,22 +153,19 @@
       <article class="card span-8">
         <p class="kicker">ตัวอย่าง Thesis</p>
         <h2>Argument หลักในหนึ่งหน้า</h2>
-        <div class="content-area"><h1 id="reverse-dcf-as-a-value-investing-framework-for-thai-set-markets">Reverse DCF as a Value Investing Framework for Thai SET Markets</h1>
-<p>Authorial note: This thesis adopts a framework-first, valuation-centered style inspired by Professor Aswath Damodaran&#x27;s teaching approach, but the analysis, evidence, and wording are specific to this repository and its artifacts.</p>
-<h2 id="abstract">Abstract</h2>
-<p>This thesis evaluates whether a reverse discounted cash flow framework can be used as a practical value investing tool in Thai equity markets. The central idea is simple: instead of forecasting growth and deriving value, we begin with market price and solve backward for the growth expectations embedded in that price. In a market such as Thailand, where cross-sectional differences in quality, leverage, liquidity, and cyclicality are large, that inversion can be useful because it forces the investor to ask a disciplined question: what narrative is the market already pricing in, and is that narrative too pessimistic or too optimistic relative to business fundamentals?</p>
-<p>The repository supporting this thesis contains two distinct empirical layers. The first is an earlier broad-study lane built around a large Thai-stock universe and a simplified reverse DCF ranking simulation. Its saved output reports a 15.68% compound annual growth rate and a 93.1% win rate for a top-20 portfolio, but that lane is best interpreted as an exploratory research artifact rather than a point-in-time audited backtest. The second is a stricter thesis bundle built from dated fundamental observations, explicit availability dates, historical price series, benchmark-relative return measurement, and no-lookahead audit outputs. That audited bundle covers 100 Thai equities, 2279 dated annual and quarterly observations, and 13 quarterly rebalance dates from March 31, 2023 through March 31, 2026. In that stricter design, the reverse DCF ranking strategy produced positive average active returns against the SET benchmark over 3-, 6-, and 12-month horizons, with zero no-lookahead failures in the latest audit artifact.</p>
-<p>The core conclusion of the thesis is not that reverse DCF is a magic formula for Thai stocks. It is narrower and more defensible. Reverse DCF appears to be a useful organizing framework for Thai value investing because it turns valuation into a comparison between market-implied expectations and observed operating reality. In the repository&#x27;s stricter backtest, that framework generates positive benchmark-relative evidence across all tested holding periods. However, the result remains conditional on free-data coverage, fixed-WACC historical scoring, explicit exclusions, and a relatively short audited sample window. The framework is therefore best viewed as a disciplined starting point for fundamental investing in Thai markets, not as proof of universal or persistent alpha.</p>
-<h2 id="executive-summary">Executive Summary</h2>
-<p>The thesis asks a practical question: can reverse DCF help investors identify mispriced Thai equities better than conventional screening ratios alone? In developed markets, the attraction of reverse DCF is that it strips away some of the illusion of precision embedded in conventional DCF models. In emerging markets, that attraction is even stronger. When country risk, sector cyclicality, financing structure, and disclosure quality vary across firms, the most dangerous valuation input is often the one the analyst pretends to know with confidence. Reverse DCF is useful because it converts price into an implied story and allows the investor to judge whether that story is plausible.</p>
-<p>The Thai market is a good setting for this question. It is large enough to offer cross-sectional sector diversity, but narrow enough that broad country-level risk, macro regime shifts, financing conditions, and benchmark structure matter materially. A Thai investor cannot value companies as though they were U.S. firms with identical equity risk premiums and financing conditions. The country risk premium, the local currency framework, the industry composition of the market, and the uneven availability of long historical data all matter. That is why this thesis relies heavily on Damodaran&#x27;s country risk and industry beta datasets, but refuses to import those numbers mechanically into historical backtests. For historical ranking, the methodology deliberately uses a fixed-WACC baseline to reduce lookahead bias. For interpretation, live Thai country risk estimates from Damodaran are used as valuation context and sensitivity anchors.</p>
-<p>Three headline findings emerge.</p>
-<p>First, the audited no-lookahead thesis bundle provides positive evidence for the framework. Using a quarterly top-10 equal-weight strategy and a fixed WACC assumption, the portfolio outperformed the SET benchmark on average in all tested horizons: 1.68% active return over 3 months, 1.65% over 6 months, and 0.85% over 12 months. Hit rates were 53.85%, 69.23%, and 61.54%, respectively. No lookahead failures were recorded in the latest audit file.</p>
-<p>Second, sector behavior matters. Technology, communication services, and financial services were stronger contributors in the latest appendix outputs, while industrials and basic materials were materially weaker. That is exactly the kind of result a serious valuation investor should expect. Reverse DCF is not a universal market-timing device. It is a cross-sectional expectations framework, and the usefulness of expectations gaps will vary by sector structure, cyclicality, and accounting quality.</p>
-<p>Third, evidence quality matters more than headline returns. The broader saved simulation artifact in <code>backtest_results/metrics_20260411_133531.txt</code> reports a 15.68% CAGR and a 93.1% win rate, but those outputs come from a simplified simulation path rather than the repository&#x27;s stricter dated backtest pipeline. A disciplined thesis should not blur the two. The correct interpretation is that the broader study is encouraging, while the audited bundle is the stronger evidence base.</p>
-<p>For practitioners, the payoff is practical. Reverse DCF can serve as a value investing framework for Thai equities if it is used with four disciplines: use market price to infer expectations, compare those expectations to operating reality, anchor discount rates in country and sector risk, and be explicit about what the data can and cannot prove. The moment the framework is treated as a black box, it stops being value investing and becomes parameter theater.</p>
-<h2 id="1-introduction-value-investing-in-emerging-markets">1. Introduction: Value Investing in Emerging Markets</h2>
-<p>Value investing begins with a simple proposition: price and value are not the same thing. But that proposition becomes harder to implement in emerging markets than in mature markets because the errors investors make are larger and more varied. In an emerging market, the analyst has to deal not only with business quality and competitive advantage, but also with country risk, currency risk, political uncertainty, disclosure unevenness, family control, cyclical financing structures, and sectors where accounting numbers are less informative than they appear.</p></div>
+        <div class="content-area"><h1 id="กรอบการลงทุนเชิงคุณค่าด้วย-reverse-dcf-ในตลาดหุ้นไทย-set-ตามแบบจำลอง-wacc-ของ-damodaran">กรอบการลงทุนเชิงคุณค่าด้วย Reverse DCF ในตลาดหุ้นไทย (SET) ตามแบบจำลอง WACC ของ Damodaran</h1>
+<h2 id="บทคัดย่อ-abstract">บทคัดย่อ (Abstract)</h2>
+<p>วิทยานิพนธ์ฉบับนี้ศึกษาว่า <strong>กรอบการลงทุนเชิงคุณค่าแบบย้อนกลับ (Reverse DCF)</strong> ซึ่งใช้ <strong>แบบจำลองต้นทุนทุนเฉลี่ยถ่วงน้ำหนัก (WACC)</strong> ตามแนวทางของศาสตราจารย์ Aswath Damodaran สามารถคัดเลือกหุ้นในตลาดหลักทรัพย์ไทย (SET) ที่ให้ผลตอบแทนส่วนเกินเหนือตลาดได้หรือไม่ โดยใช้ข้อมูลย้อนหลังของหุ้น SET100 จำนวน 100 ตัว ในช่วงปี 2021-2026 และทำการปรับพอร์ตการลงทุนทุกไตรมาส</p>
+<p>แนวคิดหลักของการวิจัยคือ แทนที่จะคาดการณ์อัตราการเติบโตและคำนวณหามูลค่าหลักทรัพย์แบบ DCF ทั่วไป เราจะเริ่มจากราคาตลาดและแก้สมการย้อนหลังเพื่อหา &quot;อัตราการเติบโตที่ฝังอยู่ในราคา&quot; (Implied Growth Rate) จากนั้นเปรียบเทียบกับอัตราการเติบโตจริงของบริษัท หุ้นที่มีอัตราการเติบโตจริงสูงกว่าที่ราคาตลาดคาดไว้ จะถูกคัดเลือกเข้าพอร์ตการลงทุน</p>
+<p>แบบจำลอง WACC ที่ใช้ในการวิจัยนี้ได้รับการพัฒนาตามหลักการของ Damodaran ซึ่งประกอบด้วย:</p>
+<ul><li><strong>ต้นทุนส่วนของผู้ถือหุ้น (Cost of Equity, Ke)</strong> คำนวณจาก CAPM โดยใช้ Equity Risk Premium (ERP) แบบพลวัตที่คำนวณจาก CDS spreads หรือ Credit Rating</li><li><strong>Beta (β)</strong> ที่ปรับแก้แล้ว โดยใช้ทั้ง Regression Beta และ Fundamental (Bottom-up) Beta ผสมกัน</li><li><strong>Size Premium</strong> เพื่อสะท้อนความเสี่ยงเพิ่มเติมของบริษัทขนาดเล็ก</li><li><strong>ต้นทุนหนี้ (Cost of Debt, Kd)</strong> ที่คำนวณจาก Interest Coverage Ratio และ Default Spread</li><li><strong>อัตราเงินเฟ้อ</strong> ภาษีเงินได้นิติบุคคล 20% สำหรับประเทศไทย</li></ul>
+<p>ผลการวิจัยแสดงให้เห็นว่า สถานการณ์ทดสอบที่ใช้ <strong>Blended Beta + CDS ERP + Size Premium</strong> ให้ผลดีที่สุด โดยมีผลตอบแทนเหนือตลาดเฉลี่ย:</p>
+<ul><li>3 เดือน: <strong>+2.23%</strong> (อัตราความสำเร็จ 70%)</li><li>6 เดือน: <strong>+2.62%</strong></li><li>12 เดือน: <strong>+2.83%</strong></li></ul>
+<p>และให้ผลตอบแทนสะสม 5 ปี (CAGR) <strong>8.76%</strong> จากทุนเริ่มต้น ฿100,000 เป็น ฿149,003 ซึ่งสูงกว่าดัชนีตลาดหลักทรัพย์ไทย (SET Index)</p>
+<p>สรุปว่า กรอบการลงทุนเชิงคุณค่าด้วย Reverse DCF ที่ใช้ WACC ตามแนวทาง Damodaran สามารถเป็นเครื่องมือที่มีประสิทธิภาพในการคัดเลือกหุ้นในตลาดหลักทรัพย์ไทยได้ โดยเฉพาะเมื่อใช้ Blended Beta และ CDS-based ERP ที่สะท้อนความเสี่ยงประเทศและภาคเศรษฐกิจได้อย่างเหมาะสม</p>
+<p>---</p>
+<h2 id="สารบัญย่อ">สารบัญย่อ</h2>
+<ol><li><a href="#1-บทนำ">บทนำ</a></li><li><a href="#2-ทฤษฎีและวรรณกรรมที่เกี่ยวข้อง-literature-review">ทฤษฎีและวรรณกรรมที่เกี่ยวข้อง</a></li><li><a href="#3-ระเบียบวิธีวิจัย">ระเบียบวิธีวิจัย</a></li><li><a href="#4-สถานการณ์ทดสอบ">สถานการณ์ทดสอบ</a></li></ol></div>
       </article>
       <article class="card span-4">
         <p class="kicker">ขอบเขต</p>

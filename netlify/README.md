@@ -44,4 +44,4 @@ python scripts/build_netlify_site.py --site-url "$URL"
 
 - The site is dependency-free HTML and CSS.
 - Asset copies are intentionally local for fast loading and portability.
-- The thesis conversion is produced from `docs/thesis_reverse_dcf_thai_set.md`.
+- The thesis conversion is produced from `docs/thesis-damodaran-wacc-thai.md`.

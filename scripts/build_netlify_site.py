@@ -9,6 +9,7 @@ import html
 import json
 import re
 import shutil
+import unicodedata
 from collections import Counter
 from datetime import date
 from pathlib import Path
@@ -18,6 +19,10 @@ from typing import Iterable
 ROOT = Path(__file__).resolve().parents[1]
 NETLIFY = ROOT / "netlify"
 SITE_URL_DEFAULT = "https://example.com"
+THESIS_SOURCE = ROOT / "docs/thesis-damodaran-wacc-thai.md"
+THESIS_SOURCE_DISPLAY = "docs/thesis-damodaran-wacc-thai.md"
+THESIS_ASSET_PATH = "assets/docs/thesis-damodaran-wacc-thai.md"
+LEGACY_THESIS_ASSET_PATH = "assets/docs/thesis_reverse_dcf_thai_set.md"
 
 
 NAV_LINKS = [
@@ -1017,8 +1022,8 @@ pre code {
 
 
 def slugify(text: str) -> str:
-    normalized = text.strip().lower()
-    slug = re.sub(r"[^\w]+", "-", normalized, flags=re.UNICODE).strip("-")
+    normalized = unicodedata.normalize("NFC", text.strip().lower())
+    slug = re.sub(r"[^0-9a-z\u0E00-\u0E7F]+", "-", normalized, flags=re.UNICODE).strip("-")
     return slug or "section"
 
 
@@ -2264,10 +2269,10 @@ def render_thesis_page(
     body = f"""
     <section class="page-intro" aria-labelledby="thesis-title">
       <span class="eyebrow">วิทยานิพนธ์ฉบับเต็ม</span>
-      <h1 id="thesis-title">Reverse DCF เป็นกรอบการลงทุนแบบเน้นมูลค่าสำหรับตลาดหุ้นไทย SET</h1>
+      <h1 id="thesis-title">กรอบการลงทุนเชิงคุณค่าด้วย Reverse DCF ในตลาดหุ้นไทย (SET)</h1>
       <p>
-        แปลงเป็น HTML จากวิทยานิพนธ์ใน repository พร้อมหัวข้อความหมาย ตาราง บล็อกโค้ด และการนำทาง anchor ภายใน
-        หน้านี้ออกแบบสำหรับการอ่านโดยตรง การตรวจสอบทางวิชาการ และการจัดทำดัชนีค้นหา
+        หน้าเว็บนี้สร้างจากต้นฉบับวิทยานิพนธ์ภาษาไทยใน repository พร้อมหัวข้อ ตาราง บล็อกโค้ด
+        และลิงก์ภายในสำหรับการอ่านต่อเนื่อง การอ้างอิง และการจัดทำดัชนีค้นหา
       </p>
     </section>
     <section class="card-grid" style="margin-bottom:22px">
@@ -2313,18 +2318,18 @@ def render_thesis_page(
     structured_data = {
         "@context": "https://schema.org",
         "@type": "ScholarlyArticle",
-        "headline": "Reverse DCF เป็นกรอบการลงทุนแบบเน้นมูลค่าสำหรับตลาดหุ้นไทย SET",
+        "headline": "กรอบการลงทุนเชิงคุณค่าด้วย Reverse DCF ในตลาดหุ้นไทย (SET)",
         "description": (
-            "วิทยานิพนธ์ประเมิน Reverse DCF เป็นกรอบการลงทุนแบบเน้นมูลค่าสำหรับหุ้นไทย SET ตามแนวทางของ Aswath Damodaran"
+            "วิทยานิพนธ์ภาษาไทยว่าด้วยการใช้ Reverse DCF และ WACC ตามแนวทาง Damodaran เพื่อประเมินหุ้นไทย SET"
         ),
         "url": absolute_url(site_url, "thesis.html"),
-        "inLanguage": "en",
+        "inLanguage": "th",
         "about": ["Reverse DCF", "Thai SET", "Value investing", "Backtesting"],
     }
     return render_page(
         title="วิทยานิพนธ์ | Thai SET Reverse DCF",
         description=(
-            "วิทยานิพนธ์เกี่ยวกับ Reverse DCF เป็นกรอบการลงทุนแบบเน้นมูลค่าสำหรับตลาดหุ้นไทย SET ตามกรอบของ Aswath Damodaran"
+            "วิทยานิพนธ์ภาษาไทยเกี่ยวกับ Reverse DCF และ WACC สำหรับตลาดหุ้นไทย SET ตามแนวทางของ Aswath Damodaran"
         ),
         active_nav="วิทยานิพนธ์",
         prefix="",
@@ -2556,7 +2561,7 @@ def render_backtest_page(
 
 
 def render_about_page(site_url: str) -> str:
-    body = """
+    body = f"""
     <section class="page-intro" aria-labelledby="about-title">
       <span class="eyebrow">ภาพรวมโครงการ</span>
       <h1 id="about-title">โครงการนี้พยายามพิสูจน์อะไร — และปฏิเสธที่จะอ้างอะไร</h1>
@@ -2606,7 +2611,7 @@ def render_about_page(site_url: str) -> str:
         <p class="kicker">แผนผัง repository</p>
         <h2>เว็บไซต์ map ไปยัง repo artifacts อย่างไร</h2>
         <ul class="list-clean">
-          <li><code>docs/thesis_reverse_dcf_thai_set.md</code> → หน้า thesis</li>
+          <li><code>{THESIS_SOURCE_DISPLAY}</code> → หน้า thesis</li>
           <li><code>docs/thesis-methodology.md</code> + <code>docs/datasource-decision.md</code> → หน้าวิจัย</li>
           <li><code>research_data/source_of_truth_100/backtest/</code> → หน้า backtest และ downloads</li>
           <li><code>research_data/source_of_truth_100/thesis_bundle/</code> → bundle references</li>
@@ -2628,7 +2633,7 @@ def render_about_page(site_url: str) -> str:
 
 
 def render_download_page(site_url: str) -> str:
-    body = """
+    body = f"""
     <section class="page-intro" aria-labelledby="download-title">
       <span class="eyebrow">Downloads</span>
       <h1 id="download-title">Source files, figures, and summaries copied into the static bundle</h1>
@@ -2643,7 +2648,7 @@ def render_download_page(site_url: str) -> str:
         <h2>Core markdown sources</h2>
         <ul class="list-clean">
           <li><a href="../assets/docs/reader-first-thai.md">Thai reader-first guide source</a></li>
-          <li><a href="../assets/docs/thesis_reverse_dcf_thai_set.md">Full thesis markdown</a></li>
+          <li><a href="../{THESIS_ASSET_PATH}">Thai thesis markdown</a></li>
           <li><a href="../assets/docs/executive-summary.md">Executive summary</a></li>
           <li><a href="../assets/docs/thesis-methodology.md">Methodology note</a></li>
           <li><a href="../assets/docs/thesis-results.md">Results note</a></li>
@@ -2701,6 +2706,10 @@ def copy_files(mapping: dict[Path, Path]) -> None:
     for source, destination in mapping.items():
         ensure_dir(destination.parent)
         shutil.copy2(source, destination)
+        if source == THESIS_SOURCE and destination == NETLIFY / THESIS_ASSET_PATH:
+            legacy_destination = NETLIFY / LEGACY_THESIS_ASSET_PATH
+            ensure_dir(legacy_destination.parent)
+            shutil.copy2(source, legacy_destination)
 
 
 def build_sitemap(site_url: str) -> str:
@@ -2770,7 +2779,7 @@ python scripts/build_netlify_site.py --site-url "$URL"
 
 - The site is dependency-free HTML and CSS.
 - Asset copies are intentionally local for fast loading and portability.
-- The thesis conversion is produced from `docs/thesis_reverse_dcf_thai_set.md`.
+- The thesis conversion is produced from `{THESIS_SOURCE_DISPLAY}`.
 """
 
 
@@ -2781,7 +2790,7 @@ def build_asset_sources() -> dict[Path, Path]:
         ROOT / "research_data/source_of_truth_100/backtest/figures/sector_active_return_heatmap.png": NETLIFY / "assets/figures/sector_active_return_heatmap.png",
         ROOT / "research_data/source_of_truth_100/backtest/figures/wacc_sensitivity.png": NETLIFY / "assets/figures/wacc_sensitivity.png",
         ROOT / "docs/reader-first-thai.md": NETLIFY / "assets/docs/reader-first-thai.md",
-        ROOT / "docs/thesis_reverse_dcf_thai_set.md": NETLIFY / "assets/docs/thesis_reverse_dcf_thai_set.md",
+        THESIS_SOURCE: NETLIFY / THESIS_ASSET_PATH,
         ROOT / "docs/executive-summary.md": NETLIFY / "assets/docs/executive-summary.md",
         ROOT / "docs/thesis-methodology.md": NETLIFY / "assets/docs/thesis-methodology.md",
         ROOT / "docs/thesis-results.md": NETLIFY / "assets/docs/thesis-results.md",
@@ -2828,7 +2837,7 @@ def main() -> None:
     site_url = args.site_url.rstrip("/")
 
     reader_guide_md = read_text(ROOT / "docs/reader-first-thai.md")
-    thesis_md = read_text(ROOT / "docs/thesis_reverse_dcf_thai_set.md")
+    thesis_md = read_text(THESIS_SOURCE)
     methodology_md = read_text(ROOT / "docs/thesis-methodology.md")
     datasource_md = read_text(ROOT / "docs/datasource-decision.md")
     audit_md = read_text(ROOT / "research_data/source_of_truth_100/backtest/no_lookahead_audit.md")

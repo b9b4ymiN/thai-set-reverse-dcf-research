@@ -59,5 +59,15 @@ class TestBuildNetlifySite(unittest.TestCase):
         self.assertIn("toc-card", toc)
         self.assertIn("#section1", toc)
 
+    def test_thesis_page_metadata_is_thai(self):
+        html = bns.render_thesis_page("<h2 id='x'>หัวข้อ</h2>", [{"level": 2, "text": "หัวข้อ", "id": "x"}], "https://example.com")
+        self.assertIn('"inLanguage": "th"', html)
+        self.assertIn("กรอบการลงทุนเชิงคุณค่าด้วย Reverse DCF", html)
+        self.assertEqual(bns.THESIS_SOURCE_DISPLAY, "docs/thesis-damodaran-wacc-thai.md")
+
+    def test_slugify_preserves_thai_headings(self):
+        self.assertEqual(bns.slugify("3. ระเบียบวิธีวิจัย"), "3-ระเบียบวิธีวิจัย")
+        self.assertEqual(bns.slugify("บทคัดย่อ (Abstract)"), "บทคัดย่อ-abstract")
+
 if __name__ == "__main__":
     unittest.main()
